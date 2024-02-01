@@ -1,1552 +1,1043 @@
-## openLuup: User Guide - ver 2020.05.12 @akbooer
+The following is courtesy of Rex Beckett on the Vera forum and has been edited throughout. See this link for the original information:
 
-
-### Contents
-
-### Overview
-
-### 2020, Release x.xx (v20xx.xx)
-
-### Installation
-1. Lua installation
-2. openLuup Installation
-3. Making openLuup run at system boot time
-4. Linking to Vera
-
-### Backing up the system
-
-### More about VeraBridge
-1. Bridging to multiple Veras
-2. Mirroring individual device variables from openLuup to Vera
-3. Synchronising House Mode
-
-Other configuration variables
-
-### The Data Historian
-
-### The user_data.json file
-
-### More about the port 3480 HTTP server
-1. File Access
-2. index.html Files
-3. CGI processing
-
-### Something about openLuup log files
-
-### More about Scenes
-1. VeraBridge and Remote Scenes
-2. Porting Vera scenes to openLuup
-3. Scene Finalisers – Running Lua Code after Individual Scene Execution
-4. Scene Prolog and Epilog Lua code – Global Functions
-
-### Appendix: Starting openLuup at system boot time
-
-1. systemctl with /etc/systemd/system/openluup.service
-
-2. /etc/init.d/openLuup
-
-3. /etc/rc.local
+https://community.ezlo.com/t/conditional-scene-execution-some-examples/178331/1
 
 ---
+# Conditional Scene Execution: Some Examples
+RexBeckett:
 
-### Appendix: Configuring key openLuup parameters at Startup
+One of the most frequent questions on this forum is How do I stop my scene running when… This has been asked and answered for many different types of condition and diligent searching will often find you a solution. To help newcomers to Vera, I am posting a few of the most common scenarios in this thread.
 
-### Appendix: Directory Structure and Additional Files
-1. Vera & openLuup directory structures and ancillary files
-2. /usr/bin/GetNetworkState.sh and /etc/cmh/ui
-3. openLuup_reload.bat for Windows
-4. code for /usr/bin/GetNetworkState.sh
-
-### Appendix: openLuup SMTP and POP3 (eMail) servers
-1. SMTP server
-
-2. Testing the SMTP server
-
-3. POP3 server
-
-### Appendix: Using Cameras with openLuup
-
-1. I_openLuupCamera1.xml implementation file
-
-2. Configuration
-
-### Appendix: openLuup – Databases and Data Visualisation
-
-1. InfluxDB
-
-2. DataYours / Graphite
-
-### Appendix: Sending and receiving UDP datagrams
-
-### Appendix: openLuup plugin Actions and Variables
-
-1. House Mode related actions and variables
-
-2. File Management actions and variables
-
-3. AltUI-related variables
-
-4. System Status Variables
-
-### Appendix: Undocumented features of Luup
-
-### Appendix: Unimplemented features of openLuup
-1. unimplemented luup API calls
-2. unimplemented HTTP requests
-
-### Appendix: Differences between openLuup and Vera / MiOS
-
-1. Features of Vera / MiOS not in openLuup
-2. Features of openLuup not in Vera / MiOS
+The mechanism for preventing a scene running is simple: You insert Luup code into the scene that returns false if you want the scene blocked or true if you want to allow it to run. You can insert the code in a Trigger’s Luup event to allow or block only that trigger. You can also insert the code into the scene’s main LUUP tab where it will allow or block all triggers and manual operation. You can use a combination of both types for more complex scenarios. UI7 does not currently allow code to be attached to individual triggers so only the main Luup Code tab may be used.
 
 ---
-# Overview
+# Examples list:
+RexBeckett:
 
-openLuup is an environment which supports the running of some MiOS (Vera) plugins on generic Unix systems (or, indeed, Windows systems.) Processors such as Raspberry Pi and BeagleBone Black are ideal for running this environment, although it can also run on Apple Mac, Microsoft Windows PCs, anything, in fact, which can run Lua code (most things can.) The intention is to offload processing (cpu and memory use) from a running Vera to a remote machine to increase system reliability.
+[Day or Night Conditions](Day-or-Night-Conditions.md)
 
-Running on non-specific hardware means that there is no native support for Z-wave, although plugins to handle Z-wave USB sticks support this (the latest openLuup versions support a ZWay plugin for Z-Wave.me Razberry boards or UZB slicks.) The full range of MySensors (http://www.mysensors.org/) Arduino devices are supported though the Ethernet Bridge plugin available on that site. A plugin, VeraBridge, to provide a bidirectional ‘bridge’ (monitoring / control, including scenes) to remote MiOS (Vera) systems is provided in the openLuup installation.
+[Z-Wave and Virtual Switches](z-wave-and-virtual-switches.md)
 
-openLuup is extremely fast to start (a few seconds before it starts running any created devices startup code) has very low cpu load, and has a very compact memory footprint. Whereas each plugin on a Vera system might take ~4 Mbytes, it’s far less than this under openLuup, in fact, the whole system can fit into that sort of space. Since the hardware on which it runs is anyway likely to have much more physical memory than current Vera systems, memory is not really an issue.
+[Time Period](time-period.md)
 
-For the user interface, but we have, courtesy of @amg0, the most excellent AltUI: Alternate UI to UI7. See the Vera forum board:
+[Temperature Range](temperature-range.md)
 
-https://community.ezlo.com/t/altui-version-log/188335
+[Humidity Range](humidity-range.md)
 
-https://community.ezlo.com/t/altui-new-features-suggestions/188330
+[Light Level](
+light-level.md)
 
-An automated way of installing and updating the AltUI environment is built-in to openLuup. There’s actually no requirement for any user interface if all that’s needed is an environment to run plugins. There is a rudimentary console interface for examine some of the system objects and data.
+[VariableContainer](variable-container.md)
 
-A built-in VeraBridge action is provided to transfer a complete set of uncompressed device files and icons from any Vera on your network to the openLuup target machine. It also supports liking to Vera scenes and/or importing them to run as native openLuup scenes.
+[Day Range](day-range.md)
 
-openLuup includes a 'Data Historian' which stores previous device variable values in both in-memory cache and (optionally) on-disk archives. It offers an almost configuration-free approach to storing (and retrieving) variable values, and provides plotting through both a Gefena Data Source API (so that data may be easily visualised if you already have a Grafana installation) or plotted directly by HTTP request (using Google Charts.)
+[Date Range](date-range.md)
 
-For compatibility with Vera systems, openLuup has been written in Lua version 5.1 and requires the appropriate installation to be loaded on your target machine. Installation is not trivial, but it’s not hard either.
+[Multiple Conditions](multiple-conditions.md)
 
-**Please read this document carefully and then follow the installation steps.**
+[Using Functions](using-functions.md)
 
----
-## 2020, Release x.xx (v20xx.xx)
-This release is a comprehensive (but not totally complete) implementation of Luup, and includes a set of features which are generally sufficient to run a large number of third-party plugins.
+[Multiple Triggers](multiple-triggers.md)
 
-What openLuup does:
+[Time Window](time-window.md)
 
-- runs on any Unix machine - I often run it within my development environment on a Mac also runs under Windows. However, plugins which spawn commands using the Lua os.execute() function may not operate correctly
-- runs the AltUI plugin to give a great UI experience
-- runs the MySensors Arduino plugin (ethernet connection to gateway only) which is
-really the main goal - to have a Vera-like machine built entirely from third-party bits (open source)
-- runs the ZWay plugin to provide basic control of Wave devices through the Z-Wave.me
-Razberry board or UZB stick
-- includes a bridge app to link to remote Veras (which can be running UI5 or UI7 and require no additional software.)
-- runs many plugins unmodified – particularly those which just create virtual devices (eg. DataYours, Netatmo, …)
-- provides access to the AltAppStore where other plugins tested under openLuup by
-- their authors are available for download
-- uses a tiny amount of memory and boots up very quickly (a few seconds)
-- supports scenes with timers and AltUI-style variable watch triggers
-- has its own port 3480 HTTP server supporting multiple asynchronous client requests
-- has a fairly complete implementation of the Luup API and the HTTP requests
-- has a simple log structure - most events generate just one entry each in the log.
-- writes variables to a separate log file for AltUI to display variable and scene changes.
-- special camera implementation file with motion sensor triggered by camera
-- SMTP/POP3 email server to receive and browse local emails within your LAN
-- File retention policy manager with SendToTrash and EmptyTrash actions
+[Service IDs, Variables and Actions](service-ids-variables-and-actions.md)
 
-## What it doesn't do:
+[Delayed Actions](delayed-actions.md)
 
-- Some less-used HTML requests are not yet implemented (see Appendix.)
-- Doesn't support the <incoming> or <timeout> action tags in service files, but does support the device-level <incoming> tag.
-- Doesn’t directly support local serial I/O hardware (there are work-arounds: ser2net)
-- Won't run encrypted, or licensed, plugins.
-- Doesn't use lots of memory.
-- Doesn’t use lots of cpu.
-- Doesn’t constantly reload (like Vera often does, for no apparent reason.)
-- Doesn't do UPnP (and never will.)
+[Delayed Actions - Passing a Serialized Table](delayed-actions-passing-a-serialized-table.md)
 
-See the relevant appendix for more discussion of Vera / openLuup differences.
+[Debugging Lua Code - kwikLog](debugging-lua-code-kwiklog.md)
 
-**If you like openLuup, please consider donating something to Cancer Research UK at https://www.justgiving.com/DataYours/**
+[Run Scene when a Variable Changes](run-scene-when-a-variable-changes.md)
+
+[Finding the Correct Service ID]()
+
+[Testing Lua Code - LuaTest]()
 
 ---
-## Installation
+# Day or Night conditions
+RexBeckett:
 
-There are just a few basic installation steps to set up an openLuup system running the
-AltUI interface and bridging to a remote Vera:
-
-1. install Lua and some of its packages on your target machine
-2. install openLuup itself using the openLuup_install.lua file
-3. install and run the VeraBridge plugin from the AltUI Plugins page
-
-That’s all that’s needed!
-
----
-## 1. Lua installation
-
-For compatibility with Vera systems, openLuup has been written in Lua version 5.1 and requires the appropriate installation to be loaded on your target machine. You will also need the LuaSocket library, LuaFileSystem, and, for secure (SSL) network connections, the LuaSec library. It’s not difficult, but the guide assumes some familiarity with Linuxtype systems (although much is also applicable to Windows.)
-
-The installation process is target machine dependent (other machines may require source code compilation of the libraries, but that is beyond the scope of this document) but a few of the simpler cases are:
-
-**RASPBIAN (RASPBERRY PI)**
-
-(Lua 5.1 is pre-installed)
-```text
-# sudo apt-get update
-# sudo apt-get install lua-socket
-# sudo apt-get install lua-filesystem
-# sudo apt-get install lua-sec
-```
-
-**DEBIAN (BEAGLEBONE BLACK)**
-
-```text
-# apt-get update
-# apt-get install lua5.1
-# apt-get install lua-socket
-# apt-get install lua-filesystem
-# apt-get install lua-sec
-```
-
-**OPEN-WRT (AS USED BY VERA!)**
-
-(Lua 5.1 is pre-installed)
-
-```text
-# opkg update
-# opkg install luasocket
-# opkg install luafilesystem
-# opkg install luasec
-```
-
----
-## 2. openLuup Installation
-This is very straight-forward: create a directory **cmh-ludl/** for the openLuup installation on your machine (in your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions) **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
+To allow a scene to run only at night:
 
 ```lua
-wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
+return luup.is_night()
 ```
 
-The link below may also be used to retrieve the file:
-
-https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
-
-Run the file using the command line:
-
-```text
-# lua5.1 openLuup_install.lua
-```
-
-If successful, the script produces console output like this:
-
-```Bash
-# lua5.1 install.lua
-openLuup_install 2016.06.08 @akbooer
-getting latest openLuup version tar file from GitHub...
-un-zipping download files...
-getting dkjson.lua...
-creating required files and folders
-initialising...
-downloading and installing AltUI...
-Tue Nov 8 11:08:32 2016 device 2 ' openLuup' requesting reload
-openLuup downloaded, installed, and running...
-visit http://172.16.42.131:3480 to start using the system
-#
-```
-
-and browsing the reported URL will take you to the AltUI interface and show two devices: openLuup and AltUI. From here on, the interface can be used to configure the system.
-
-## 3. Making openLuup run at system boot time
-
-This initial running instance of openLuup will not persist between system reboots. To do that, some system-specific file editing is required. There are at least three options for doing this as described in the Appendix: Starting openLuup at system boot time.
-
-## 4. Linking to Vera
-
-Using the AltUI menus to navigate More > Plugins takes you to the plugin page:
-
-IMAGE HERE
-
-Simply clicking on the Update button (located between Actions and Uninstall, **NOT the Update checkbox which you may safely ignore**) for VeraBridge will install that plugin.
-
-You have to go to the Devices page and the Attributes tab of the new VeraBridge in order to enter the IP address of your Vera. Moving to the the Misc > Reload Luup Engine menu will reload and the bridge should now have connected to that Vera and display its devices and scenes as ‘clones’ on openLuup.
-
-There is just a little further configuration to do for bridged devices.
-
-IMAGE HERE
-
-None of the device files or icons have yet been downloaded to openLuup, so the icons will be missing and also devices will not have their full functionality. The bridge allows an easy way to retrieve these files: simply go to the **Action** tag of the bridge’s control panel and press the **GetVeraFiles** button.
-
-This will copy all device files (D_xxx.xml, D_xxx.json, I_xxx.xml, S_xxx.xml, J_xxx.js, etc…) into **/etc/cmh-ludl/files/** and the icons (xxx.png) in **/etc/cmh-ludl/icons/** and reload the system. After a possibly required browser refresh, the device icons and full functionality should be in place.
-
-Read more about VeraBridge capabilities in a later section of this guide.
-
-# Backing up the system
-AltUI makes it very easy to create a backup of your system configuration – all of which is defined in one (large) JSON-encoded file: **/etc/cmh-ludl/user_data.json**.
-
-The More > Controllers page provides a button to save a copy to **/etc/cmh-ludl/backup/** in a file named something like **backup.openLuup-88800000-2016-05-01.lzap**. Repeated backups on the same day overwrite one another. Different days have unique names and are not automatically purged.
-
-This file is a binary compressed version of the user_data.json file, and typically 5 to 6 times smaller. It may be used as a parameter to the openLuup_reload script and the initialisation process will uncompress it automatically.
-
-IMAGE HERE
-
-Backup may also be initiated from Lua code (perhaps in a scheduled scene) with the single command:
+To prevent a scene running at night:
 
 ```lua
-luup.inet.wget "/cgi-bin/cmh/backup.sh?"
+return not luup.is_night()
 ```
 
----
-# More about VeraBridge
-
-The VeraBridge plugin is an openLuup plugin which links to remote Veras. Unlike the built-in Vera ‘bridge’ capability (which, I think, uses UPnP discovery) this has no limitation as to the Vera firmware version that it links to, and you can quite happily run multiple copies of this linking to UI5 and UI7 remote machines (which, themselves, require no special software installation.)
-
-VeraBridge provides local clones of devices and scenes from a remote Vera:
-
-- reflects the status of the remote devices (ie. device variables and house mode)
-- provides, through AltUI, a display panel and controls allows control of the remote devices (eg. on/off, dimming, ...) through the usual luup.call_action mechanism (or the control panel)
-- makes remote scenes visible locally, allowing timers and triggers to be added
-- maintains a local variable to reflect the remote machine’s House Mode
-- maintains a local variable showing the time of last contact with remote machine
-- capability to lock the openLuup House Mode to the bridged machine or vice-versa.
-- ‘reverse bridging’ or ‘mirroring’ of specified device variables: openLuup variables may be written to devices on the bridged Vera so that plugins and scenes there can be influenced by plugins and scene logic running under openLuup.
-- the ability to download all device files and icons from the bridged Vera.
-
-The device numbering is different from that on the remote machine, being incremented by multiples of 10000 for each different bridge, and one of VeraBridge's main functions is to intercept actions on the local devices and pass them to the remote ones. What does NOT work is to set a variable on a local device and expect that variable on the corresponding remote device to change.
-
-Since it is possible (but fairly unlikely) that the VeraBridge will miss an update to a Vera device variable, every so often (actually, about every minute) it scans the whole lot and updates all the cloned devices on openLuup. This means that WHATEVER changes you make to cloned device variables will get overwritten frequently. The motto is this... do NOT write variables to cloned devices.
-
-Running under openLuup, VeraBridge supports any serviceId/action command request (ie. those not returning device status parameters) This covers most device control scenarios.
-
-The bridge device also has a variable which reflects the remote House Mode (if the remote system is UI7 or greater) and which may therefore be used as a device variable watch trigger for scenes. Additionally, the bridge can ‘mirror’ the house mode in either direction, synchronising the mode of both (or more) machines.
-
-Action calls with serviceId urn:micasaverde-com:serviceId:HomeAutomationGateway1 made to the VeraBridge plugin are relayed to the remote Vera. This means that requests made to VeraBridge for actions like "SetHouseMode" and "SetGeoFence" will be effective on the bridged Vera.
-
-## 1. Bridging to multiple Veras
-
-Multiple bridges may be installed (through the Create button on the devices page.)
-
-The first Vera linked to is special, for a number of reasons:
-
-TBD…
-
-## 2. Mirroring individual device variables from openLuup to Vera
-
-Any openLuup device variable may be ‘mirrored’ to any bridged Vera. That is, a variable on a remote Vera device can actively track the value of a local variable.
-
-Each instance of the VeraBridge plugin registers itself with AltUI as a Data Storage Provider with a name of the form **Vera@xxx.xx.xx.xx** where the ‘x’s represent the IP address of the remote Vera.
-
-Simply going to AltUI’s Device > Variables pane you can select to watch any variable by clicking on the ‘graph’ button, selecting the appropriate Vera to push the data to and enter the device number (on the remote machine) where you want that variable to be mirrored.
-
-A device number on its own means that the current variable’s serviceId and name will be used on the remote machine. Alternatively the following syntax may be used to force a specific serviceId / name:
-
-device.serviceId.variable (eg. 42.urn:something:serviceId:newservice.NewName)
-device.*.variable (eg. 42.*.NewName to retain existing serviceId)
-
-## 3. Synchronising House Mode
-The bridge has a device variable HouseModeMirror, which you can set to one of three values:
-
-- "0" : no mirroring,
-- "1" : local mirrors remote machine,
-- "2" : remote mirrors local machine.
-
-You have to reload to make this change effective. Because of Vera's built-in delay in changing HouseMode, mode 2 can take a while (typically 30 seconds or more) to kick in, but they should synchronise in the end.
-
-Note that it’s not easily possible to have this synchronisation work in both directions simultaneously because of a race condition that arises from the latency of Vera changing modes. You can, however, have openLuup mirror one bridged Vera’s mode and have other bridged Veras which mirror that.
-
-Also note that the openLuup plugin itself has a HouseMode variable which may be used as a variable watch trigger to kick off scenes when the house mode is changed (no need for a separate HouseMode plugin.)
-
----
-## Other configuration variables
-
-My thanks to openLuup enthusiast @explorer for having made the original suggestion to add more customisation to VeraBridge:
-
-Selecting devices in VeraBridge. To quote from that post:
-
-"I thought it would be nice to add some basic device filtering mechanism to VeraBridge, so I added
-these variables:"
-
-- **ZWaveOnly** – if set to true then only Z-Wave devices are considered by VeraBridge.
-- **IncludeDevices** – a comma-separated list of devices to include even if ZWaveOnly is set to true.
-- **ExcludeDevices** – a comma-separated list of devices to exclude from synchronization by VeraBridge, takes precedence over the first two.
-
-Also:
-
-- **BridgeScenes** – enable/disable linking to remote scenes by setting to ‘true’. If you have added or deleted some scenes on Vera and you wish to update the openLuup links, then you need to turn BridgeScenes off, reload, turn them on, and reload again.
-
-- **CloneRooms** – set to true to force all bridged devices to be in the same rooms as on the remote Vera. Devices which are in "No Room" remotely, are placed in the appropriately named "MiOS..." room which corresponds to the remote machine name.
-
----
-## The Data Historian
-
-openLuup includes a 'Data Historian' which stores previous device variable values in both inmemory cache and (optionally) on-disk archives. Taking lessons learned from DataYours and EventWatcher, also from AltUI's Data Storage Providers, it offers an almost configuration-free approach to storing (and retrieving) variable values. In addition, and in contrast to those other options and the dataMine plugin, it provides a natural way of reading historic variable values through the usual Luup interface. Also included is a Grafana Data Source API so that data may be easily visualised if you already have a Grafana installation, or plotted directly (using Google Charts.) A big plus here is that you don't have to have set up storage for any specific variable, they are (almost) all available.
-
-In summary:
-
-- only numeric variable values are stored
-- by default, the in-memory cache stores all variable changes since system startup, with a small number of exceptions, retaining the most recent 1000 values (by default)
-- variables not cached (by default) include timestamp-like ones, including LastUpdate, Polls, low-level Zwave, and some dates
-- the on-disk archive is enabled by the single LuaStartup line luup.attr_set ("openLuup.Historian.Directory","history/"), where 'history/' is the path (including trailing '/') relative to cmh-ludl/ where you want the data to reside.
-- by default, only a small subset of cached variables are archived on disk, including security sensors Tripped, temperature, humidity, and generic sensors Current values, energy metering KWH and Watts, battery levels, openLuup system memory and cpu stats, ...
-- the on-disk archives are implemented as Graphite Whisper files (as in DataYours)
-- different data types have different sample rates and retention policies. For example, temperature data is sampled every 20 minutes, initially, but reduced in a number of stages to once per day after a year, and battery levels are just sampled once per day.
-- default total on-disk archive duration is 10 years. Typical file sizes, one per variable (containing multiple resolution data) are about 300Kbyte.
-- system impact is minimal, with high performance. The additional system load is less than writing to the logs.
-- database maintenance effort is zero. The disk archive is of fixed size per variable, and total file space is roughly proportional to the number of archived variables.
-- the openLuup Console has two pages to view historian activities: openLuup > Historian (for the in-memory cache), and Files > History DB (for the on-disk archives)
-- the URL for the Grafana Data Source interface is simply your openLuup:3480 port
-- programmatically, data is retrieved using the luup.variable_get() call
-
-On my 'production' system which is linked to 3 Veras, Netatmo, Philips Hue, and some MySensors Arduinos, there are over 4000 device variables. About 300 of those are cached in memory, and their on-disk archives take about 90 Mbyte. There are, on average, 12 updates per minute, each one taking about 1.5 mS on an RPi. (I don't have any security sensors triggering frequently on this system.)
-
-
-For plugin developers, reading data from the cache/archive is trivial, using an additional {start,end} time parameter to variable_get():
-
+Or a more generic form:
 
 ```lua
-local v0,t0 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33)
-
-print ("normal current value", v0,t0)
-
-local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33,{os.time()-3600,os.time()})
-
-print ("over the last hour", pretty {value = v2, times=t2})
+local allow = true -- true runs scene at night, false blocks it return ((luup.is_night()) == allow)
 ```
 
-gives
+Many of us use the DayTime (Day or Night) plugin as an alternative to the luup.is_night() function. It has a few advantages: You can configure offsets from sunrise and sunset to control your definition of daytime; You can manually set it to Day or Night to test your scenes; It gives you an indicator on your dashboard to show its current state.
 
-```text
-normal current value 31.3 1530026929
-over the last hour {
-   times = {1530023886,1530023926.5466,1530024526.9677,1530025127.1189,1530026327.7046,1530026929.0275,1530027486},
-   value = {31.1,31,31.2,31.3,31.2,31.3,31.3}
-}
-```
-
-If the data over the requested time range is all in cache, then the time resolution will be better than 1mS. Once on disk, it depends on the retention policy of the particular archive (sensible defaults, but all configurable if necessary) never finer than 1 second, but usually 5-10 minutes. If there is no data within the time range, then arrays are empty, but within a non-empty array there are no nil points, the times simply denoting (approximately) when the variable changed.
-
-DataYours has its own Whisper database, location defined by the contents of DataYours variable LOCAL_DATA_DIR, usually 'whisper/'. Data Historian has its data wherever you've set the system attribute openLuup.Historian.Directory, usually ‘history/'. **You should not map these two directories to the same folder.**
-
-Pointing Grafana at openLuupIP:3480/, will allow its metric menus to find both databases, but the metric trees will be merged. However, adding the following line to Lua Startup
+Generic DayTime:
 
 ```lua
-luup. attr_set ("openLuup.Historian.DataYours", "whisper/")
--- overriding DY finder
+local dID = 23 -- Device ID of your DayTime plugin
+local allow = true -- true runs scene during daytime, false runs it at night
+local status = luup.variable_get("urn:rts-services-com:serviceId:DayTime","Status",dID)
+return ((status == "1") == allow)
 ```
-
-Assuming that your LOCAL_DATA_DIR points to 'whisper/', then after a restart, you should see all
-your original DataYours file under a metric tree called DataYours...
-
-```text
-"DataYours.Vera-88800000.008.urn^micasaverdecom^
-serviceId^EnergyMetering1.EnergyUsage",
-"DataYours.Vera-88800000.294.urn^micasaverdecom^
-serviceId^EnergyMetering1.EnergyUsage",
-"DataYours.Vera-88800000.386.urn^micasaverdecom^
-serviceId^EnergyMetering1.EnergyUsage",
-"DataYours.cpu.d",
-"DataYours.memory.d",
-"DataYours.unknown",
-"DataYours.uptime.m",
-```
-
-...along with the other sub-trees generated by the historian (one for openLuup, and one for each
-bridged Vera.)
 
 ---
-# The user_data.json file
+# Z-Wave and Virtual Switches
+RexBeckett:
 
-Configuration changes to the system happen in different ways in the three major phases of normal running, startup and shutdown:
+We often want to allow or block scenes depending on the state of a Z-Wave switch (E.g. a light is on) or a VirtualSwitch (e.g. Home/Away). The VirtualSwitch (VS) plugin is very useful as a means of controlling scenes. You can create several different VS devices to signify various states of your home. E.g. Home/Away, OnVacation, HaveGuests, etc. VS devices can be set manually through the UI, by scenes or with other plugins.
 
-### STARTUP
-- The default behaviour is to look for a JSON file called user_data.json in the current directory (/etc/cmh-ludl/) loading the device/room/scene configuration from that.
-- an optional startup parameter is one of:
+Testing the state of a switch is essentially the same whether it is real or virtual but the serviceID must match the type of switch being tested.
 
-  - the word reset, which forces a ‘factory reset’, or
-  - a user_data JSON formatted filename, or
-  - a .lzap compressed backup file, or
-  - a Lua filename to be run in the context of a factory-reset system (with no rooms or scenes, and only devices 1 (Gateway) and 2 (Z-wave controller) defined)
-
-### RUNNING
-- every so often, the system configuration is check-pointed to the file user_data.json. This will capture device variable and attribute changes, scene creation/deletions, etc.
-- logged events are written to the log files as they happen and not cached.
-
-### SHUTDOWN
-- on luup.reload, or full exit, the configuration will be written to the file user_data.json in the current directory
-- on luup.reload, or any other configuration change requiring a reload (eg. new child devices created) the process will exit with status 42
-- on exit (from the HTTP request id=exit) will exit with status of 0 (successful exit)
-
-This means that it is easy to save and restore arbitrary configurations, or start from scratch. Since any reload will cause the process to exit, it’s necessary to launch openLuup from within a script, in order to restart automatically. A Unix shell script to do this, openLuup_reload, is included in the distribution (in the openLuup - Utilities directory) and shown here. For Windows, see the relevant Appendix.
-
-```bash
-#!/bin/sh
-#
-# reload loop for openLuup
-# @akbooer, Aug 2015
-# you may need to change ‘lua’ to ‘lua5.1’ depending on your install
-lua openLuup/init.lua $1
-while [ $? -eq 42 ]
-do
-   lua openLuup/init.lua
-done
-```
-
-**Whatever else you do, backup your functional user_data.json file.**
-
-Even after a system reboot, the only thing required to get openLuup restored to its previous state is to start the openLuup_reload script (with no parameters) since this just picks up the latest user_data.json file and runs with it.
-
----
-# More about the port 3480 HTTP server
-As well as supporting Luup HTML requests, the openLuup HTTP server on port 3480 has some of the functionality of any normal web server, but also some special features:
-
-## 1. File Access
-The root directory for the port 3480 server is cmh-ludl/ (or wherever the openLuup process is started.) However, in addition, the server will search in ../cmh-lu/ if it fails to find the requested file. This mimics Vera’s use of that directory. It means that you can put .xml, .json, and other files there for convenience.
-
-Note, however, that a plugin which expects to find a file in /etc/cmh-ludl/ using io.open() will NOT automatically find it if it resides in ../cmh-lu/.
-
-The Lua package path has also been modified to search ../cmh-lu/ so that required Lua modules may also be located there. Note also that any files here are not in compressed form (.lzo) as they are in Vera.
-
-Additionally, file-based icon references in .json files are redirected during loading to access the cmh-ludl/icons/ directory through the port 3480 server. This means that the requests do not go from AltUI to port 80, but to port 3480, which in turn means that device icons work over a secure connection to port 3480 only. It also means that the icon directories under /www/cmh/skins/default/… are not required. Existing HTPP icon references are untouched.
-
-## 2. index.html Files
-The server looks for an index.html file if the request is for a directory (ends with ‘/‘). This means that an index.html file may be used to present any web page you like, but in particular it may be used to redirect the request. For example: With the following text in cmh-ludl/index.html
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <!-- HTML meta refresh URL redirection -->
-    <meta http-equiv="refresh"
-    content="0; url=/data_request?id=lr_AltUI_Handler&command=home#">
-  </head>
-</html>
-```
-
-then http://openLuupIP:3480/ redirects to AltUI.
-
-Once again, this is useful functionality for access over a secure connection.
-
----
-## 3. CGI processing
-
-The openLuup HTTP server has a Lua Web Server API (WSAPI) connector to allow it to run Lua applications as CGIs. This is an industry-standard used on web servers such as Xavante, Apache, Lighttpd, and others.
-
-This means that arbitrary web server functionality can be added to openLuup simply by writing a short, stand-alone, Lua module. The first time a CGI URL is accessed, the module is compiled and loaded. Thereafter, it runs just as quickly as any built-in server code. The API implementation adheres exactly to the (brief) documentation here: http://keplerproject.github.io/wsapi/manual.html.
-
-The connector supports CGI code in the cgi/ and cgi-bin/ directories in cmh-ludl/. So, for example, taking exactly the code from the simple example in the above documentation:
+Z-Wave Switch:
 
 ```lua
-#!/usr/bin/env wsapi.cgi
-module(..., package.seeall)
-function run(wsapi_env)
-local headers = { ["Content-type"] = "text/html" }
-local function hello_text()
-coroutine.yield("<html><body>")
-coroutine.yield("<p>Hello Wsapi!</p>")
-coroutine.yield("<p>PATH_INFO: " .. wsapi_env.PATH_INFO .. "</p>")
-coroutine.yield("<p>SCRIPT_NAME: " .. wsapi_env.SCRIPT_NAME .. "</p>")
-coroutine.yield("</body></html>")
-end
-return 200, headers, coroutine.wrap(hello_text)
+local dID = 66 -- Device ID of your Z-Wave Switch
+local allow = true -- true runs scene if switch is on, false blocks it
+local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1","Status",dID)
+return ((status == "1") == allow)
+```
+
+Virtual Switch:
+
+```lua
+local dID = 32 -- Device ID of your VirtualSwitch
+local allow = true -- true runs scene if switch is on, false blocks it
+local status = luup.variable_get("urn:upnp-org:serviceId:VSwitch1","Status",dID)
+return ((status == "1") == allow)
+```
+
+MultiSwitch:
+
+```lua
+local dID = 94 -- Device ID of your MultiSwitch local button = 1 -- MultiSwitch button number (1-8)
+local allow = true -- true runs scene if switch is on, false blocks it
+local status = luup.variable_get("urn:dcineco-com:serviceId:MSwitch1","Status"..button,dID)
+return ((status == "1") == allow)
+```
+
+---
+# Time Period
+RexBeckett:
+
+We frequently want to control the time periods during which a scene may run. You would probably prefer that your bedroom light did not come on in the middle of the night when you are clocked by the motion-sensor on your way to the bathroom. ;D
+
+Here is a generic routine that can be set to allow or block a scene in the period between two times. The start and end times can be set within the same day or either side of midnight. Both times must be in 24-hour form and entered as HH:MM. As with previous generic examples, the variable allow determines whether to allow or block the scene during the specified period.
+
+Generic Time Period:
+
+```lua
+local pStart = "22:30" -- Start of time period
+local pEnd = "06:15" -- End of time period local allow = true -- true runs scene during period, false blocks it
+local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
+local mStart = (hS * 60) + mS
+local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
+local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mNow = (tNow.hour * 60) + tNow.min
+if mEnd >= mStart then
+    return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
+else
+    return (((mNow >= mStart) or (mNow <= mEnd)) == allow)
 end
 ```
 
-...and putting it into cmh-ludl/cgi/hello.lua, allows you to invoke it with
+With a small modification, we can take the start time as sunset with a +/- offset. Strictly speaking, this will use the time of the next sunset so will give a slightly different result before and after sunset. The difference is about two minutes so should not be a major problem.
 
-http://openLuupIP:3480/cgi/hello.lua
-
-...and get the returned page:
-
-**Hello Wsapi!**
-
-**PATH_INFO: /**
-
-**SCRIPT_NAME: /cgi/hello.lua**
-
-Any other CGI action can be implemented in the same way.
-
-Note that shell scripts and other CGI language implementations are not (yet) supported by the port 3480 server, but this mechanism does enable some of the key CGIs used by Vera to be emulated through a small amount of effort.
-
----
-# Something about openLuup log files
-
-On startup, openLuup writes its log data initially to cmh-ludl/logs/Startup_LuaUPnP.log until the initial devices and scenes are loaded and the Startup Lua has been run. This file is retained for the last 5 versions.
-
-By default, openLuup writes its main log file to cmh-ludl/log/LuaUPnP.log. This location, and other logging parameters may be changed by defining openLuup attributes in the Startup Lua.
+Sunset to End Time:
 
 ```lua
--- openLuup configuration options:
-luup.attr_set ("openLuup.Logfile.Name", "logs/LuaUPnP.log") -- path to log file
-luup.attr_set ("openLuup.Logfile.Lines", 2000)
-luup.attr_set ("openLuup.Logfile.Versions", 5)
+local pStart = 0 -- Start of time period, minutes offset from sunset
+local pEnd = "06:15" -- End of time period
+local allow = true -- true runs scene during period, false blocks it
+local mStart = math.floor( (luup.sunset() % 86400) / 60 ) + pStart
+local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
+local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mNow = (tNow.hour * 60) + tNow.min
+if mEnd >= mStart then
+   return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
+else
+   return (((mNow >= mStart) or (mNow <= mEnd)) == allow) end
 ```
 
-To keep file sizes manageable, it rotates the log from time to time (by default, after about 2,000 lines, which makes the file size about 250 Kb.) The five most recent log files are versioned with the suffix .1 / .2 / …etc., so you can go back and see what happened just before a reload. The reason for the reload should be one of the last lines in the log. Unlike Vera, this doesn’t just happen randomly, but in response to either a user request or a device doing something which requires a reload (adding a new child device, for example.)
+We can also use sunrise as one of our times. This version has a specified start time and the end time is sunrise with a +/- minutes offset.
 
-openLuup also maintains another log, which is a subset of the main one, and contains only device variable changes, scene invocations, and workflow messages. Those entries are written to a log file, if the /var/log/cmh/ directory exists, in /var/log/cmh/LuaUPnP.log, with colour-highlighted variable names, as in Vera’s log. The OS command that comes as standard in AltUI tails this log, and it’s an easy way just to see the major changes happening in the system, without being cluttered by other activities which write to the log file. It is also used by AltUI to provide a history of device variable changes, scenes, and workflows. This log file is not versioned, and reset after 5000 lines, so it is possible to come to it sometimes and find it almost empty. This file is also essential for the variable and scene history functions of AltUI to operate – the file is scanned for the relevant variable changes which are presented as the change history under that button of the device variable. Since this file in openLuup is dedicated to this particular purpose, it’s likely that variable and scene histories will be retained much longer than on a Vera.
-
-openLuup doesn't use the same log level numbering system as Vera, trying to keep things simple. Log entries created by devices always carry their device ID. Here’s a log entry made by device #7
-
-```text
-luup_log:7: Arduino: urn:micasaverde-com:serviceId:HaDevice1,LastUpdateHR, 09:42, 42
-```
-
-If you're trying to troubleshoot a single plugin, then I always recommend that you do it in a system which only has that plugin. That way, almost all of the log entries are relevant. Of course, if it's complex multi-device logic, then you can't do that.
-
-The log file name, path, length, and number of retained versions may be altered at startup. See:
-FIX ME
- [Appendix: Configuring key openLuup parameters at Startup](Appendix-Configuring-key-openLuup -parameters-at-Startup.md)
-
----
-## More about Scenes
-
-Scene timers and actions can be defined with the AltUI interface in exactly the same way as on Vera. Triggers, however, are treated differently, because the Vera approach, itself based on UPnP definitions in various files, is deeply flawed and inflexible. Instead, the AltUI-supported mechanism of device variable triggers are used.
-
-Using the appropriate button under the scene / trigger definition menu, you may select any device and variable as a trigger. The trigger will fire whenever the variable changes value, and using a small amount of Lua code, or the blocky graphical interface, you can construct arbitrary logic expressions combining, times, old and new variable values, other device variables, in fact almost anything you want, to determine whether or not the scene should actually execute.
-
-openLuup also provides the capability to run a specified Lua function after the termination of an individual scene (scene finalisers), and, in addition, the ability to run shared, globally-defined functions at the start and end of all scenes (scene prolog and epilog code.)
-
-Scenes on remote Veras may be linked to openLuup, or copied and saved to assist in the migration of automation logic.
-
-## 1. VeraBridge and Remote Scenes
-A Vera scene that has been linked to by VeraBridge is simply a perfectly normal openLuup scene (hence totally isolated from any scene code on your actual Vera) with one-line in the Lua code section (which you're able to view and edit) which fires off the remote scene.
-
-This means you can add local triggers, timers, even other Lua code (before the the statement that runs the remote scene!) without any code impact on your actual Vera... very comforting when developing!
-
-So, really, these types of scenes are not clones of the Vera scenes, but merely ways to trigger them remotely.
-
-No aspect of the remote scenes can be changed – it is not an editor for remote scenes. You can't edit scenes from a remote Vera on openLuup if they are bridged by the VeraBridge plugin – you have to edit them on the original Vera.
-
-They are really there as a basis for re-writing them to operate entirely locally in the openLuup environment as you migrate plugins and scene logic from Vera to openLuup. The bridge’s capability to mirror openLuup variables to actual device variables on Vera makes this transition easier in some cases.
-
-VeraBridge has a BridgeScenes variable. Set to **true or 1** to enable linking to remote scenes, or anything else (including **false or 0**) to disable this on startup.
-
-## 2. Porting Vera scenes to openLuup
-VeraBridge also has an action GetVeraScenes which creates **temporary** local copies of Vera scenes as an aid in migrating automation to openLuup.
-
-IMAGE HERE
-
-Things to note:
-
-- new scene numbering has 100,000 added to the local scene numbering
-- new scenes name has TEMP COPY added as a suffix
-- scenes are placed into the appropriate openLuup Vera room
-- these scenes don't survive a reload (unless you explicitly renumber them)
-- because of the above you can play to your heart's content and not damage anything
-- the scenes are initialled PAUSED, so won’t run
-- all event triggers are redirected to local devices, but disabled
-- any scenes with triggers have an extra one added, warning that they're unused!
-- all device actions are redirected to local devices
-- scene Lua is unchanged
-
-All you have to do is go to the Actions tab for the VeraBridge you're interested in and press GetVeraScenes which runs a job (very quickly.) Switch immediately to the Scenes page and you should find them there. To make a scene permanent, use the 'Copy' button on the Scene and it will create a new scene, with a low scene number, called 'Clone of XXX’. Don’t forget to delete the original scene on Vera when you’re ready to use the new openLuup one.
-
-## 3. Scene Finalisers
-Running Lua Code after Individual Scene Execution Normal Lua scene code runs BEFORE any action in the scene. Scene finalisers allow you to run Lua code some time AFTER all the actions of a scene have executed.
-
-In each scene that you want to do something, you return a SECOND parameter which is a function to be run when the scene 'finishes'. The default is 30 seconds after the START of the LAST delayed action (which may take an indeterminate time to run, depending on what it does.) There is an additional optional THIRD return parameter which overrides this default delay time in seconds. So your scene Lua looks something like this:
+Start Time to Sunrise:
 
 ```lua
-local function finish() -- you can call it what you want
-   -- things to do at the end go here
+local pStart = "22:30" -- Start of time period
+local pEnd = 0 -- End of time period, minutes offset from sunrise
+local allow = true -- true runs scene during period, false blocks it local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
+local mStart = (hS * 60) + mS
+local mEnd = math.floor( (luup.sunrise() % 86400) / 60 ) + pEnd
+local tNow = os.date("*t") local mNow = (tNow.hour * 60) + tNow.min
+if mEnd >= mStart then
+   return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
+else
+   return (((mNow >= mStart) or (mNow <= mEnd)) == allow)
+end
+```
+
+---
+# Temperature Range
+RexBeckett:
+
+This code will enable you to set a range of temperatures within which your scene will, or will not, be run. Set tLow and tHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current temperature is within the specified range.
+
+Generic Temperature Range:
+
+```lua
+local dID = 55 -- Device ID of your thermostatic/temperature sensor
+local tLow = 18 -- Lowest temperature of range
+local tHigh = 22 -- Highest temperature of range
+local allow = true -- true runs scene when in range, false blocks it
+local tCurrent = tonumber((luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",dID)))
+return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow)
+```
+
+---
+# Humidity Range
+RexBeckett:
+
+This code will enable you to set a range of humidity within which your scene will, or will not, be run. Set hLow and hHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current humidity level is within the specified range.
+
+Generic Humidity Range:
+
+```lua
+local dID = 31 -- Device ID of your humidity sensor
+local hLow = 50 -- Lowest humidity of range local hHigh = 80 -- Highest humidity of range
+local allow = true -- true runs scene when in range, false blocks it
+local hCurrent = tonumber((luup.variable_get("urn:micasaverde-com:serviceId:HumiditySensor1","CurrentLevel",dID)))
+return (((hCurrent >= hLow) and (hCurrent <= hHigh)) == allow)
+```
+
+---
+# Light Level
+RexBeckett:
+
+This code will enable you to set a range of light level within which your scene will, or will not, be run. Set lLow and lHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current light level is within the specified range.
+
+Generic Light Level Range:
+
+```lua
+local dID = 30 -- Device ID of your light sensor
+local lLow = 0 -- Lowest level of range
+local lHigh = 20 -- Highest level of range
+local allow = true -- true runs scene when in range, false blocks it
+local lCurrent = tonumber((luup.variable_get("urn:micasaverde-com:serviceId:LightSensor1","CurrentLevel",dID)))
+return (((lCurrent >= lLow) and (lCurrent <= lHigh)) == allow)
+```
+
+---
+# VariableContainer
+RexBeckett:
+
+The VariableContainer (VC) plugin provides a convenient way in which values may be entered and changed without requiring a Vera restart. It also provides a form of scratchpad that can be used to convey values from one scene or plugin to another.
+
+This code will enable you to set a range of values in a VC variable within which your scene will, or will not, be run. Set vLow and vHigh to define the range and vNo to define the VC variable number (1-5) in which the value is stored. As with previous generic examples, the variable allow determines whether to allow or block the scene when the VC variable value is within the specified range.
+
+Generic VirtualContainer Value Range:
+```lua
+local dID = 76 -- Device ID of your VariableContainer
+local vNo = 5 -- Variable number (1-5) to test local vLow = 100 -- Lowest value of range
+local vHigh = 199 -- Highest value of range
+local allow = true -- true runs scene when in range, false blocks it
+local sVC = luup.variable_get("urn:upnp-org:serviceId:VContainer1","Variable" .. vNo,dID)
+local vVC = tonumber(sVC) or 0
+return (((vVC >= vLow) and (vVC <= vHigh)) == allow)
+```
+
+Another great use for VC is to allow us to change the limits in our scene Luup without restarting Vera. The following code tests for the current time to be within the period set by two VC variables. These variables must contain valid times in HH:MM form. Other than taking the Start and Stop times from VC variables, this code works the same as the earlier Time Range example.
+
+Generic Time Range from VC Variables:
+
+```lua
+local dID = 76 -- Device ID of your VariableContainer
+local vStart = 4 -- Variable number (1-5) of Start time
+local vEnd = 5 -- Variable number (1-5) of End time
+local allow = true -- true runs scene when during time range, false blocks it
+local pStart = luup.variable_get("urn:upnp-org:serviceId:VContainer1","Variable" .. vStart,dID) or ""
+if #pStart == 0 then
+    pStart = "00:00"
+end
+local pEnd = luup.variable_get("urn:upnp-org:serviceId:VContainer1","Variable" .. vEnd,dID) or ""
+if #pEnd == 0 then
+   pEnd = "00:00"
+end
+local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
+local mStart = (hS * 60) + mS
+local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
+local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mNow = (tNow.hour * 60) + tNow.min
+if mEnd >= mStart then
+    return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
+else
+    return (((mNow >= mStart) or (mNow <= mEnd)) == allow) end
+```
+
+---
+# Day Range
+RexBeckett:
+
+This code will enable you to set a range of days during which your scene will, or will not, be run. Set dFirst and dLast to define the range. These are day numbers (1-7) where 1 is Sunday. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current day is within the specified range.
+
+Generic Day Range:
+
+```lua
+local dFirst = 2 -- Start day of period (1-7) Sunday = 1
+local dLast = 6 -- End day of period (1-7) Sunday = 1
+local allow = true -- true runs scene during period, false blocks it
+local tNow = os.date("*t")
+local dNow = tNow.wday
+if dLast >= dFirst then
+    return (((dNow >= dFirst) and (dNow <= dLast)) == allow)
+else
+    return (((dNow >= dFirst) or (dNow <= dLast)) == allow)
+end
+```
+
+---
+# Date Range
+RexBeckett:
+
+This code will enable you to set a range of dates during which your scene will, or will not, be run. Set mdStart and mdEnd to define the range. These are dates in the form of MM/DD (in deference to our US members). The included period may span the change of year if required. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current date is within the specified range.
+
+Generic Date Range:
+
+```lua
+local mdStart = "12/01" -- Start of period (MM/DD)
+local mdEnd = "12/31" -- End of period (MM/DD)
+local allow = true -- true runs scene during period, false blocks it
+local smS, sdS = string.match(mdStart,"(%d+)%/(%d+)")
+local smE, sdE = string.match(mdEnd,"(%d+)%/(%d+)") local mS = tonumber(smS)
+local dS = tonumber(sdS)
+local mE = tonumber(smE)
+local dE = tonumber(sdE)
+local tNow = os.date("*t")
+local mN = tNow.month
+local dN = tNow.day
+if (mE > mS) or ((mE == mS) and (dE >= dS)) then
+    return (((mN > mS) or ((mN == mS) and (dN >= dS))) and ((mN < mE) or ((mN == mE) and (dN <= dE))) == allow)
+else return (((mN > mS) or ((mN == mS) and (dN >= dS))) or ((mN < mE) or ((mN == mE) and (dN <= dE))) == allow)
+end
+```
+
+If the preceding examples don’t cover what you want to achieve:
+
+Try the good old search facility. There’s a very good chance that someone else had a similar requirement and found a solution. Google search with site:community.ezlo.com may give you better results than the forum’s own search-engine.
+
+You may need to combine more than one piece of code. This can be done by using a variable to hold the result of one test and and-ing or or-ing it with another. For example, to run a scene when a temperature is within a range but only during the day, try this:
+
+
+```lua
+local isDay = not luup.is_night()
+
+local dID = 55 -- Device ID of your thermostatic/temperature sensorlocal tLow = 18 – Lowest temperature of range
+
+local tHigh = 22 -- Highest temperature of range
+
+local allow = true -- true runs scene when in range, false blocks it
+
+local tCurrent = tonumber((luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",dID)))
+
+return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow) and isDay
+```
+
+---
+# Multiple Conditions
+RexBeckett:
+
+You can combine multiple conditions in scene or trigger Luup by converting each piece of code into a Lua function. Then you can combine the results of each test in a single return statement using and/or operators.
+
+Converting to a function is easy:
+
+```lua
+local function functionName() <lines of code> end
+```
+
+Combining the results is also simple:
+
+```lua
+return function1() and function2()
+```
+
+Example to allow a scene to run between 08:00 and 22:30 at weekends:
+
+```lua
+local function checkTime()
+   local pStart = "08:00" – Start of time period
+   local pEnd = "22:30" – End of time period
+   local allow = true – true runs scene during period, false blocks it
+   local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
+   local mStart = (hS * 60) + mS
+   local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
+   local mEnd = (hE * 60) + mE
+   local tNow = os.date("*t")
+   local mNow = (tNow.hour * 60) + tNow.min
+   if mEnd >= mStart then
+      return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
+   else
+      return (((mNow >= mStart) or (mNow <= mEnd)) == allow)
+   end
 end
 
--- usual Lua code goes here
+local function checkDay()
+   local dFirst = 7 – Start day of period (1-7) Sunday = 1
+   local dLast = 1 – End day of period (1-7) Sunday = 1
+   local allow = true – true runs scene during period, false blocks it
+   local tNow = os.date("*t")
+   local dNow = tNow.wday
+   if dLast >= dFirst then
+       return (((dNow >= dFirst) and (dNow <= dLast)) == allow)
+   else
+       return (((dNow >= dFirst) or (dNow <= dLast)) == allow)
+   end
+end
 
-return status, finish, optional_delay
+return checkTime() and checkDay()
 ```
 
-Be careful that EVERY return from the scene code looks like this last line. As usual, if 'status' is false then the scene (and the finaliser) will not run, if it's anything else then it will run. The simplest way to ensure this is to make the final return the ONLY return from the scene. If you can't do that you'll need to write things like this:
+---
+# Using Functions
+RexBeckett:
+
+I showed in Multiple Conditions 1 how a code chunk could be converted to a function. With small adjustments, the function call can pass the parameters to be used for the test. Now a single piece of code can be used to test several devices. The function code can even be added to your Startup Lua so it may be called from any scene. In the following examples, I changed the original lines that set the parameters to comments (with --) as a reminder of what each parameter means.
+
+Function to check if a temperature is within a range
 
 ```lua
-if something_special then
-   return true, final
+function checkTemp(dID, tLow, tHigh, allow) --dID = 55
+-- Device ID of your thermostatic/temperature sensor
+local tLow = 18
+-- Lowest temperature of range
+local tHigh = 22
+-- Highest temperature of range
+local allow = true
+-- true runs scene when in range, false blocks it
+
+local tCurrent = tonumber((luup.variable_get( "urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",dID)))
+return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow)
+end
+```
+
+Function to check the state of a Z-Wave switch
+
+```lua
+function checkSwitch(dID, allow) local dID = 66
+-- Device ID of your Z-Wave Switch
+local allow = true
+-- true runs scene if switch is on, false blocks it
+
+local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1","Status",dID)
+return ((status == "1") == allow) end
+```
+
+We can use these two functions to implement a more-complex set of conditions. This example, suggested by @parkerc, checks the temperature in three different rooms. If any of the temperatures are out of range, checkTemp(device,min,max,true) returns false. In this case we check if the switch controlling our heating is off and, if so, allow the scene to run to turn it on.
+
+```lua
+if checkTemp(123,18,22,true) and checkTemp(124,18,22,true) and checkTemp(125,18,22,true)
+then return false
+
+-- All temperatures are in range, don't run scene else return checkSwitch(101,false) -- Run scene if switch is off end
+```
+
+Adding functions to Startup Lua
+
+Select the APPS tab, click on Develop Apps and select Edit Startup Lua. Add your functions to the end of the existing code and click GO. Now click on Vera’s Reload button to restart the luup engine. Your functions should now be available to the luup in any scene.
+
+---
+# Multiple Triggers
+RexBeckett:
+
+Sometimes we want to have several different events or schedules result in essentially the same action but with different settings. An example would be setting different temperature setpoints or dimmer levels depending and time schedules or any of the conditions in the previous examples. The obvious way to do this is with several scenes but there is another way. We can use a global variable to transport our required settings from Trigger Luup event to the main scene LUUP.
+
+This example is for a scene that sets a Thermostat setpoint based on one of three triggers.
+
+Trigger 1 Luup event - Set to 20 during daytime, do nothing at night.
+
+```lua
+local function checkDayTime()
+   local dID = 23 -- Device ID of your DayTime plugin
+   local allow = true -- true runs scene during daytime, false runs it at night
+   local status = luup.variable_get("urn:rts-services-com:serviceId:DayTime","Status",dID)
+   return ((status == "1") == allow)
+end
+
+if checkDayTime() then
+   setTemp = 20
+   return true
 else
    return false
 end
-
--- other things here perhaps
-
-return true, final
 ```
 
-Obviously, if you return false anywhere, the second parameter is not needed anyway.
-
-## 4. Scene Prolog and Epilog Lua code – Global Functions
-Thanks to constant pestering by forum member @DesT ;-) openLuup now has the ability to run global code as a pre/post for all scenes without having to edit them individually. There are two parts to enabling these calls which can both be done in Startup Lua:
-
-**1) set the openLuup parameters which reference the calls**
-
-In Lua Startup define the global names for one or both of the procedures you want to call. For example:
+Trigger 2 Luup event - Set to 20 during daytime or 10 at night
 
 ```lua
-luup.attr_set ("openLuup.Scenes.Prolog", "SCENE_Prolog")
-luup.attr_set ("openLuup.Scenes.Epilog", "SCENE_Epilog")
-```
-
-The globals are shared in the scenes, Lua Startup, and Lua Test code environment.
-
-**2) define the global functions**
-
-```lua
-function SCENE_Prolog (id)
-   luup.log ("SCENE_Prolog: " .. id)
-   -- any actions to run before all scenes go here
-   return true -- or false to cancel
+local function checkDayTime()
+   local dID = 23 -- Device ID of your DayTime plugin
+   local allow = true -- true runs scene during daytime, false runs it at night
+   local status = luup.variable_get("urn:rts-services-com:serviceId:DayTime","Status",dID)
+   return ((status == "1") == allow)
 end
 
-function SCENE_Epilog (id)
-   luup.log ("SCENE_Epilog: " .. id)
-   -- any actions to run after all scenes go here
+if checkDayTime() then
+   setTemp = 20
+else
+   setTemp = 10
+end
+
+return true
+```
+
+Trigger 3 Luup event - Set to 18
+
+setTemp = 18 return true
+
+Main scene LUUP - Version 1
+
+```lua
+local dID = 55 if (setTemp ~= nil) then
+   luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat","SetCurrentSetpoint",{NewCurrentSetpoint=setTemp},dID)
+   setTemp = nil
 end
 ```
 
-The Prolog function is called before ANY scene code is executed. It's called with the scene id as a parameter. If it returns false then the scene will be aborted (as with normal Lua scene code.) Note that after this function is called (if it doesn't return false,) the regular scene Lua will be executed and that too may abort further scene execution.
-
-The Epilog function is only called after a successful scene execution. It also receives the scene id as a parameter.
-
-One useful application of the Prolog handler is that you can consolidate ALL you scene code into one place, in Lua Startup, without ever having to define any scene Lua when setting up the scene. Simply branch to an appropriate piece of code within the Prolog function to handle that particular scene number… or look up the scene name and branch based on that instead.
-
-The possibilities are endless.
-
----
-## Appendix: Starting openLuup at system boot time
-
-For openLuup to start up at system boot time, there are various approaches suggested by experts
-on the forum. Details are taken directly from the posts there:
-
-1. openLuup Start on Bootup using Systemctl on Raspberry Pi by @groundglass
-2. /etc/rc.local, as used in turnkey systems by @CudaNet
-3. openLuup: init.d script by @martynwendon
-
-I’m currently using the Systemctl approach…
-
-### systemctl with /etc/systemd/system/openluup.service
-Thanks to @groundglass:
-
-Another way to auto start openLuup on reboots using systemctl on a Raspberry Pi 3
-
-I've had various degrees of successes (mainly unpredictable problems) with other projects on Raspberry Pi's with restarting programs with rc.local and crontabs. Typically it has related to when the network becomes available during the boot process. systemd has been more predictable for me. Here is how I set it up for openluup on a raspberry pi 3.
-
-This assumes you installed openLuup at: /etc/cmh-ludl
-
-Create a bash script to run openLuup in the background:
-
-```bash
-$ sudo nano /etc/cmh-ludl/run_openLuup.sh
-```
-
-Code:
-
-```bash
-#!/bin/bash
-echo "Starting openLuup server"
-echo "To see tail of logfile: tail -f ./out.log"
-cd /etc/cmh-ludl
-sudo rm ./out.log
-nohup ./openLuup_reload >> out.log 2>&1 &
-
-$ sudo chmod +x run_openLuup.sh
-```
-
-Next create the systemd service for openLuup setting it up to wait for network before starting
-
-```bash
-$ sudo nano /etc/systemd/system/openluup.service
-```
-
-Code:
-```bash
-[Unit]
-Description=openLuup and AltUI Server for Vera 3
-Wants=network.target
-After=network.target
-
-[Service]
-Type=forking
-WorkingDirectory=/etc/cmh-ludl
-ExecStart=/bin/bash /etc/cmh-ludl/run_openLuup.sh
-ExecStop=curl http://localhost:3480/data_request?id=exit
-
-[Install]
-WantedBy=multi-user.target
-```
-
-Next (one time only) create the service and start openLuup. Make sure openLuup server is
-stopped using ***http://openLuupIP:3480/data_request?id=exit***
-
-``` bash
-$ sudo systemctl enable openluup
-$ sudo systemctl start openluup
-```
-
-That's it. openLuup will now autostart with reboots.
-Other useful commands:
-
-``` bash
-$ sudo systemctl status openluup -l
-$ sudo systemctl stop openluup
-$ sudo systemctl disable openluup
-```
-
-### /etc/init.d/openLuup
-Thanks to @martynwendon:
-
-So I whipped up a quick init.d script for openLuup, it works well for me on debian based systems.
-
-To use it (some knowledge of Linux is assumed with the below commands):
-
-create a file "openLuup" in /etc/init.d using your editor of choice copy / paste script from below & save the file make the file executable test it, make sure you're happy with it (/etc/init.d/openLuup start) execute "update-rc.d openLuup defaults" to activate it on start / stop of Linux
-
-It supports "start/stop/restart/reload/kill"
-
-Couple of notes:
-I don't think openLuup is Linux "signal" aware (at least it didn't exit / restart cleanly when the process was sent signals). So it's not possible to use traditional stop / start / reload methods (as I understand it, it's very difficult to make Lua stuff signal aware, so this likely won't change). I used wget to call the exit / reload urls on localhost instead.
-
-I like to run things like openLuup under a "screen" session as it means if they bomb out you should
-still be able to access the screen session and see any stdout / stderr fallout that may not make it into any log files. To resume the screen session use "screen -R -d -r openLuup" (will likely be a blank screen unless openLuup is outputting anything to stdout / stderr at the time).
-
----
-
-Tail your log file using "tail -F /etc/cmh-ludl/LuaUPnP.log" - capital "F" makes tail follow
-the log file continuously and also re-open the file if it get's rotated.
-Code:
-
-```bash
-#! /bin/sh
-# Starts and stops openLuup
-# /etc/init.d/openLuup
-### BEGIN INIT INFO
-# Provides: openLuup
-# Required-Start: $syslog
-# Required-Stop: $syslog
-# Default-Start: 2 3 4 5
-# Default-Stop: 0 1 6
-# Short-Description: openLuup
-### END INIT INFO
-
-#Load up openLuup when called
-case "$1" in
-start)
-       echo "Starting openLuup.."
-       cd /etc/cmh-ludl
-       sudo screen -dmS openLuup Utilities/openLuup_reload
-       echo "ok"
-;;
-stop)
-       echo "Stopping openLuup.."
-       sudo wget -q -t 1 -T 5 http://127.0.0.1:3480/data_request?id=exit
-       echo "ok"
-;;
-kill)
-       echo "Killing openLuup.."
-       sudo screen -S openLuup -X quit
-       echo "ok"
-;;
-       restart)
-       echo "Restarting openLuup.."
-       $0 stop
-       $0 start
-;;
-reload)
-       echo "Reloading openLuup.."
-       sudo wget -q -t 1 -T 5 http://127.0.0.1:3480/data_request? id=reload
-       echo "ok"
-;;
-*)
-       echo "Usage: $0 {start|stop|reload|restart|kill}"
-       exit 1
-esac
-```
-
-### /etc/rc.local
-Thanks to @CudaNet:
-
-Adjust startup(server) script for openLuup persistence....
-
-
-/etc/cmh-ludl$ sudo nano /etc/rc.local
-
-You will see the following:
-
-```bash
-#!/bin/sh -e
-#
-# rc.local
-#
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-#
-# In order to enable or disable this script just change the
-# execution bits.
-#
-# By default this script does nothing.
-```
-
-Add these lines...
-
-```bash
-sleep 20
-cd /etc/cmh-ludl
-./openLuup_reload
-
-exit 0
-```
-
-IMPORTANT : 'exit 0' must NOT be removed.
-
-If using nano, press cntrl-o, press [enter], press cntrl-x to exit editor.
-
----
-## Appendix: Configuring key openLuup parameters at Startup
-
-There is a special top-level system attribute called "openLuup" (created at startup and not saved in the user_data.json file) which contains a table with some key system parameters some of which are user-configurable in the Lua Startup code.
-
-The default structure includes:
+Main scene LUUP - Version 2
 
 ```lua
-{
-Backup = {
-       Compress = "LZAP",
-       Directory = "backup/"
-},
-Logfile = {
-       Incoming = "true",
-       Lines = 2000,
-       Name = "logs/LuaUPnP.log",
-       Versions = 5
-},
-Scenes = {
-       Epilog = "",
-       Prolog = ""
-},
-Status = {
-       CpuLoad = "0.3%",
-       Memory = "2.9 Mbyte",
-       StartTime = "2018-01-27T11:32:53",
-       Uptime = "0 days"
-},
-UserData = {
-       Checkpoint = 60,
-       Name = "user_data.json"
-},
-Version = "v18.1.18"
+local dID = 55 if (setTemp == nil) then
+   setTemp = 20
+end
+luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat","SetCurrentSetpoint",{NewCurrentSetpoint=setTemp},dID)
+setTemp = nil
+```
+
+Version 1 of the Main scene LUUP will do nothing if run from the UI because, if a trigger did not occur, setTemp will be nil. Version 2, if run from the UI, will set the temperature setpoint to 20.
+16 days later
+
+---
+# Time Window
+RexBeckett:
+
+There were two requests for this type of scene condition in the last 24 hours so it must be worth posting here. The objective is to allow or prevent a scene executing when triggers occur in a short time period (window).
+
+All these examples save a timestamp each time they are run using a global variable tLastOnD99. On each run, the saved timestamp is subtracted from the current time and compared to the specified time window (twSecs). To allow this code to be used for more than one triggering device, the 99 in tLastOnD99 should be replaced with the device ID of the triggering device. This is simply to avoid undesired side effects so any other name could be used instead.
+
+As with previous examples, the code may be placed in either a Trigger’s Luup event to allow/prevent that trigger or on the scene’s LUUP tab where it will affect all triggers and manual operation.
+
+Allow the scene to run when a trigger occurs within twSecs of the last one (e.g. on/off/on):
+
+```lua
+local twSecs = 5 -- Number of seconds in time window
+local tNow = os.time()
+local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+return ((tNow - tLastOn) <= twSecs)
+```
+
+Allow the scene to run provided a trigger occurs at least twSecs after the last one:
+
+```lua
+local twSecs = 5 -- Number of seconds in time window
+local tNow = os.time()
+local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+return ((tNow - tLastOn) >= twSecs)
+```
+
+Generic version:
+```lua
+local twSecs = 5 -- Number of seconds in time window
+local allow = true -- true runs scene during time window, false blocks it
+local tNow = os.time()
+local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+return (((tNow - tLastOn) <= twSecs) == allow)
+```
+
+---
+# Service IDs, Variables and Actions
+RexBeckett:
+
+One of the most frequent problems we see in requests for help with Lua code, is errors in Service IDs and variable or parameter names in luup function calls. These errors can be tricky to find. Even one character in the wrong case will prevent the call working correctly: A luup.variable_get(…) will return a nil instead of the expected value; A luup.call_action(…) may do absolutely nothing.
+
+Listed below are example luup calls for the most common device types. All examples assume that local variable dID contains the ID of the device being addressed. e.g. local dID = 123 Alternatively, replace dID in the calls with the required device ID number. Examples are given for reading a device variable using luup.variable_get(…) and for initiating an action with luup.call_action(…). It is also possible to directly set device variables but, in many cases, this will have little or no apparent effect on the device. Generally it is better to use luup.call_action(…) rather than directly setting device variables.
+
+The examples are also in the attached pdf file. If you drop it on your desktop, you can quickly open it to copy and paste the calls into your Lua. If the device you want to address is not listed, you can find the Service ID by hovering the mouse cursor over the name of the variable on the device’s Advanced tab.
+
+On/Off Switch
+Set Target, read Status. "0" = Off, "1" = On.
+
+```lua
+local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1", "Status", dID)
+
+luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetValue = "1"}, dID)
+```
+
+Virtual Switch
+Set Target, read Status. "0" = Off, "1" = On.
+
+```lua
+local status = luup.variable_get("urn:upnp-org:serviceId:VSwitch1", "Status", dID)
+
+luup.call_action("urn:upnp-org:serviceId:VSwitch1", "SetTarget", {newTargetValue = "1"}, dID)
+```
+
+Dimmable Light
+Set LoadLevelTarget, read LoadLevelStatus. "0" = Off, "100" = Full.
+
+```lua
+local level = luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)
+
+luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = "50"}, dID)
+```
+
+Thermostat
+Set ModeTarget, read ModeStatus. "Off", "HeatOn", "CoolOn", "AutoChangeOver".
+
+```lua
+local mode = luup.variable_get("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", dID)
+
+luup.call_action("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "SetModeTarget", {NewModeTarget = "Off"}, dID)
+```
+
+Set and read CurrentSetpoint. (Degrees)
+
+```lua
+local setpoint = luup.variable_get("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", dID)
+
+luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "SetCurrentSetpoint", {NewCurrentSetpoint = "25"}, dID)
+
+local setpoint = luup.variable_get("urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "CurrentSetpoint", dID)
+
+luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "SetCurrentSetpoint", {NewCurrentSetpoint = "30"}, dID)
+```
+
+Temperature Sensor
+
+```lua
+local temp = luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", dID)
+```
+
+Generic Sensor
+
+```lua
+local level = luup.variable_get("urn:micasaverde-com:serviceId:GenericSensor1", "CurrentLevel", dID)
+```
+
+Light Sensor
+
+```lua
+local level = luup.variable_get("urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", dID)
+```
+
+Humidity Sensor
+
+```lua
+local level = luup.variable_get("urn:micasaverde-com:serviceId:HumiditySensor1", "CurrentLevel", dID)
+```
+
+Security Sensor
+
+```lua
+
+local tripped = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "Tripped", dID)
+
+local armed = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "Armed", dID)
+
+local lasttrip = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", dID)
+
+luup.call_action("urn:micasaverde-com:serviceId:SecuritySensor1", "SetArmed", {newArmedValue = "1"}, dID)
+
+```
+
+Window Covering
+Use Dimmable Light Status variable for current position. Down = 0, Up = 100.
+
+```lua
+local level = luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)
+
+luup.call_action("urn:upnp-org:serviceId:WindowCovering1", "Up", {}, dID)
+
+luup.call_action("urn:upnp-org:serviceId:WindowCovering1", "Down", {}, dID)
+
+luup.call_action("urn:upnp-org:serviceId:WindowCovering1", "Stop", {}, dID)
+```
+
+Variable Container
+Set and read VariableN where N is 1 to 5.
+
+```lua
+local vcvar1 = luup.variable_get("urn:upnp-org:serviceId:VContainer1", "Variable1", dID)
+
+luup.variable_set("urn:upnp-org:serviceId:VContainer1", "Variable1",newvalue, dID)
+
+luup.variable_set("urn:upnp-org:serviceId:VContainer1", "Variable5","newtext", dID)
+```
+
+DayTime plugin
+Set and read Status. "0" = Night, "1" = Day.
+
+```lua
+local itsday = luup.variable_get("urn:rts-services-com:serviceId:DayTime", "Status", dID)
+
+luup.variable_set("urn:rts-services-com:serviceId:DayTime", "Status", "1", dID)
+```
+
+---
+# Delayed Actions
+RexBeckett:
+
+Another favourite forum question concerns using delays in scene Lua. It is tempting to do this with luup.sleep(milliseconds) but this can lead to problems. While luup.sleep(…) is executing, other Vera events can be blocked. A peak of activity at this point can cause a Vera restart. This is one possible cause of unexplained restarts.
+
+Luup provides a more-robust way of achieving delays with luup.call_delay("callfunction",secs,"parmstring"). This will call the function named callfunction after a delay of secs seconds and pass it the optional parameter parmstring. The called function must be global (i.e. not local). After the luup.call_delay(…), the main code continues to execute and may terminate. Multiple luup.call_delay(…) calls may be made to the same or different called functions.
+
+For example, the following code turns on a light and then turns it off after ten seconds. You could, of course, do this simply with scene action delays but it’s a stepping stone.
+
+```lua
+luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },66)
+luup.call_delay("delayOff",10)
+-- Main code terminates at this point
+
+-- Function to be called after delay
+function delayOff()
+   luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=0},66)
+end
+```
+
+Because the called function is global, it does not have access to any of the local variables in the main part of your code. You could make your variables global but be careful how you name them to avoid side effects with other code. A cleaner approach is to pass them via the optional parameter. This parameter is a string so you will need to convert numeric data for some purposes.
+
+In this example, the device ID of the switch is passed as the parameter.
+
+```lua
+local dID = 66
+luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },dID)
+luup.call_delay("delayOff",10,dID)
+
+function delayOff(dev)
+   local devno = tonumber(dev)
+   luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=0},devno)
+end
+```
+
+The called function can also issue a luup.call_delay(…) to itself. This allows timed sequences to be programmed. The following example will dim a light by 10% every two seconds until it reaches zero.
+
+```lua
+local dID = 99
+luup.call_delay("delayDim",2,dID)
+
+function delayDim(dev)
+   local devno = tonumber(dev)
+   local lls = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", devno)))
+   local newlls = lls - 10
+   if newlls < 0 then newlls = 0 end
+   luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = newlls}, devno)
+   if newlls > 0 then luup.call_delay("delayDim",2,dev) end
+end
+```
+
+Only one parameter string can be passed to the called function. If you need to pass more than one item, you will need to encode them into the string. Simple numeric items can be passed as a comma-separated list. The next example uses this technique to pass three numeric values. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run.
+
+```lua
+local dID = 99
+local dstep, dtarget
+local level = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)))
+if level > 50 then
+   dtarget = 0
+   dstep = -10
+else
+   dtarget = 100
+   dstep = 10
+end
+local prms = string.format("%d,%d,%d",dID,dtarget,dstep)
+luup.call_delay("delayDim",2,prms)
+
+function delayDim(parms)
+   local pdev,ptgt,pstp = string.match(parms,"(%d+),(%d+),([%-%d]+)")
+   local devno = tonumber(pdev)
+   local target = tonumber(ptgt)
+   local step = tonumber(pstp)
+   local lls = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", devno)))
+   local newlls = lls + step
+   if step > 0 then
+      if newlls > target then newlls = target end
+   else
+      if newlls < target then newlls = target end
+end
+
+luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = newlls}, devno)
+if newlls ~= target then luup.call_delay("delayDim",2,parms) end
+end
+```
+
+Parameters may also be passed as a serialized table. See Passing a Serialized Table 1.
+
+I hope some of these examples will help to point the way to a solution for your particular requirements. If not, I recommend taking a look at the Program Logic Event Generator (PLEG) plugin.
+
+---
+# Delayed Actions - Passing a Serialized Table
+RexBeckett:
+
+As explained in an earlier post, the optional parameter passed by luup.call_delay(…) is a single string. If you need to pass several parameters to the called function, a Lua table can be serialized into that string and recreated when the called function executes.
+
+The general-purpose serialize function in the following example will convert a table containing numeric, string, boolean or nested table elements into a single string. The table can be recreated using the Lua loadstring statement.
+
+This example performs the same function as the previous one but a serialized table is used to pass the three numeric values. The values are initially set in the table dparms which is then serialized and sent as the parameter in luup.call_delay(…). The called function uses loadstring to recreate the table as xparms and can then access the individual variables using xparms. notation. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run.
+
+```lua
+
+local function serialize(val,name)
+local tmp = ""
+if name then
+   tmp = tmp … name … "="
+end
+if type(val) == "table" then
+   tmp = tmp … "{"
+   for k, v in pairs(val) do
+      if type(k) == "number" then
+         tmp = tmp … serialize(v) … ","
+      else
+         tmp = tmp … serialize(v, k) … ","
+      end
+   end  -- for
+   tmp = tmp … "}"
+
+elseif type(val) == "number" then
+   tmp = tmp … tostring(val)
+
+elseif type(val) == "string" then
+   tmp = tmp … string.format("%q", val)
+
+elseif type(val) == "boolean" then
+   tmp = tmp … (val and "true" or "false")
+
+else
+   tmp = tmp … ""[inserializeable datatype:" … type(val) … "]""
+end
+
+return tmp
+end -- function
+
+local dID = 99
+local dparms = {}
+dparms.dev = dID
+local level = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)))
+if level > 50 then
+   dparms.target = 0
+   dparms.step = -10
+else
+   dparms.target = 100
+   dparms.step = 10
+end
+
+luup.call_delay("delayDim",2,serialize(dparms))
+
+function delayDim(parms)
+   assert(loadstring("xparms="…parms))()
+   local lls = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", xparms.dev)))
+   local newlls = lls + xparms.step
+   if xparms.step > 0 then
+      if newlls > xparms.target then
+         newlls = xparms.target
+      end
+   else
+      if newlls < xparms.target then
+         newlls = xparms.target
+      end
+   end
+   luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = newlls}, xparms.dev)
+
+   if newlls ~= xparms.target then luup.call_delay("delayDim",2,parms) end
+end
+```
+
+---
+# Debugging Lua Code - kwikLog
+RexBeckett:
+
+Debugging Lua code in scenes can be very frustrating. When something doesn’t work as you expected, you need to be able to see which parts of your code are being executed and, often, the value of key variables. Vera provides luup.log(…) to help with this but it is not always easy to find your log entries in LuaUPnP.log with all the other activity there.
+
+kwikLog is a simple function that logs your messages, with a time stamp, to a standalone file. The file may be viewed from a browser by entering /kwikLog.txt. A browser page refresh will show you the latest entries.
+
+You can use kwikLog in several ways:
+
+- Add it to your scene Lua (above where you call it from your code)
+- Add it before code you run in Test Luup code (Lua)
+- Add it to Startup Lua so that you can use it from any scene
+
+If you add it to Startup Lua (APPS → Develop Apps → Edit Startup Lua), remove the word local from the first line.
+
+```lua
+local function kwikLog(message, clear) local socket = require("socket")
+local time = socket.gettime() or os.time()
+local tms = string.format(".%03d ",math.floor (1000 * (time % 1)))
+local stamp = os.date("%d %b %Y %T",math.floor(time)) .. tms
+local mode = "a+" if clear then mode = "w+" end
+local file = io.open("/www/kwikLog.txt", mode)
+file:write(stamp .. (message or "") .. "\n")
+file:close()
+end
+```
+
+kwikLog has two arguments: The string you wish to log and, optionally, true if you want to clear the log file. If the second argument is missing or false, log messages are appended to the existing file. You can place calls to kwikLog anywhere in your code so you can see what is happening. For example:
+
+```lua
+kwikLog("SuperScene started",true)
+local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1","Status",123)
+if status == "1" then
+   kwikLog("Light is already on!")
+end
+local level = luup.variable_get("urn:upnp-org:serviceId:Dimming1","LoadLevelStatus",123) kwikLog("Dim level is " .. level)
+if (status == "0") and (tonumber(level) > 0) then
+   kwikLog("This can't happen...")
+end
+```
+etc.
+
+Several users have recently had problems with Sunset and Sunrise triggers due to incorrect location information. As a quick demonstration of kwikLog, paste the following code into APPS → Develop Apps → Test Luup code (Lua) and click GO.
+
+```lua
+local function kwikLog(message, clear)
+local socket = require("socket")
+local time = socket.gettime() or os.time()
+local tms = string.format(".%03d ",math.floor (1000 * (time % 1)))
+local stamp = os.date("%d %b %Y %T",math.floor(time)) … tms
+local mode = "a+"
+if clear then mode = "w+" end
+local file = io.open("/www/kwikLog.txt", mode)
+file:write(stamp … (message or "") … "\n")
+file:close()
+end
+
+kwikLog("Timezone: " … luup.timezone … " hours")
+kwikLog("City: " … luup.city)
+kwikLog("Latitude: " … luup.latitude … " degrees")
+kwikLog("Longitude: " … luup.longitude … " degrees")
+local srtime = os.date("%c",luup.sunrise())
+kwikLog("Next Sunrise: " … srtime)
+local sstime = os.date("%c",luup.sunset())
+kwikLog("Next Sunset: " … sstime)
+```
+
+Enter /kwikLog.txt in a browser window to see if your location data is correct. Replace with the IP address of your Vera (without the <>).
+
+---
+# Running a scene when a variable changes
+RexBeckett:
+
+There have been several recent posts on this subject so I think it is worth including here. The issue is that normal scene triggers that include conditions, like temperature is lower than 18, will fire when the temperature drops below 18 but will not fire again unless it rises to or above 18 and then drops below it again.
+
+If you use this type of trigger for a scene that includes Lua code for additional conditions - say a time period - it will not work very well. If the trigger fires outside of the allowed time period, you may not get another trigger during the period when you want to take some action.
+
+One solution is to have your scene triggered by a periodic schedule. Then you can use Lua code from the examples in this thread to decide if you want the actions to be executed.
+
+A better technique is to watch the variable in question and have your scene run when it changes. As above, you can then use Lua code to decide if you want to execute some action(s). Vera provides a function for this very purpose. Here is how you can use it:
+
+```lua
+-- Set up variable-watch for device 123
+luup.variable_watch("doChange123","urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",123)
+
+-- Process variable-watch callback for device 123. Run scene 12
+function doChange123()
+   luup.call_action("urn:micasaverde-com:serviceId:HomeAutomationGateway1", "RunScene", {SceneNum = 12}, 0)
+end
+```
+
+If this code is placed in Vera’s Startup Lua, it will set up a variable-watch for thermostat/thermometer device 123 current temperature. When this changes, scene number 12 will be executed.
+
+To edit Startup Lua, select APPS → Develop Apps → Edit Startup Lua then paste the code on the end of any existing line and click GO. You will need to restart Vera before the changes take effect.
+
+If you want to watch other variables, you can repeat the code for each one. You will need to change the name of the function in both the function and the luup.variable_watch(…) statements to keep them unique.
+
+If you want to watch several variables, the following example shows how this can be done by using a table instead of multiple pieces of code. watchTable contains an entry for each variable that you want to watch. Each entry includes the ServiceId, variable name and device number that you want to watch and the scene number to be run if it changes. Each entry, other than the last one, should be terminated with a comma.
+
+The function setWatch reads this table and sets up a watch for each entry. All the watches use the same callback function. This function, catchWatch, searches the table for a matching entry and, if it finds one, runs the specified scene.
+
+```lua
+– Table entries { "ServiceID", "VariableName", DeviceNo, SceneNo }
+watchTable = {
+{"urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",123,11},
+{"urn:micasaverde-com:serviceId:LightSensor1","CurrentLevel",124,12}
 }
-```
-
-The key parts which can be changed include:
-- openLuup.Backup.Directory — location of the backup files (path must exist already)
-
-- openLuup.Logfile.Name — full path to log file
-
-- ditto Lines and Versions - number of lines before log rotation, number of versions saved
-
-- openLuup.UserData.Checkpoint - number of minutes between each user_data.json save.
-
-Actually, the user_data.json file is saved after the first 6 minutes of the running system, and
-thereafter, every specified interval.
-
-Some system internals may be inspected using the console viewer UI: http://openLuupIP:3480/console
-
-IMAGE HERE
-
----
-## Appendix: Directory Structure and Additional Files
-
-The installations steps 1, 2, 3, give you a functioning system, linked to a remote Vera. But to allow as many plugins as possible to run on openLuup, you may need additional files and directories.
-
-### 1. Vera & openLuup directory structures and ancillary files
-
-Vera’s directory structure is quite complex, but the basic structure is shown below:
-
-```text
-/etc
-    /cmh
-        ui
-    /skins
-        /default
-            /icons/", "icons/" (UI5 icons)
-            /img
-                /devices/device_states/","icons/") (UI7 icons)
-                /icons/", "icons/")
-    /cmh-lu
-    /cmh-ludl
-/usr
-    /bin
-        GetNetworkState.sh
-/var/log/cmh/LuaUPnP.log
-```
-
-openLuup is **designed to run in a non-privileged account using only a directory structure below its own home directory** to avoid file and directory permission problems (but see also next section.) The basic structure created by the install process is:
-
-```text
-/cmh-ludl (might be in /home/pi, or /etc/cmh, or anywhere else)
-    /backup
-    /files
-    /icons
-    /images
-    /logs
-    /openLuup
-    /trash
-    /www
-```
-
-Most plugins are completely agnostic as to file structures, simply being defined at startup by their device files. However, some advanced plugin authors do tricky things like re-writing JSON files and explicitly using the Vera file structure. It’s possible to accommodate some of these by careful use of file aliases and extra directories. In other cases such authors have explicitly coded their plugins to discriminate between Vera and openLuup, and do the right thing.
-
-Whilst openLuup’s goal is to provide a run-time environment as similar as possible to Vera (but more reliable,) it’s not fully achievable given the constraints of running on a third-party machine.
-
-The AltAppStore plugin (an integral part of openLuup) also requires full access to the /tmp directory for temporary download files. This isn’t usually an issue but there have been times when, for whatever reason, there have been permissions problems with this directory.
-
-### 2. /usr/bin/GetNetworkState.sh and /etc/cmh/ui
-Some plugins (eg. Sonos) use a shell command /etc/bin/GetNetworkState.sh to determine the machine's IP address. I used to provide this (actually for AltUI, but it doesn't need it now.) So you need to create that file with the contents shown in the Appendix.
-
-On a Windows machine you may need to use the simpler hard-coded address version of the script shown there. I’m not actually sure that this works.
-
-At least one plugin (IOSPush) requires the file /etc/cmh/ui with the single line (the digit seven):
-
-```text
-7
-```
-
-### 3. openLuup_reload.bat for Windows
-
-For Windows, you will need an alternative shell file to run the basic openLuup reload loop. I’m indebted to @vosmont for the following information which I’ve copied directly from the post here https://community.ezlo.com/t/systems-to-run-at-share-experiences/189409/29
-
-For the moment, I use openLuup on Windows.
-
-Install http://luadist.org/ (contains Lua 5.1 and all the needed libraries)
-
-Copy this file "openLuup_reload.bat" in "openLuup\etc\cmh-ludl", and change
-"LUA_DEV" according to LuaDist folder.
-
-```batch
-@ECHO OFF
-SETLOCAL
-SET LUA_DEV=D:\devhome\app\LuaDist\bin
-SET CURRENT_PATH=%~dp0
-ECHO Start openLuup from "%CURRENT_PATH%"
-ECHO.
-CD %CURRENT_PATH%
-"%LUA_DEV%\lua" openLuup\init.lua %1
-
-:loop
-IF NOT %ERRORLEVEL% == 42 GOTO exit
-"%LUA_DEV%\lua" openLuup\init.lua
-GOTO loop
-
-:exit
-```
-
-### 4. code for /usr/bin/GetNetworkState.sh
-Some plugins (eg. Sonos, DLNA, Squeezebox, …) require an external shell script (part of a standard Vera installation) to define the host machine IP address.
-
-There’s two basic ways to implement this.
-
-This file can either be VERY simple:
-
-echo -n 172.16.42.88
-
-...with the IP address appropriately set (manually) …
-
-or a more sophisticated approach using a Lua script to return the result (automatic) which is
-described here:
-
-http://forums.coronalabs.com/topic/21105-found-undocumented-way-to-get-your-devices-ipaddress-from-lua-socket/
-
-```lua
-#! /usr/bin/env lua
-
--- discover main IP address of machine and write to standard output
--- http://forums.coronalabs.com/topic/21105-found-undocumented-way-to-get-yourdevices-
--- ip-address-from-lua-socket/
-
-local socket = require "socket"
-function myIP ()
-   local mySocket = socket.udp ()
-   mySocket:setpeername ("42.42.42.42", "424242") -- arbitrary IP/PORT
-   local ip = mySocket:getsockname ()
-   mySocket: close()
-   return ip or "127.0.0.1"
-end
-io.write (myIP())
-```
-
----
-## Appendix: openLuup SMTP and POP3 (eMail) servers
-
-SMTP server
-
-openLuup (v18.3.14 and subsequent) includes a built-in SMTP server to receive email messages, Although included specifically for cameras which use this to trigger an associated motion detector device, this is a minimal implementation of an RFC 5321 compliant server with the LOGIN authentication method and no Transport Layer Security (TLS / SSL.)
-
-**The server only handles messages within the LAN sent to a specific TCP port (2525 by default) and does not relay them further, except to pass them to internal handlers, each of which may be registered to receive emails from a specific email address.**
-
-Out of the box, openLuup will start the SMTP server on port 2525. This can be changed in Lua Startup code with the following line:
-
-```lua
-luup.attr_set ("openLuup.SMTP.Port", 1234) -- use port 1234 instead
-```
-
-The server comes with a number of predefined mailbox addresses:
-
-- postmaster@openLuup.local – required for an SMTP compliant server
-- openLuup@openLuup.local – general destination for openLuup messages. This mailbox performs no processing on incoming messages
-- images@openLuup.local – used for camera trigger emails, or other messages with image attachments. Images are written to the image/ folder in the openLuup home directory.
-- test@openLuup.local – all message data lines, including headers and body, will be written to the log to facilitate debugging. Beware of tryin  this on long messages!
-
-This has been tested with a Foscam camera, which attaches three images per trigger event. The filenames are specified by the camera in the multipart ContentType header of the email message, which includes a clause like name="Snap_20180323-115529-0.jpg". Other cameras may use a different approach, but I'm more than happy to try and accommodate any different formats.
-
-This feature brings with it the possibility of generating quite a large number of files, in due course.
-
-As a result I've found it helpful to include some sort of file retention policy implementation, so take a look at the openLuup File Management actions and variables.
-
-Messages addressed to non-registered mailboxes will be rejected. In your own Lua Startup code or plugins, you can create a mailbox for your own code to access using the standard luup call:
-
-```lua
-luup_register_handler ("global_function_name", "email address")
-```
-
-for example:
-
-```lua
-luup_register_handler ("MyEmailHandler", "me@mymail.local")
-```
-
-Only one client can register for a specific email address, further attempts to register an existing mailbox will be rejected. However, the same handler ca  be used for multiple different addresses.
-
-On receipt of an appropriately addressed email, your handler will be called thus:
-
-```lua
-function MyEmailHandler (email, data)
-
--- email is the registered mailbox address
--- you can have one handler for several addresses
--- data is the received data with a specific structure (see below)
-end
-```
-
-The message table is a simple list of raw email data lines including headers and mail message body as received by the SMTP server. This is so that messages can be handled with the minimum amount of processing by the server.
-
-However, for MIME-encoded messages (and almost ALL email clients use this format, including the LuaSocket library SMTP client module) there is a hidde  utility function to decode headers and message (possibly a multipart message.)
-
-The MIME format, as described in a plethora of interne  standards, is quite complex with many parts of headers and messages encoded in different systems, mostly to handle legacy compatibility issues. The supplied decoder is fairly capable, but perhaps not totally comprehensive. It should deal with all normal message formats, including multipart messages with attachments using base64 and/or quoted-printable encoding and headers with RFC 2047 encoded words.
-
-To decode a MIME message, simply write:
-
-```lua
-local message = data: decode ()
-```
-
-The decoded message format is of the form:
-
-message = { header={...}, body=... }
-- for a simple message, a body is a decoded string (from base64 or quoted-printable)
-- for a multipart message, a body is a list of messages (possibly themselves with nested multiparts)
-- header is BOTH an ordered list of decoded headers AND an index by header name (wrapped to lower case)
-
-To understand the context of a body, you need to examine the headers. The header index makes this easy. To find, for example, the ContentType header (and if it exists at all) you could write:
-
-```lua
-local content = message.header["content-type"] -- indexed headers are lowercase
-if content then
--- whatever
-end
-```
-
-To process parts of a multipart message you could write:
-
-```lua
-if type (message.body) == "table" then
-  for _, part in pairs (body) do
-     -- each part will have its own header and body
-  end
-end
-```
-
-It really is as simple as that.
-
----
-## Testing the SMTP server
-You can manually test the SMTP server easily from any machine on the network (here, I'm doing it on the same machine)...
-
-### WITH NO AUTHORISATION
-
-```text
-% nc 127.0.0.1 2525
-220 (openLuup.smtp v18.3.24) [0.0.0.0] Service ready helo from here
-250 OK
-mail from:akb@here
-250 OK
-rcpt to:test@openLuup.local
-250 OK
-data
-354 Start mail input; end with <CRLF>.<CRLF> this is a test message.
-I hope it works!
-.
-250 OK
-quit
-221 (openLuup.smtp v18.3.24) [0.0.0.0] Service closing transmission channel
-%
-```
-
-The all lower-case lines are user input. You have to mail TO: a recognised email address - the console SMTP server page will list those. The mailbox test@openLuup.local will write the raw data lines to the log.
-
-The FROM: address can be anything of the form xxx@yyy.
-
-Entries in the log file should be something like this:
-
-```text
-2018-03-25 13:32:28.822 openLuup.smtp:: SMTP new client connection from 127.0.0.1: tcp{client}: 0x1a15448
-2018-03-25 13:33:21.897 openLuup.smtp:: TO: test openLuup.local
-2018-03-25 13:33:21.898 luup.smtp.data:: Received: from (from here) [127.0.0.1]
-2018-03-25 13:33:21.898 luup.smtp.data:: by (openLuup.smtp v18.3.25) [0.0.0.0];
-2018-03-25 13:33:21.898 luup.smtp.data:: Sun, 25 Mar 2018 13:33:02 +0000
-2018-03-25 13:33:21.898 luup.smtp.data:: this is a test message.
-2018-03-25 13:33:21.898 luup.smtp.data:: I hope it works!
-2018-03-25 13:33:21.898 openLuup.smtp:: EMAIL delivered to handler for: test@openLuup.local
-2018-03-25 13:33:25.313 openLuup.smtp:: SMTP QUIT received tcp{client}: 0x1a15448
-```
-
-### WITH AUTHORISATION
-Note the different client greeting EHLO instead of HELO, to which the server responds with a list of SMTP extensions, showing, in this case, that LOGIN authorisation is supported.
-
-```text
-% nc 127.0.0.1 2525
-220 (openLuup.smtp v18.3.26) [0.0.0.0] Service ready
-ehlo from me
-250 AUTH LOGIN
-auth login
-334 VXNlciBOYW1lAA==        (base64 encoded Username: challenge)
-myname                      (this should actually be base64 encoded)
-334 UGFzc3dvcmQA            (base64 encoded Password: challenge)
-mypassword                  (-ditto-)
-235 Authentication successful.
-```
-
- … proceeds as previously
-
-Any username and password will be accepted in response to the code 334 challenges.
-
-For testing purposes, it may be useful to enable debugging of the openLuup.smtp module. The is achieved by inserting the following code in openLuup’s Lua Startup code:
-
-```lua
-do -- SMTP debug
-   local smtp = require "openLuup.smtp"
-   smtp.ABOUT.DEBUG = true
-end
-```
-
-A reload will be required to make this effective.
-
-In debug mode, any mailbox destination will be accepted. It may also be useful to send test messages TO: test@openLuup.local. That mailbox will write the raw received data lines from the exchange to the log.
-
-## POP3 server
-openLuup includes a full implementation POP3 server, along with some permanent mailboxes:
-
-- mail@openLuup.local – a normal mailbox from which full messages (with any attachments) may be retrieved
-- events@openLuup.local – only the subject line of any mail sent here will be retained
-
-Together with the SMTP server, the POP3 server allows a fully internal LAN system to send, store, and retrieve email messages. It can conveniently be accessed by almost any email client. I send trigger messages from my camera to both images openLuup.local which just stores the attached images in the images/ folder, and also events openLuup.local which lets me review any trigger times on an old iPod Touch.
-
-Of course, if you want this to work when you are away from your home LAN, then you'd need to forward these via VeraAlerts or some such additional plugin.
-
-Your email client can be used to manage the deletion of files from the mailboxes, or, alternatively, a timed scene using the openLuup SendToTrash and EmptyTrash actions will do the job automatically.
-
----
-# Appendix: Using Cameras with openLuup
-
-**I_openLuupCamera1.xml implementation file**
-
-A camera device created with this implementation file will create an associated child Motion Sensor device which is triggered when the camera's own motion detection algorithm sends an email.
-
-### Configuration
-
-The camera's device implementation file may be set on the openLuup device's Attributes page, followed by a Luup reload. The only other significant parameters are the usual: ip attribute, and the URL and DirectStreamingURL device variables.
-
-Camera configuration is obviously device-specific. For my Foscam camera (thanks to @Spanners) the important parameters are:
-
-- **Enable** – ticked
-- **SMTP Server** – the IP address of openLuup on your LAN eg. 172.16.42.156
-- **SMTP Port** – 2525, or whatever other port number you configured in openLuup startup
-- **Transport Layer Security** – none
-- **Need Authentication** – No
-- **SMTP Username / Password** – not used
-- **Sender Email** – must include the form xxx@yyy, for example Foscam@Study.local
-- **First Receiver** – openLuup@openLuup.local or images@openLuup.local
-
-My camera (FI9831P) also sends three snapshots as email attachments. These are ignored if sent to openLuup@openLuup.local, but written to openLuup’s images/ folder if sent to images@openLuup.local.
-
-The Motion Sensor device will remain triggered for 30 seconds (or longer if the camera is retriggered within that time.) In keeping with the latest security sensor service file, in addition to the Tripped variable, there is also an ArmedTripped variable which is only set/reset when the device is armed. This makes AltUI device watch triggers easy to write when wanting only to respond whenthe device is actually armed.
-
-The **ArchiveVideo** action may be used to save single camera snapshots to openLuup's images/ folder. At present, the Format and Duration parameters are unused (since this is currently only implemented for single frames.)
-
----
-# Appendix: openLuup – Databases and Data Visualisation
-
-External databases are useful for long-term storage, and visualisation, of sensor data and events. Several plugins have been written specifically for Vera/openLuup to provide this functionality:
-
-- dataMine – the original! Entirely Vera-based with possible USB storage. A self-contained eco-system with custom database format and graphics.
-
-- DataYours – a Lua implementation of the Graphite / Whisper distributed database. Industry-standard protocols allow data to be sent to multiple databases. Includes a crude Google-charts powered graphics interface.
-
-Since Vera-based storage is limited, and mounting USBs often challenging, CIFS (Common Internet File System) may be installed to access network-connected storage over the network. Whilst openLuup systems usually have massively more connected storage than Vera, the CIFS approach may also be used to good effect.
-
-AltUI itself provides a facility called Data Storage Providers (DSP) which enables the sending of device variable data to remote databases, typically over HTTP. Currently, the default supported databases are: ThingsSpeak, Emoncms, and IfThisThenThat (IFTTT). It also provides a capability for users to extend the feature to additional databases. openLuup builds on these tools to allow a number of further options:
-
-- InfluxDB DSP – UDP connection to an externally configured InfluxDB database.
-- Graphite DSP – UDP connection to an externally configured Graphite database.
-- Graphite CGI – HTTP API to retrieve data from multiple dataMine & DataYours databases.(installed as part of the DataYours plugin)
-
-The Graphite DSP is fully compatible with both DataYours and a real Graphite system. This means that you can send data to a remote DataYours installation without having DataYours installed on your local machine.
-
-Whilst a number of these options provide their own data visualisations, the best experience for browsing and plotting data seems to be offered by third-party tools. Probably one of the best is Grafana which is able to access many of the above database systems through its own connectors. The Graphite CGI also allows Grafana to connect with data from DataMine and DataYours.
-
----
-## InfluxDB
-
-My choice is for simplicity of use, which means configuring the UDP port of InfluxDB. Once
-installed, the InfluxDB configuration file is at /etc/influxdb/influxdb.conf In that file, I have:
-
-```text
-[[udp]]
-enabled = true
-bind-address = ":8089"
-database = "openLuup"
-retention-policy = ""
-```
-
-It's then a matter of configuring the Influx database (here called "openLuup") the way you want it. Note that the UDP port access can have its own default retention policy.
-
- Finally, you need to arrange AltUI to give you InfluxDB as an option. It's just a matter of defining a system parameter to point to the UDP port in Startup Lua...
-
-```lua
-luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
-```
-
-For each watched variable you need just to specify a measurement name, optionally followed by any tags you want to do with it…
-
-IMAGE HERE
-
-## DataYours / Graphite
-
-TO BE DONE.
-
----
-## Appendix: Sending and receiving UDP datagrams
-
-Most communications protocols (HTTP, SMTP, POP3, …) along with standard device plugin I/O
-are handled over the TCP connections. However, UDP officers a very lightweight, transaction-free
-communication mechanism used by some systems. DataYours, for example (a Lua
-implementation of the Carbon/Graphite database system) uses this for logging individual data
-metrics.
-
-openLuup includes a mechanism to send UDP datagrams and also a callback to listen for incoming
-UDP datagrams arriving at specified ports.
-
-
-The luup.register_handler() function has been extended to be able to specify the UDP
-protocol and a port to listen on. The handler is called with a similar parameter list to regular
-callback functions, but with slightly different semantics:
-
-- port – the incoming port as a string, eg. "2222"
-- data – a table with {datagram = received_datagram_string, ip = sender_ip}
-- protocol – "udp", in this case
-
-So, for example, in Lua Startup, or within a plugin you could write:
-
-```lua
-function myUDPcallback (port, data, protocol)
-   print "Incoming UDP!"
-   print (port)
-   print ((json.encode(data)))
-   print (protocol)
+-- Setup Variable Watch for each entry in watchTable
+
+function setWatch()
+   for n,t in ipairs(watchTable) do
+      luup.variable_watch("catchWatch",t[1],t[2],t[3])
+   end
 end
 
-luup.register_handler ("myUDPcallback", "udp:2222")
-```
-
-The callback handler is called for each incoming datagram.
-
-For sending, you simply need to open a UDP port on the destination IP:
-
-```lua
-local ioutil = require "openLuup.io" -- NOT same as luup.io or Lua's io.
-local udp, err = ioutil.udp.open "123.4.5.67:2468"
-if not udp then
-    luup.log (err) -- some error message
+-- When a watched variable changes, call the specified scene
+function catchWatch(lul_device, lul_service, lul_variable, lul_value_old, lul_value_new)
+   for n,t in ipairs(watchTable) do
+      if ( (t[3] == lul_device) and (t[1] == lul_service) and (t[2] == lul_variable) ) then
+         luup.call_action("urn:micasaverde-com:serviceId:HomeAutomationGateway1", "RunScene", {SceneNum = t[4]}, 0)
+      end
+   end
 end
+– Wait for 30 seconds after restart then run setWatch
+
+luup.call_delay("setWatch",30)
 ```
 
-and then use it whenever you like to send a datagram:
+The last part of this code causes the setWatch function to be run 30 seconds after Vera restarts. This is to allow all devices to have completed their initialization.
+
+---
+# Finding the Correct Service ID
+RexBeckett:
+
+First adventures into using Lua code frequently fail due to the use of incorrect Service IDs in luup.variable_get(…), luup.variable_set(…) and luup.call_action(…) calls. A common error is to use the Device-type instead of the Service ID. Tip: A Service ID string will contain the word serviceId and will not contain the words schemas or device.
+
+I listed some of the common ones in Service IDs, Variables and Actions 1. It is also possible to see the Service ID for a device variable by hovering your mouse cursor over the variable name on the device’s Advanced tab. This is OK if you have a good visual memory. :wink:
+
+One way to see the Service ID in a copy/paste-able form is to enter this command in your browser - replacing with the IP address of your Vera (without the <>):
 
 ```lua
-udp: send "body of UDP datagram"
+http://<veraip>:3480/data_request?id=status&output_format=xml
 ```
 
-Again, it’s as simple as that.
-
----
-## Appendix: openLuup plugin Actions and Variables
-
-The openLuup system itself runs a plugin called openLuup (always device #2) which offers useful variables and actions to assist in home automation tasks.
-
-All of these element are within the "openLuup" serviceId. Note that openLuup does not implement UPnP so does not use the Vera / MiOS / UPnP syntax "urn:xxx.com:serviceId:abcd1" for its own native services. Of course, for standard devices and third-party plugins, their own full serviceId should be used.
-
-### House Mode related actions and variables
-
-When it comes to using house modes in Vera, you quickly run into two problems:
-
-1. Mode is a system attribute, not a variable, so you can’t use it as a trigger
-
-2. SetHouseMode action is only defined for device #0 which you can’t see from scenes
-
-The openLuup plugin has its own HouseMode variable which tracks the system Mode attribute and
-may be used as a scene trigger.
-
-It also has its own SetHouseMode action which may be selected from the list of scene actions for the openLuup plugin.
-
-### File Management actions and variables
-
-**action = "SendToTrash"**
-
-This action moves selected files to openLuup's trash/ folder, and has four parameters:
-- **Folder** - the path of a folder below the openLuup home directory. For the application
-described here, this should be images, but it must be a relative path name only.
-- **MaxDays** - the maximum age in days of files which should be retained
-- **MaxFiles** - the maximum number of files that should be retained
-- **FileTypes** - a string listing the types the types of files to which this applies, for example jpg gif bmp. It may also be set to * in which case, any file is applicable. Note that this does not act on subfolders or their contents.
-
-One or both of MaxDays and MaxFiles may be specified. If either of the conditions is true, then the file is moved to trash.
-
-Invoke this from Lua, like this:
+This will list every variable for all of your devices so you will need to scroll down the list until you find the one you want. You can also get the information for a particular device by using this - replacing 123 with the device number:
 
 ```lua
-luup.call_action ("openLuup","SendToTrash"
-{Folder="backup", MaxDays="", MaxFiles="10", FileTypes="lzap"}, 2)
+http://<veraip>:3480/data_request?id=status&output_format=xml&DeviceNum=123
 ```
 
-Certain folder a protected from file management actions, in particular:
+To see all the actions available for your devices, enter this:
 
-openLuup, cgi, cgi-bin, cmh, historian, whisper, files, icons, www
-
-Moving files to the trash folder is reversible (manually!) but to delete them permanently, you may use the following action.
-
-**action = "EmptyTrash"**
-
-This action has one parameter:
-
-- **AreYouSure** - needs to have the value "yes" (case-insensitive) to delete all the files in openLuup's trash/ folder.
-
-The purpose of the AreYouSure parameter is to avoid accidental clicks on the EmptyTrash button on the device actions page having any effect.
-
-The above actions are easily included into scheduled scenes which might, for example, run the SendToTrash action early in the morning every day, and the EmptyTrash every weekend.
-
-### AltUI-related variables
-
-AltUI has its own actions and services with the serviceId of "urn:upnp-org:serviceId:altui1".
-
-openLuup uses several of these variables to display information on its device panel, as do some related plugins like AltApStore and VeraBridge.
-
-DisplayLine1 and DisplayLine2 are the relevant device variables.
-
-### System Status Variables
-
-Global system parameters:
-- **MemAvail_Mb**
-- **MemFree_Mb**
-- **MemTotal_Mb**
-
-openLuup system parameters:
-- **CpuLoad** – the percentage of CPU time being used by all of openLuup
-- **Memory_Mb** – the total amount of memory that all of openLuup is using
-- **Uptime_Days** – just how long we’ve been running
-- **Version** – the system version as tagged in GitHub
-- **StartTime** – the time of the last Luup restart
-
----
-# Appendix: Undocumented features of Luup
-
-The documentation for Luup is poor: out of date, misleading, incomplete, unclear, and sometimes just plain wrong. However, "hats off" to those stalwart members of the forum who have contributed to the Wiki. During the implementation of openLuup a number of undocumented ‘features’ have come to light. In some cases, these features are used by various plugins, either deliberately or unknowingly, through sins of commission or omission. As a result, I’ve had to include them in the openLuup implementation.
-
-If you’re a developer, please try NOT to rely on these things in your plugin code.
-
-Here’s what I’ve found - if you know more, let me know.
-
-- **lul_device** – this variable is often included in callback function parameter lists to indicate the target device, and that’s fine. However, it ALSO turns out to be in scope in the whole body of a plugin’s Lua code. Some plugins rely (possibly inadvertently) on this feature.
-
-- **nil device parameter in luup.variable_watch** – whilst the use of a nil variable parameter to watch ALL service variables is documented, the use of a nil DEVICE is not, but works as expected: the callback occurs a change in ANY device with an update to the given serviceId and variable (thanks for @vosmont for that information.)
-- **nil device parameter in luup.variable_set/get** – it appears that when called from device code, a missing device parameter gets the current luup.device variable value substituted.
-
-- **urn:micasaverde-com:serviceId:HaDevice1, HideDeleteButton** – according to @reneboer:
-
->>"If you set that to 1 on UI7 it will not show the delete button at the bottom of the device Control Panel. I now use this to hide that on the child devices that are under full control of the parent device, including proper deletion."
-
-- **The ordering of the files tag and the functions tag matters** – in implementation files, they are concatenated in that order and it matters to the scope of local variables defined there (thanks to @logread and @cybrmage for that nugget.)
-
-- **only devices with a device file appear in the status request response** – what this means is that if you create a ‘dummy’ device on Vera, just to hang variables off, or as a holder for VeraBridge mirrored variables, those device variable values won’t appear on a bridged openLuup system unless you create the dummy device with a valid device file (just a device type will not do.) I usually use D_ComboDevice1.xml for this.
-
-- **luup.inet.wget()** – returns a third parameter, which is the actual http.request status code. luup.io.intercept() – returns a boolean with complex meaning. See post by @a-lurker here: https://community.ezlo.com/t/openluup-vs-vera-comms-protocol/196129
-- **/data_request?id=static** – This is just a subset of the &id=user_data request, which contains the static data. It’s the opposite of &id=user_data&ns=1, which suppresses the static data.
-
-- …
-
----
-# Appendix: Unimplemented features of openLuup
-
-openLuup is, as of this time, an unfinished work. The following features are known to be
-unimplemented, poorly implemented, or non-functional, for a variety of reasons.
-
-### 1. unimplemented luup API calls
-
-- **luup.devices_by_service** – the definition of the functionality here _Luup_Lua_Extensions_ is not adequate to make an implementation.
-- **luup.job_watch** – not yet implemented.
-- **luup.require** – undocumented.
-- **luup.xj** – undocumented.
-
-### 2. unimplemented HTTP requests
-
-- **id=scene** – only create, delete, list, and rename are implemented (ie. no interactive creation of scenes.) Also note that scene triggers (or notifications) are stored, but not used. Any scene with a defined trigger will have one additional trigger added with a warning that these triggers are un-implemented.
-- **id=action** – the virtual category 999 is not implemented. Actions on groups of devices defined by category is not implemented.
-- **id=finddevice** – not implemented.
-- **id=resync** – not implemented.
-- **id=archive_video** – only implemented for single snapshots.
-- **id=jobstatus** – not implemented.
-- **id=relay** – not implemented.
-
----
-# Appendix: Differences between openLuup and Vera / MiOS
-
-### Features of Vera / MiOS not in openLuup
-Hard to give an exhaustive list, but notable omissions include:
-
-- UPnP triggers as defined in service files are not implemented.
-
-- openLuup does not support events as published in the json files.
-
-- openLuup does NOT use the system HTTP port 80 server, but implements its own port 3480
-- the default user_data.json checkpoint time every 60 minutes, not 6.
-
-- …
-
-### Features of openLuup not in Vera / MiOS
-The original goal for the development of openLuup was to have a system which was to be as indistinguishable as possible from a real Vera, aside, of course, for performance and reliability.
-
-However, there are some blatantly obvious omissions from Vera’s Luup which are very much ‘nice to have’ and don’t break forward compatibility when moving from Vera to openLuup.
-
-### lul_scene:
-
-In device implementation code, there is a variable **lul_device** which defines the current device number to the code. This may be used to index the **luup.devices** table for more information. However, there is no equivalent when executing scene code.
-
-The variable **lul_scene** is now available to fill that gap, indicating the active scene number which may, in turn, be used to index the **luup.scenes** table to extract other information such as the name (description) of the current scene.
-
-### luup.call_timer():
-
-In Vera, this call is one-shot and if you want repeating timers you have to call it again within the callback. In openLuup, there is an extra boolean parameter which, if true, reschedules the callback automatically. Important, if using this, NOT to call it again in the callback hander!
-
-### Scene finalisers, prolog and epilog code:
-
-See the relevant section above on these topics.
-
-### ShutdownCode:
-There is an additional global attribute in the user_data called ShutdownCode. This may be set at startup, or other times, with
-
-```Lua
-luup.attr_set ("ShutdownCode", "-- Lua code goes here")
+```lua
+http://<veraip>:3480/data_request?id=invoke
 ```
 
- and defines Lua code which is run prior to system shutdown (or restart.) This has been used to tidy up connections to external devices and servers prior to disconnection.
+or, for a single device:
+
+```lua
+http://<veraip>:3480/data_request?id=invoke&DeviceNum=123
+```
+
+Note that not all devices will actually implement all the available actions. The list is a super-set covering all devices of the given Device-type. Theoretically, actions marked with an asterisk (*) should be implemented but this is not always the case. Clicking on an entry in the invoke list will fire the action so be careful!
+
+If you would prefer a less-cluttered list, you could use LuaTest which has buttons to display Variables, Values, Actions and individual device Status.
+
+---
+# Testing Lua Code - LuaTest
+RexBeckett:
+
+LuaTest is Lua code designed to  faciltate debugging your own code. See the forum discussion here:
+
+>[LuaTest - A Tool for Testing Scene Lua Code](https://community.ezlo.com/t/luatest-a-tool-for-testing-scene-lua-code/180205)
+
+The documentation is here:
+
+>[LuaTest: Documentation](LuaTest-Documentation)
+
+and the code itself here:
+
+>[LuaTest: code](LuaTest-code)
+
+with some updates here:
+
+>[LuaTest: code 2](cgmartin/RBLuaTest.lua)
