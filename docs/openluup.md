@@ -982,7 +982,7 @@ Whilst openLuup’s goal is to provide a run-time environment as similar as poss
 
 The AltAppStore plugin (an integral part of openLuup) also requires full access to the /tmp directory for temporary download files. This isn’t usually an issue but there have been times when, for whatever reason, there have been permissions problems with this directory.
 
-## 2. /usr/bin/GetNetworkState.sh and /etc/cmh/ui
+### 2. /usr/bin/GetNetworkState.sh and /etc/cmh/ui
 Some plugins (eg. Sonos) use a shell command /etc/bin/GetNetworkState.sh to determine the machine's IP address. I used to provide this (actually for AltUI, but it doesn't need it now.) So you need to create that file with the contents shown in the Appendix.
 
 On a Windows machine you may need to use the simpler hard-coded address version of the script shown there. I’m not actually sure that this works.
@@ -993,11 +993,10 @@ At least one plugin (IOSPush) requires the file /etc/cmh/ui with the single line
 7
 ```
 
-## 3. openLuup_reload.bat for Windows
+### 3. openLuup_reload.bat for Windows
+
 For Windows, you will need an alternative shell file to run the basic openLuup reload loop. I’m indebted to @vosmont for the following information which I’ve copied directly from the post here https://community.ezlo.com/t/systems-to-run-at-share-experiences/189409/29
 
-
-### Thanks to @vosmont
 For the moment, I use openLuup on Windows.
 
 Install http://luadist.org/ (contains Lua 5.1 and all the needed libraries)
