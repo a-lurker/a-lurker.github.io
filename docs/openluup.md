@@ -538,7 +538,7 @@ return 200, headers, coroutine.wrap(hello_text)
 end
 ```
 
-...and putting it into cmh-ludl/cgi/hello.lua, allows you to invoke it with 
+...and putting it into cmh-ludl/cgi/hello.lua, allows you to invoke it with
 
 http://openLuupIP:3480/cgi/hello.lua
 
@@ -706,7 +706,7 @@ on the forum. Details are taken directly from the posts there:
 2. /etc/rc.local, as used in turnkey systems by @CudaNet
 3. openLuup: init.d script by @martynwendon
 
-I’m currently using the Systemctl approach… 
+I’m currently using the Systemctl approach…
 
 >systemctl with /etc/systemd/system/openluup.service
 
@@ -921,7 +921,7 @@ Version = "v18.1.18"
 ```
 
 The key parts which can be changed include:
-- openLuup.Backup.Directory — location of the backup files (path must exist already) 
+- openLuup.Backup.Directory — location of the backup files (path must exist already)
 
 - openLuup.Logfile.Name — full path to log file
 
@@ -945,54 +945,37 @@ The installations steps 1, 2, 3, give you a functioning system, linked to a remo
 
 Vera’s directory structure is quite complex, but the basic structure is shown below:
 
->/etc
-
->>/cmh
-
->>>ui
-
->>/skins
-
->>>/default
-
->>>>/icons/", "icons/" (UI5 icons)
-
->>>>/img
-
->>>>>/devices/device_states/","icons/") (UI7 icons)
-
->>>>>/icons/", "icons/")
-
->>/cmh-lu
-
->>/cmh-ludl
-
->/usr
-
->>/bin
-
->>>GetNetworkState.sh
-
->/var/log/cmh/LuaUPnP.log
+```text
+/etc
+    /cmh
+        ui
+    /skins
+        /default
+            /icons/", "icons/" (UI5 icons)
+            /img
+                /devices/device_states/","icons/") (UI7 icons)
+                /icons/", "icons/")
+    /cmh-lu
+    /cmh-ludl
+/usr
+    /bin
+        GetNetworkState.sh
+/var/log/cmh/LuaUPnP.log
+```
 
 openLuup is **designed to run in a non-privileged account using only a directory structure below its own home directory** to avoid file and directory permission problems (but see also next section.) The basic structure created by the install process is:
 
->/cmh-ludl (might be in /home/pi, or /etc/cmh, or anywhere else)
->>/backup
-
->>/files
-
->>/icons
-
->>/images
-
->>/logs
-
->>/openLuup
-
->>/trash
-
->>/www
+```text
+/cmh-ludl (might be in /home/pi, or /etc/cmh, or anywhere else)
+    /backup
+    /files
+    /icons
+    /images
+    /logs
+    /openLuup
+    /trash
+    /www
+```
 
 Most plugins are completely agnostic as to file structures, simply being defined at startup by their device files. However, some advanced plugin authors do tricky things like re-writing JSON files and explicitly using the Vera file structure. It’s possible to accommodate some of these by careful use of file aliases and extra directories. In other cases such authors have explicitly coded their plugins to discriminate between Vera and openLuup, and do the right thing.
 
@@ -1217,14 +1200,14 @@ Note the different client greeting EHLO instead of HELO, to which the server res
 ehlo from me
 250 AUTH LOGIN
 auth login
-334 VXNlciBOYW1lAA==        (base64 encoded Username: challenge) 
+334 VXNlciBOYW1lAA==        (base64 encoded Username: challenge)
 myname                      (this should actually be base64 encoded)
 334 UGFzc3dvcmQA            (base64 encoded Password: challenge)
 mypassword                  (-ditto-)
 235 Authentication successful.
 ```
  … proceeds as previously
- 
+
 Any username and password will be accepted in response to the code 334 challenges.
 
 For testing purposes, it may be useful to enable debugging of the openLuup.smtp module. The is achieved by inserting the following code in openLuup’s Lua Startup code:
@@ -1253,7 +1236,7 @@ Of course, if you want this to work when you are away from your home LAN, then y
 Your email client can be used to manage the deletion of files from the mailboxes, or, alternatively, a timed scene using the openLuup SendToTrash and EmptyTrash actions will do the job automatically.
 
 --------------------------------------------------------------------------------
-# Appendix: Using Cameras with openLuup 
+# Appendix: Using Cameras with openLuup
 
 **I_openLuupCamera1.xml implementation file**
 
@@ -1325,7 +1308,7 @@ luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 
 For each watched variable you need just to specify a measurement name, optionally followed by any tags you want to do with it…
 
-IMAGE HERE 
+IMAGE HERE
 
 ## DataYours / Graphite
 
@@ -1474,7 +1457,7 @@ Here’s what I’ve found - if you know more, let me know.
 
 - **lul_device** – this variable is often included in callback function parameter lists to indicate the target device, and that’s fine. However, it ALSO turns out to be in scope in the whole body of a plugin’s Lua code. Some plugins rely (possibly inadvertently) on this feature.
 
-- **nil device parameter in luup.variable_watch** – whilst the use of a nil variable parameter to watch ALL service variables is documented, the use of a nil DEVICE is not, but works as expected: the callback occurs a change in ANY device with an update to the given serviceId and variable (thanks for @vosmont for that information.) 
+- **nil device parameter in luup.variable_watch** – whilst the use of a nil variable parameter to watch ALL service variables is documented, the use of a nil DEVICE is not, but works as expected: the callback occurs a change in ANY device with an update to the given serviceId and variable (thanks for @vosmont for that information.)
 - **nil device parameter in luup.variable_set/get** – it appears that when called from device code, a missing device parameter gets the current luup.device variable value substituted.
 
 - **urn:micasaverde-com:serviceId:HaDevice1, HideDeleteButton** – according to @reneboer:
@@ -1548,7 +1531,7 @@ In Vera, this call is one-shot and if you want repeating timers you have to call
 See the relevant section above on these topics.
 
 ### ShutdownCode:
-There is an additional global attribute in the user_data called ShutdownCode. This may be set at startup, or other times, with 
+There is an additional global attribute in the user_data called ShutdownCode. This may be set at startup, or other times, with
 
 ```Lua
 luup.attr_set ("ShutdownCode", "-- Lua code goes here")
