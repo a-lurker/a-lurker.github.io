@@ -989,7 +989,9 @@ On a Windows machine you may need to use the simpler hard-coded address version 
 
 At least one plugin (IOSPush) requires the file /etc/cmh/ui with the single line (the digit seven):
 
+```text
 7
+```
 
 ## 3. openLuup_reload.bat for Windows
 For Windows, you will need an alternative shell file to run the basic openLuup reload loop. I’m indebted to @vosmont for the following information which I’ve copied directly from the post here https://community.ezlo.com/t/systems-to-run-at-share-experiences/189409/29
@@ -1003,7 +1005,7 @@ Install http://luadist.org/ (contains Lua 5.1 and all the needed libraries)
 Copy this file "openLuup_reload.bat" in "openLuup\etc\cmh-ludl", and change
 "LUA_DEV" according to LuaDist folder.
 
-```bat
+```batch
 @ECHO OFF
 SETLOCAL
 SET LUA_DEV=D:\devhome\app\LuaDist\bin
