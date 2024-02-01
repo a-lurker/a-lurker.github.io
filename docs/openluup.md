@@ -187,7 +187,8 @@ The installation process is target machine dependent (other machines may require
 **RASPBIAN (RASPBERRY PI)**
 
 (Lua 5.1 is pre-installed)
-```# sudo apt-get update
+```text
+# sudo apt-get update
 # sudo apt-get install lua-socket
 # sudo apt-get install lua-filesystem
 # sudo apt-get install lua-sec
@@ -195,7 +196,8 @@ The installation process is target machine dependent (other machines may require
 
 **DEBIAN (BEAGLEBONE BLACK)**
 
-```# apt-get update
+```text
+# apt-get update
 # apt-get install lua5.1
 # apt-get install lua-socket
 # apt-get install lua-filesystem
@@ -206,7 +208,8 @@ The installation process is target machine dependent (other machines may require
 
 (Lua 5.1 is pre-installed)
 
-```# opkg update
+```text
+# opkg update
 # opkg install luasocket
 # opkg install luafilesystem
 # opkg install luasec
@@ -216,7 +219,9 @@ The installation process is target machine dependent (other machines may require
 ## 2. openLuup Installation
 This is very straight-forward: create a directory **cmh-ludl/** for the openLuup installation on your machine (in your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions) **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
 
-```wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua```
+```lua
+wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
+```
 
 The link below may also be used to retrieve the file:
 
@@ -224,7 +229,9 @@ https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 
 Run the file using the command line:
 
-```# lua5.1 openLuup_install.lua```
+```text
+# lua5.1 openLuup_install.lua
+```
 
 If successful, the script produces console output like this:
 
@@ -400,6 +407,7 @@ local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","Cu
 
 print ("over the last hour", pretty {value = v2, times=t2})
 ```
+
 gives
 
 ```text
@@ -416,7 +424,7 @@ DataYours has its own Whisper database, location defined by the contents of Data
 
 Pointing Grafana at openLuupIP:3480/, will allow its metric menus to find both databases, but the metric trees will be merged. However, adding the following line to Lua Startup
 
-``` lua
+```lua
 luup. attr_set ("openLuup.Historian.DataYours", "whisper/")
 -- overriding DY finder
 ```
@@ -574,7 +582,7 @@ openLuup also maintains another log, which is a subset of the main one, and cont
 
 openLuup doesn't use the same log level numbering system as Vera, trying to keep things simple. Log entries created by devices always carry their device ID. Here’s a log entry made by device #7
 
-```lua
+```text
 luup_log:7: Arduino: urn:micasaverde-com:serviceId:HaDevice1,LastUpdateHR, 09:42, 42
 ```
 
@@ -758,12 +766,15 @@ ExecStop=curl http://localhost:3480/data_request?id=exit
 [Install]
 WantedBy=multi-user.target
 ```
+
 Next (one time only) create the service and start openLuup. Make sure openLuup server is
 stopped using ***http://openLuupIP:3480/data_request?id=exit***
+
 ``` bash
 $ sudo systemctl enable openluup
 $ sudo systemctl start openluup
 ```
+
 That's it. openLuup will now autostart with reboots.
 Other useful commands:
 
@@ -841,7 +852,6 @@ reload)
        echo "Usage: $0 {start|stop|reload|restart|kill}"
        exit 1
 esac
-
 ```
 
 ### /etc/rc.local
@@ -878,6 +888,7 @@ cd /etc/cmh-ludl
 
 exit 0
 ```
+
 IMPORTANT : 'exit 0' must NOT be removed.
 
 If using nano, press cntrl-o, press [enter], press cntrl-x to exit editor.
@@ -889,7 +900,7 @@ There is a special top-level system attribute called "openLuup" (created at star
 
 The default structure includes:
 
-```
+```lua
 {
 Backup = {
        Compress = "LZAP",
@@ -1022,7 +1033,7 @@ GOTO loop
 :exit
 ```
 
-## 4. code for /usr/bin/GetNetworkState.sh
+### 4. code for /usr/bin/GetNetworkState.sh
 Some plugins (eg. Sonos, DLNA, Squeezebox, …) require an external shell script (part of a standard Vera installation) to define the host machine IP address.
 
 There’s two basic ways to implement this.
@@ -1194,7 +1205,7 @@ Entries in the log file should be something like this:
 ### WITH AUTHORISATION
 Note the different client greeting EHLO instead of HELO, to which the server responds with a list of SMTP extensions, showing, in this case, that LOGIN authorisation is supported.
 
-```
+```text
 % nc 127.0.0.1 2525
 220 (openLuup.smtp v18.3.26) [0.0.0.0] Service ready
 ehlo from me
@@ -1206,6 +1217,7 @@ myname                      (this should actually be base64 encoded)
 mypassword                  (-ditto-)
 235 Authentication successful.
 ```
+
  … proceeds as previously
 
 Any username and password will be accepted in response to the code 334 challenges.
