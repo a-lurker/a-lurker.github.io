@@ -1,6 +1,7 @@
 ## openLuup
 
 An open source version of the Luup library found in Vera.
+
 Written by [akbooer](https://github.com/akbooer/openLuup).
 
 ## History
