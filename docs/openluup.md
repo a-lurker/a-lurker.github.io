@@ -235,7 +235,7 @@ Run the file using the command line:
 
 If successful, the script produces console output like this:
 
-```Bash
+```text
 # lua5.1 install.lua
 openLuup_install 2016.06.08 @akbooer
 getting latest openLuup version tar file from GitHub...
@@ -770,7 +770,7 @@ WantedBy=multi-user.target
 Next (one time only) create the service and start openLuup. Make sure openLuup server is
 stopped using ***http://openLuupIP:3480/data_request?id=exit***
 
-``` bash
+```text
 $ sudo systemctl enable openluup
 $ sudo systemctl start openluup
 ```
@@ -778,7 +778,7 @@ $ sudo systemctl start openluup
 That's it. openLuup will now autostart with reboots.
 Other useful commands:
 
-``` bash
+```text
 $ sudo systemctl status openluup -l
 $ sudo systemctl stop openluup
 $ sudo systemctl disable openluup
