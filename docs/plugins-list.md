@@ -101,3 +101,7 @@ For those just interested in what the store contains; refer to the list below - 
 |[Z-Way](https://github.com/akbooer/Z-Way)||
 |[ZiBlue Gateway](https://github.com/vosmont/Vera-Plugin-ZiBlueGateway)||
 |[ZiGate Gateway](https://github.com/vosmont/Vera-Plugin-ZiGateGateway)
+
+Eample of plugins shown in the [openLuup console - App Store](https://smarthome.community/assets/uploads/files/1604754181183-screenshot_2020-11-07-openluup-resized.png):
+
+
