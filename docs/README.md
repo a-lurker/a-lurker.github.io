@@ -6,7 +6,7 @@ Written by [akbooer](https://github.com/akbooer/openLuup).
 
 ## History
 
-The developement of the Vera software and hardware slowly came to a standstill. Regardless it was a great setup and was well spported. There was a need for it to continue hence this open source replacement.
+The developement of the Vera software and hardware slowly came to a standstill. Regardless it was a great setup and was well supported. There was a need for it to continue hence this open source replacement.
 
 ## openLuup overview
 
@@ -16,15 +16,15 @@ The developement of the Vera software and hardware slowly came to a standstill. 
 - Fast
 - MQTT with built in broker
 - Built in support for and via MQTT:
-  * ZigBee
+  * [ZigBee](https://www.zigbee2mqtt.io/)
   * Shelley
   * Tasmota
 - Plugin for Zwave using Zway
 - Email server
 - Console
 - Third party plugins of varying quality!
-  * MySensors
-  * Multi System Reactor
+  * [Multi System Reactor](https://reactor.toggledbits.com/docs/)
+  * [MySensors](https://www.mysensors.org/)
   * See the [list of plugins](plugins-list.md)
 
 ## Donate
