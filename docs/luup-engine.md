@@ -207,7 +207,7 @@ luup.call_delay ("lightOn", "3600", "color")
 ```
 
 ## call_timer
-call_timer (function_name, type, argument_for_function, thread)
+call_timer (function_name, type, time, days, argument_for_function)
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -496,7 +496,7 @@ print(luup.longitude))
 ```
 
 ## pk_accesspoint
-Deprecated. Vera only. Used for clound connections. Equals 88800000 in openLuup.
+Deprecated. Vera only. Used for clound connections. Equals 88800000 or 87654321 in openLuup.
 
 ## version_branch
 See below.
@@ -528,8 +528,9 @@ Deprecated. Vera only. Used for clound connections.
 
 ## ra_server_backup
 Deprecated. Vera only. Used for clound connections.
+
 ## timezone
-Deprecated. Vera only. Used for clound connections.
+UTC offset including DST.
 
 ## version
 ```lua
