@@ -6,7 +6,7 @@ Written by [akbooer](https://github.com/akbooer/openLuup).
 
 ## History
 
-The developement of the Vera software and hardware slowly came to a standstill. Regardless it was a great setup and was well supported. There was a need for it to continue hence this open source replacement.
+The developement of the Vera software and hardware slowly came to a standstill. Regardless it was a great setup and was well supported. There was a need for it to continue, hence this open source replacement.
 
 ## openLuup overview
 
@@ -15,6 +15,7 @@ The developement of the Vera software and hardware slowly came to a standstill. 
 - Courtesy of [@amg0](https://github.com/amg0/ALTUI), a nice Alternative User Interface "AltUI"
 - Fast
 - MQTT with built in broker
+- UDP to MQTT bridge
 - Built in support for and via MQTT:
   * [ZigBee](https://www.zigbee2mqtt.io/)
   * Shelley
