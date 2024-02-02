@@ -8,5 +8,8 @@
 
 - Guide
 
+  - [Luup Engine](luup_engine.md)
   - [Luup how to: by Rex Beckett](rex-beckett-posts.md)
-  - [Reference: Vera hardware versions](vera-versions.md)
+
+- Reference
+  - [Vera hardware versions](vera-versions.md)
