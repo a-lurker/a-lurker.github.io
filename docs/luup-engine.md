@@ -166,7 +166,7 @@ luup.attr_set ("mac", "2D:EE:91:87:46:A3", 23, false)
 ```
 
 ## call_action
-call_action (service, device, arguments, device)
+call_action (service, device, arguments, device)
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -252,7 +252,7 @@ ip_set (value, device)
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|value|string| eg 192.168.1.1|
+|value|string| eg 192.168.1.1|
 |device|string or number|"49"|
 |.|||
 |Returns:|||
@@ -313,7 +313,7 @@ mac_set (value, device)
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|value|string| eg 2D:EE:91:87:46:A3|
+|value|string| eg 2D:EE:91:87:46:A3|
 |device|string or number|49|
 |.|||
 |Returns:|||
@@ -327,8 +327,8 @@ luup.mac_set ("2D:EE:91:87:46:A3", 49)
 ## modelID
 Deprecated. Refers to Vera model.
 
-## register_handler
-register_handler ()
+## register_handler
+register_handler ()
 
 ## reload
 reload ()
