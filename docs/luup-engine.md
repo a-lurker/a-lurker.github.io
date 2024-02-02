@@ -8,7 +8,7 @@ local function getLuupInfo(lookAt)
    local strings   = {}
    local functions = {}
    local tables    = {}
-   
+
    for k, v in pairs(lookAt) do
       if (type(v) == 'number') then
          table.insert(numbers,k)
@@ -22,12 +22,12 @@ local function getLuupInfo(lookAt)
          print(k..'='..type(k))
       end
    end
-   
+
    table.sort(numbers)
    table.sort(strings)
    table.sort(functions)
    table.sort(tables)
-  
+
    local numbersInfo   = table.concat(numbers,'\n')
    local stringsInfo   = table.concat(strings,'\n')
    local functionsInfo = table.concat(functions,'\n')
@@ -136,7 +136,7 @@ attr_get (attribute, device)
 |---|---|---|
 |Arguments:|||
 |attribute|string|eg id, name |
-|device|string or number||
+|device|string or integer||
 |.|||
 |Returns:|||
 |attribute value|string||
@@ -154,7 +154,7 @@ attr_set (attribute, value, device, refresh_user_data)
 |Arguments:|||
 |attribute|string|eg id, name |
 |value|string||
-|device|string or number||
+|device|string or integer||
 |refresh_user_data|boolean|Increments DataVersion in the user_data.json file|
 |.|||
 |Returns:|||
@@ -174,12 +174,12 @@ call_action (service, device, arguments, device)
 |service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
 |action|string|eg "SetTarget"|
 |arguments|table|eg \{newTargetValue = level}|
-|device|string or number||
+|device|string or integer||
 |.|||
 |Returns:|||
-|error|number||
+|error|integer||
 |error_msg|string||
-|job|number||
+|job|integer||
 |arguments|table||
 
 Example:
@@ -194,12 +194,12 @@ call_delay (function_name, seconds, argument_for_function, thread)
 |---|---|---|
 |Arguments:|||
 |function_name|string|eg lightOn|
-|seconds|number|eg 3600 is one hour|
+|seconds|integer|eg 3600 is one hour|
 |argument_for_function|string|Multiple arguments need to be serialiased|
 |thread|boolean|deprecated - not required|
 |.|||
 |Returns:|||
-|result|number|0 on success|
+|result|integer|0 on success|
 
 Example:
 ```lua
@@ -213,7 +213,7 @@ call_timer (function_name, type, argument_for_function, thread)
 |---|---|---|
 |Arguments:|||
 |function_name|string|eg lightOn|
-|type|number||
+|type|integer||
 |time|string||
 |days|string||
 |argument_for_function|string|Multiple arguments need to be serialiased|
@@ -253,7 +253,7 @@ ip_set (value, device)
 |---|---|---|
 |Arguments:|||
 |value|string| eg 192.168.1.1|
-|device|string or number|"49"|
+|device|string or integer|"49"|
 |.|||
 |Returns:|||
 |Nil|||
@@ -278,7 +278,7 @@ Example:
 ```lua
 local night_time = luup.is_night ()
 ```
- 
+
 ## is_ready
 Deprecated.
 
@@ -292,7 +292,7 @@ log ()
 |---|---|---|
 |Arguments:|||
 |log_this|string||
-|log_level|number|optional: default is 50|
+|log_level|integer|optional: default is 50|
 |.|||
 |Returns:|||
 |nil|||
@@ -304,7 +304,7 @@ Levels:
 
 Example:
 ```lua
-local luup.log ("Another stuff up occured in function cannot_count")
+luup.log ("Another stuff up occured in function cannot_count")
 ```
 
 ## mac_set
@@ -314,7 +314,7 @@ mac_set (value, device)
 |---|---|---|
 |Arguments:|||
 |value|string| eg 2D:EE:91:87:46:A3|
-|device|string or number|49|
+|device|string or integer|49|
 |.|||
 |Returns:|||
 |Nil|||
@@ -348,6 +348,86 @@ Example:
 luup.reload ()
 ```
 
+## set_failure
+set_failure ()
 
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|value|integer|0 is OK, 1 is not OK|
+|device|string or integer|49|
+|.|||
+|Returns:|||
+|Nil|||
 
+Restarts the luup engine.
 
+Example:
+```lua
+-- heart beat function indicates device at far end is off line
+luup.set_failure (1)
+```
+
+## set_failure
+set_failure ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|value|integer|milliseconds|
+|device|string or integer|49|
+|.|||
+|Returns:|||
+|Nil|||
+
+Restarts the luup engine.
+
+Example:
+```lua
+-- Don't sleep too long. It may cause a luup engine restart!
+luup.sleep (25)
+```
+
+## sunrise
+sunrise ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|nil|||
+|.|||
+|Returns:|||
+|next_sunrise|integer|unix time stamp|
+
+Example:
+```lua
+local next_sunrise = luup.sunrise ()
+```
+
+## sunset
+sunset ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|nil|||
+|.|||
+|Returns:|||
+|next_sunrise|integer|unix time stamp|
+
+Example:
+```lua
+local next_sunset = luup.sunset ()
+```
+
+ ## task
+task ()
+
+ ## variable_get
+variable_get ()
+
+ ## variable_set
+variable_set ()
+
+ ## variable_watch
+variable_watch ()
