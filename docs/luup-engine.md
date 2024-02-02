@@ -328,6 +328,11 @@ luup.mac_set ("2D:EE:91:87:46:A3", 49)
 ## modelID
 Deprecated. Refers to Vera model.
 
+```lua
+print(luup.modelID())
+-- Result is "35" for Vera Edge and "0" for openLuup
+```
+
 ## register_handler
 register_handler ()
 
