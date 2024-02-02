@@ -99,7 +99,7 @@ Tables:
 {"chdev","devices","inet","io","ir","job","remotes","rooms","scenes"}
 ```
 
-# Functions: luup.*
+# Functions, luup.function_name:
 
 - attr_get
 - attr_set
@@ -434,7 +434,7 @@ variable_get (service, variable_name, device)
 |device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
-|variable value|string||
+|variable_value|string||
 |time|integer|UNIX time stamp|
 
 Example:
@@ -478,7 +478,61 @@ variable_watch (function_name, service, variable_name, device)
 
 Example:
 ```lua
-luup.variable_watch ("lightSwitchOperated","urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
+# Numbers:
+## latitude
+Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
+```lua
+print(luup.latitude))
+```
 
+## longitude
+Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
+Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
+```lua
+print(luup.longitude))
+```
+
+## pk_accesspoint
+Deprecated. Vera only. Used for clound connections. Equals 88800000 in openLuup.
+
+## version_branch
+See below.
+
+## version_major
+See below.
+
+## version_minor
+```lua
+print(luup.version_branch.."."..luup.version_major.."."..luup.version_minor)
+
+-- shows "1.7.0"; same as print(luup.version)
+```
+# Strings:
+## city
+Can be altered in the start up code. We know where you live.
+
+## event_server
+Deprecated. Vera only. Used for clound connections.
+
+## event_server_backup
+Deprecated. Vera only. Used for clound connections.
+
+## hw_key
+Deprecated. Vera only. Used for clound connections.
+
+## ra_server
+Deprecated. Vera only. Used for clound connections.
+
+## ra_server_backup
+Deprecated. Vera only. Used for clound connections.
+## timezone
+Deprecated. Vera only. Used for clound connections.
+
+## version
+```lua
+print(luup.version)
+-- shows "1.7.0" 
+```
