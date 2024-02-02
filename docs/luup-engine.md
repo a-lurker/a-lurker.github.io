@@ -340,7 +340,7 @@ luup.mac_set ("2D:EE:91:87:46:A3", 49)
 ```
 
 ## modelID
-Deprecated. Refers to Vera model.
+Deprecated. Refers to Vera models.
 
 ```lua
 print(luup.modelID())
@@ -349,6 +349,8 @@ print(luup.modelID())
 
 ## register_handler
 register_handler ()
+
+We love this function. It is extremely useful!
 
 ## reload
 reload ()
@@ -380,16 +382,14 @@ set_failure ()
 |Returns:|||
 |Nil|||
 
-Restarts the luup engine.
-
 Example:
 ```lua
 -- heart beat function indicates device at far end is off line
 luup.set_failure (1)
 ```
 
-## set_failure
-set_failure ()
+## sleep
+sleep ()
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -399,8 +399,6 @@ set_failure ()
 |.|||
 |Returns:|||
 |Nil|||
-
-Restarts the luup engine.
 
 Example:
 ```lua
@@ -516,7 +514,7 @@ print(luup.longitude))
 ```
 
 ## pk_accesspoint
-Deprecated. Vera only. Used for clound connections. Equals 88800000 or 87654321 in openLuup.
+Deprecated. Vera only. Used for cloud connections. Equals 88800000 or 87654321 in openLuup.
 
 ## version_branch
 See below.
@@ -535,19 +533,19 @@ print(luup.version_branch.."."..luup.version_major.."."..luup.version_minor)
 Can be altered in the start up code. We know where you live.
 
 ## event_server
-Deprecated. Vera only. Used for clound connections.
+Deprecated. Vera only. Used for cloud connections.
 
 ## event_server_backup
-Deprecated. Vera only. Used for clound connections.
+Deprecated. Vera only. Used for cloud connections.
 
 ## hw_key
-Deprecated. Vera only. Used for clound connections.
+Deprecated. Vera only. Used for cloud connections.
 
 ## ra_server
-Deprecated. Vera only. Used for clound connections.
+Deprecated. Vera only. Used for cloud connections.
 
 ## ra_server_backup
-Deprecated. Vera only. Used for clound connections.
+Deprecated. Vera only. Used for cloud connections.
 
 ## timezone
 UTC offset including DST.
