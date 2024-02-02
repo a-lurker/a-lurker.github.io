@@ -236,6 +236,7 @@ luup.call_timer ("flashLight", 1, "5m", ,"color")
 
 ## create_device
 create_device ()
+Do we really need to do this?
 
 ## device_message
 Deprecated.
@@ -535,5 +536,5 @@ UTC offset including DST.
 ## version
 ```lua
 print(luup.version)
--- shows "1.7.0" 
+-- shows "1.7.0"
 ```
