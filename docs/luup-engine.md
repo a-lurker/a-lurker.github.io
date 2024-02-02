@@ -99,7 +99,7 @@ Tables:
 {"chdev","devices","inet","io","ir","job","remotes","rooms","scenes"}
 ```
 
-# Functions
+# Functions: luup.*
 
 - attr_get
 - attr_set
@@ -132,7 +132,7 @@ Tables:
 ## attr_get
 attr_get (attribute, device)
 
-|Identifier|Type|Description|
+|Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
 |attribute|string|eg id, name |
@@ -143,13 +143,13 @@ attr_get (attribute, device)
 
 Example:
 ```lua
-local macAddress = attr_get ('mac', 23)
+local macAddress = luup.attr_get ('mac', 23)
 ```
 
 ## attr_set
 attr_set (attribute, value, device, refresh_user_data)
 
-|Identifier|Type|Description|
+|Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
 |attribute|string|eg id, name |
@@ -162,13 +162,13 @@ attr_set (attribute, value, device, refresh_user_data)
 
 Example:
 ```lua
-attr_set ('mac', '2D:EE:91:87:46:A3', 23, false)
+luup.attr_set ("mac", "2D:EE:91:87:46:A3", 23, false)
 ```
 
 ## call_action
-call_action (service, device)
+call_action (service, device, arguments, device)
 
-|Identifier|Type|Description|
+|Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
 |service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
@@ -186,4 +186,168 @@ Example:
 ```lua
 luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {"newLoadlevelTarget" = "1"}, 43)
 ```
+
+## call_delay
+call_delay (function_name, seconds, argument_for_function, thread)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|function_name|string|eg lightOn|
+|seconds|number|eg 3600 is one hour|
+|argument_for_function|string|Multiple arguments need to be serialiased|
+|thread|boolean|deprecated - not required|
+|.|||
+|Returns:|||
+|result|number|0 on success|
+
+Example:
+```lua
+luup.call_delay ("lightOn", "3600", "color")
+```
+
+## call_timer
+call_timer (function_name, type, argument_for_function, thread)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|function_name|string|eg lightOn|
+|type|number||
+|time|string||
+|days|string||
+|argument_for_function|string|Multiple arguments need to be serialiased|
+|.|||
+|Returns:|||
+|result|number|0 on success|
+
+|Type value|Timer|
+|---|---|
+|1|Interval|
+|2|Day of week|
+|3|Day of month|
+|4|Absolute|
+
+
+Example:
+```lua
+luup.call_timer ("flashLight", 1, "5m", ,"color")
+```
+
+## create_device
+create_device ()
+
+## device_message
+Deprecated.
+
+## device_supports_service
+Deprecated.
+
+## devices_by_service
+Deprecated.
+
+## ip_set
+ip_set (value, device)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|value|string| eg 192.168.1.1|
+|device|string or number|"49"|
+|.|||
+|Returns:|||
+|Nil|||
+
+Example:
+```lua
+luup.ip_set ("192.168.1.1", 49)
+```
+
+## is_night
+is_night ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|nil|||
+|.|||
+|Returns:|||
+|night_time|boolean||
+
+Example:
+```lua
+local night_time = luup.is_night ()
+```
+ 
+## is_ready
+Deprecated.
+
+## job_watch
+Deprecated.
+
+## log
+log ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|log_this|string||
+|log_level|number|optional: default is 50|
+|.|||
+|Returns:|||
+|nil|||
+
+Levels:
+1. Critical
+2. Warning
+50. Default
+
+Example:
+```lua
+local luup.log ("Another stuff up occured in function cannot_count")
+```
+
+## mac_set
+mac_set (value, device)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|value|string| eg 2D:EE:91:87:46:A3|
+|device|string or number|49|
+|.|||
+|Returns:|||
+|Nil|||
+
+Example:
+```lua
+luup.mac_set ("2D:EE:91:87:46:A3", 49)
+```
+
+## modelID
+Deprecated. Refers to Vera model.
+
+## register_handler
+register_handler ()
+
+## reload
+reload ()
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|Nil|||
+|.|||
+|Returns:|||
+|Nil|||
+
+Restarts the luup engine.
+
+Example:
+```lua
+luup.reload ()
+```
+
+
+
 
