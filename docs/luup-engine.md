@@ -136,7 +136,7 @@ attr_get (attribute, device)
 |---|---|---|
 |Arguments:|||
 |attribute|string|eg id, name |
-|device|string or integer||
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |attribute value|string||
@@ -154,7 +154,7 @@ attr_set (attribute, value, device, refresh_user_data)
 |Arguments:|||
 |attribute|string|eg id, name |
 |value|string||
-|device|string or integer||
+|device|string or integer|String is the device's udn, else it's the device number.|
 |refresh_user_data|boolean|Increments DataVersion in the user_data.json file|
 |.|||
 |Returns:|||
@@ -174,7 +174,7 @@ call_action (service, device, arguments, device)
 |service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
 |action|string|eg "SetTarget"|
 |arguments|table|eg \{newTargetValue = level}|
-|device|string or integer||
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |error|integer||
@@ -219,7 +219,7 @@ call_timer (function_name, type, argument_for_function, thread)
 |argument_for_function|string|Multiple arguments need to be serialiased|
 |.|||
 |Returns:|||
-|result|number|0 on success|
+|result|integer|0 on success|
 
 |Type value|Timer|
 |---|---|
@@ -253,7 +253,7 @@ ip_set (value, device)
 |---|---|---|
 |Arguments:|||
 |value|string| eg 192.168.1.1|
-|device|string or integer|"49"|
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |Nil|||
@@ -314,7 +314,7 @@ mac_set (value, device)
 |---|---|---|
 |Arguments:|||
 |value|string| eg 2D:EE:91:87:46:A3|
-|device|string or integer|49|
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |Nil|||
@@ -355,7 +355,7 @@ set_failure ()
 |---|---|---|
 |Arguments:|||
 |value|integer|0 is OK, 1 is not OK|
-|device|string or integer|49|
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |Nil|||
@@ -375,7 +375,7 @@ set_failure ()
 |---|---|---|
 |Arguments:|||
 |value|integer|milliseconds|
-|device|string or integer|49|
+|device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
 |Nil|||
@@ -397,7 +397,7 @@ sunrise ()
 |nil|||
 |.|||
 |Returns:|||
-|next_sunrise|integer|unix time stamp|
+|next_sunrise|integer|UNIX time stamp|
 
 Example:
 ```lua
@@ -413,21 +413,72 @@ sunset ()
 |nil|||
 |.|||
 |Returns:|||
-|next_sunrise|integer|unix time stamp|
+|next_sunrise|integer|UNIX time stamp|
 
 Example:
 ```lua
 local next_sunset = luup.sunset ()
 ```
 
- ## task
+## task
 task ()
 
- ## variable_get
-variable_get ()
+## variable_get
+variable_get (service, variable_name, device)
 
- ## variable_set
-variable_set ()
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
+|variable_name|string||
+|device|string or integer|String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|variable value|string||
+|time|integer|UNIX time stamp|
 
- ## variable_watch
-variable_watch ()
+Example:
+```lua
+local lightStatus, timeStamp = luup.variable_get ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+```
+
+## variable_set
+variable_set (service, variable_name, variable_value, device)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
+|variable_name|string||
+|variable_value|string||
+|device|string or integer|String is the device's udn, else it's the device number.|
+|startup|boolean|Deprecated|
+|.|||
+|Returns:|||
+|nil|||
+
+Example:
+```lua
+luup.variable_set ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+```
+
+## variable_watch
+variable_watch (function_name, service, variable_name, device)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|function_name|string|Called when the variable changes.|
+|service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
+|variable_name|string||
+|device|string or integer|String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|nil|||
+
+Example:
+```lua
+luup.variable_watch ("lightSwitchOperated","urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+```
+
+
