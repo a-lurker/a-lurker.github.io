@@ -15,7 +15,7 @@ The developement of the Vera software and hardware slowly came to a standstill. 
 - Courtesy of [@amg0](https://github.com/amg0/ALTUI), a nice Alternative User Interface "AltUI"
 - Fast
 - MQTT with built in broker
-- UDP to MQTT bridge
+- UDP to MQTT bridge
 - Built in support for and via MQTT:
   * [ZigBee](https://www.zigbee2mqtt.io/)
   * Shelley
