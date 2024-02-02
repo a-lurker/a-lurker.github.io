@@ -401,7 +401,7 @@ sunrise ()
 
 Example:
 ```lua
-local next_sunrise = luup.sunrise ()
+local next_sunrise = luup.sunrise ()
 ```
 
 ## sunset
@@ -417,7 +417,7 @@ sunset ()
 
 Example:
 ```lua
-local next_sunset = luup.sunset ()
+local next_sunset = luup.sunset ()
 ```
 
 ## task
@@ -478,7 +478,7 @@ variable_watch (function_name, service, variable_name, device)
 
 Example:
 ```lua
-luup.variable_watch ("lightSwitchOperated","urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+luup.variable_watch ("lightSwitchOperated","urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
 
