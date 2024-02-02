@@ -40,24 +40,26 @@ end
 
 local numbersInfo, stringsInfo, functionsInfo, tables = getLuupInfo(luup)
 
-print('Numbers:\n'..numbersInfo..'\n\nStrings:\n'..stringsInfo..'\n\nfunctions:\n'..functionsInfo)
-print('\nTables:\n'..pretty(tables))
+print('numbers:\n'..numbersInfo..'\n\nstrings:\n'..stringsInfo..'\n\nfunctions:\n'..functionsInfo)
+print('\ntables:\n'..pretty(tables))
 
 return true
 ```
 
 Which produces:
 
-```lua
-Numbers:
+numbers:
+```text
 latitude
 longitude
 pk_accesspoint
 version_branch
 version_major
 version_minor
+```
 
-Strings:
+strings:
+```text
 city
 event_server
 event_server_backup
@@ -66,8 +68,10 @@ ra_server
 ra_server_backup
 timezone
 version
+```
 
 functions:
+```text
 attr_get
 attr_set
 call_action
@@ -94,9 +98,19 @@ task
 variable_get
 variable_set
 variable_watch
+```
 
-Tables:
-{"chdev","devices","inet","io","ir","job","remotes","rooms","scenes"}
+tables:
+```text
+{"chdev",
+"devices",
+"inet",
+"io",
+"ir",
+"job",
+"remotes",
+"rooms",
+"scenes"}
 ```
 
 # Functions, luup.function_name:
