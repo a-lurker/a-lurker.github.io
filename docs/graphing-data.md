@@ -1,6 +1,9 @@
 # Graphing data
 openLuup provides a variety of ways to graph data.
 
+## Grafana
+openLuup includes a Grafana Data Source API.
+
 ## Influx
 Set the server address.
 
