@@ -30,7 +30,7 @@ Run the file using the command line:
 When successful, the script produces console output like this:
 
 ```text
-# lua5.1 install.lua
+# lua install.lua
 openLuup_install 2016.06.08 @akbooer
 getting latest openLuup version tar file from GitHub...
 un-zipping download files...
