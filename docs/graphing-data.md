@@ -5,6 +5,7 @@ openLuup provides a variety of ways to graph data.
 Set the server address.
 
 ```lua
+-- place this line in in your startup code
 luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
@@ -12,12 +13,14 @@ luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 Set the server address.
 
 ```lua
+-- place this line in in your startup code
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 ```
 
 ## Data historian
 Set up the directory.
 ```lua
+-- place this line in in your startup code
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
@@ -36,7 +39,7 @@ A quick chart of cached data.
 Refer to page /home/cache.
 
 ## AltUI
-AltUi allows for any selected variable to be watched and pushed to:
+AltUI allows for any selected variable to be watched and pushed to:
 
 - datayours
 - emoncms
