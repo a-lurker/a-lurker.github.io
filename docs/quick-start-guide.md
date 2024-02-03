@@ -44,7 +44,9 @@ visit http://172.16.42.131:3480 to start using the system
 #
 ```
 
-and browsing the reported URL http://172.16.42.131:3480 will take you to the AltUI interface and show two devices: openLuup and AltUI. From here on, the interface can be used to configure the system.
+and browsing the **reported URL** http://172.16.42.131:3480 will take you to the AltUI interface and show two devices: openLuup and AltUI. From here on, the interface can be used to configure the system.
+
+Access the console at: http://172.16.42.131:3480/console
 
 ## Persist openLuup
 Setup a systemd service to start up openLuup at boot time. Refer to the following.
