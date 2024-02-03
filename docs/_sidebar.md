@@ -1,6 +1,6 @@
 - Getting started
 
-  - (Quick start guide)[quick-start-guide.md]
+  - [Quick start guide](quick-start-guide.md)
   - [openluup](openluup.md)
 
 - Customisation
