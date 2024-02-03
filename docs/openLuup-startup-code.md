@@ -1,5 +1,5 @@
-# openLuup start up code
-The openLuup code is used to set up a variety of information that may be required by different programs.
+# openLuup startup code
+The openLuup startup code is used to setup a variety of information that may be required by different programs.
 
 ## Defaults
 These are always in the startup code and are pretty self explanatory.
@@ -8,15 +8,17 @@ These are always in the startup code and are pretty self explanatory.
 -- You can personalise the installation by changing these attributes,
 -- which are persistent and may be removed from the Startup after a reload.
 local attr = luup.attr_set
+
 -- Geographical location
 attr ("City_description", "Greenwich")
 attr ("Country_description", "England")
 attr ("Region_description", "Europe")
 attr ("latitude", "51.4934")
 attr ("longitude", "0.0098")
+
 -- other parameters
 attr ("TemperatureFormat", "C")
-attr ("PK_AccessPoint", "88800000")
+attr ("PK_AccessPoint", "88800000")  -- required by Vera only
 attr ("currency", "£")
 attr ("date_format", "dd/mm/yy")
 attr ("model", "Apple MAC")
@@ -28,7 +30,7 @@ luup.log "startup code completed"
 ```
 
 ## Change the log file defaults
-Taylor the log file.
+Tailor the log file.
 
 ```lua
 -- path to log file: default is LuaUPnP.log
@@ -101,8 +103,6 @@ luup.attr_set ("openLuup.MQTT.Port", 1883)    -- choose any free port, you might
 openLuup publishes all of its variables and device status. The latter as a json block. The publishing can be turned on and off with these attributes. They both default to on.
 
 ```lua
-luup.attr_set ("openLuup.MQTT.Port", 1883)
-
 luup.attr_set ("openLuup.MQTT.PublishVariableUpdates", true) -- publish every variable update
 
 luup.attr_set ("openLuup.MQTT.PublishDeviceStatus", 2)       -- publish a single device status every N seconds (0 = never)
@@ -127,8 +127,7 @@ luup.attr_set ("openLuup.Tasmota.Topic", "SENSOR, STATE, RESULT, LWT")
 Turn the debugging on.
 
 ```lua
-attr ("openLuup.MQTT.DEBUG", true)
-attr ("openLuup.HTTP.SelectWait", 0.5)
+luup.attr_set ("openLuup.MQTT.DEBUG", true)
 ```
 
 
@@ -136,7 +135,7 @@ attr ("openLuup.HTTP.SelectWait", 0.5)
 While accessing openLuup via wireguard or similar, over world wide distances: You may get timeouts. Fine tune this value to allow the internet to keep up. Time is in fractions of a second.
 
 ```lua
-attr ("openLuup.HTTP.SelectWait", 0.5)
+luup.attr_set ("openLuup.HTTP.SelectWait", 0.5)
 ```
 
 ## Your own start up code
