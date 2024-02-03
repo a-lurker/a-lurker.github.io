@@ -43,6 +43,12 @@ luup.attr_set ("openLuup.Logfile.Lines", 1000)
 luup.attr_set ("openLuup.Logfile.Versions", 3)
 ```
 
+## User data update period
+```lua
+-- checkpoint every 60 minutes
+luup.attr_set ("openLuup.UserData.Checkpoint", 60)
+```
+
 ## Consolidate scene code
 In Vera, each scene contains code to run, when the scene is triggered. With lots of scenes this become unmanageable as you end up with heaps of little code snippets hidden in the various scenes.
 
@@ -70,9 +76,10 @@ Set up the directory.
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
-## Influx IP address
-Using Influx? Set the server address here.
+## Using Graphite or Influx databases?
+Set the server addresses.
 ```lua
+luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
