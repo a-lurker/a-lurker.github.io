@@ -4,6 +4,7 @@
 
 - Customisation
 
+  - [openLuup startup attributes](openLuup-startup-code.md)
   - [List of Plugins](plugins-list.md)
 
 - Guide
