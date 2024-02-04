@@ -1,62 +1,18 @@
+# Conditional Scene Execution: Some Examples
+
 The following is courtesy of Rex Beckett on the Vera forum and has been edited throughout. See this link for the original information:
 
 https://community.ezlo.com/t/conditional-scene-execution-some-examples/178331/1
 
----
-# Conditional Scene Execution: Some Examples
 RexBeckett:
 
 One of the most frequent questions on this forum is How do I stop my scene running when… This has been asked and answered for many different types of condition and diligent searching will often find you a solution. To help newcomers to Vera, I am posting a few of the most common scenarios in this thread.
 
 The mechanism for preventing a scene running is simple: You insert Luup code into the scene that returns false if you want the scene blocked or true if you want to allow it to run. You can insert the code in a Trigger’s Luup event to allow or block only that trigger. You can also insert the code into the scene’s main LUUP tab where it will allow or block all triggers and manual operation. You can use a combination of both types for more complex scenarios. UI7 does not currently allow code to be attached to individual triggers so only the main Luup Code tab may be used.
 
----
-# Examples list:
-RexBeckett:
+Examples follow:
 
-[Day or Night Conditions](Day-or-Night-Conditions.md)
-
-[Z-Wave and Virtual Switches](z-wave-and-virtual-switches.md)
-
-[Time Period](time-period.md)
-
-[Temperature Range](temperature-range.md)
-
-[Humidity Range](humidity-range.md)
-
-[Light Level](
-light-level.md)
-
-[VariableContainer](variable-container.md)
-
-[Day Range](day-range.md)
-
-[Date Range](date-range.md)
-
-[Multiple Conditions](multiple-conditions.md)
-
-[Using Functions](using-functions.md)
-
-[Multiple Triggers](multiple-triggers.md)
-
-[Time Window](time-window.md)
-
-[Service IDs, Variables and Actions](service-ids-variables-and-actions.md)
-
-[Delayed Actions](delayed-actions.md)
-
-[Delayed Actions - Passing a Serialized Table](delayed-actions-passing-a-serialized-table.md)
-
-[Debugging Lua Code - kwikLog](debugging-lua-code-kwiklog.md)
-
-[Run Scene when a Variable Changes](run-scene-when-a-variable-changes.md)
-
-[Finding the Correct Service ID]()
-
-[Testing Lua Code - LuaTest]()
-
----
-# Day or Night conditions
+## Day or Night conditions
 RexBeckett:
 
 To allow a scene to run only at night:
@@ -88,8 +44,7 @@ local status = luup.variable_get("urn:rts-services-com:serviceId:DayTime","Statu
 return ((status == "1") == allow)
 ```
 
----
-# Z-Wave and Virtual Switches
+## Z-Wave and Virtual Switches
 RexBeckett:
 
 We often want to allow or block scenes depending on the state of a Z-Wave switch (E.g. a light is on) or a VirtualSwitch (e.g. Home/Away). The VirtualSwitch (VS) plugin is very useful as a means of controlling scenes. You can create several different VS devices to signify various states of your home. E.g. Home/Away, OnVacation, HaveGuests, etc. VS devices can be set manually through the UI, by scenes or with other plugins.
@@ -123,8 +78,7 @@ local status = luup.variable_get("urn:dcineco-com:serviceId:MSwitch1","Status"..
 return ((status == "1") == allow)
 ```
 
----
-# Time Period
+## Time Period
 RexBeckett:
 
 We frequently want to control the time periods during which a scene may run. You would probably prefer that your bedroom light did not come on in the middle of the night when you are clocked by the motion-sensor on your way to the bathroom. ;D
@@ -184,8 +138,7 @@ else
 end
 ```
 
----
-# Temperature Range
+## Temperature Range
 RexBeckett:
 
 This code will enable you to set a range of temperatures within which your scene will, or will not, be run. Set tLow and tHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current temperature is within the specified range.
@@ -201,8 +154,7 @@ local tCurrent = tonumber((luup.variable_get("urn:upnp-org:serviceId:Temperature
 return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow)
 ```
 
----
-# Humidity Range
+## Humidity Range
 RexBeckett:
 
 This code will enable you to set a range of humidity within which your scene will, or will not, be run. Set hLow and hHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current humidity level is within the specified range.
@@ -217,8 +169,7 @@ local hCurrent = tonumber((luup.variable_get("urn:micasaverde-com:serviceId:Humi
 return (((hCurrent >= hLow) and (hCurrent <= hHigh)) == allow)
 ```
 
----
-# Light Level
+## Light Level
 RexBeckett:
 
 This code will enable you to set a range of light level within which your scene will, or will not, be run. Set lLow and lHigh to define the range. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current light level is within the specified range.
@@ -234,8 +185,7 @@ local lCurrent = tonumber((luup.variable_get("urn:micasaverde-com:serviceId:Ligh
 return (((lCurrent >= lLow) and (lCurrent <= lHigh)) == allow)
 ```
 
----
-# VariableContainer
+## VariableContainer
 RexBeckett:
 
 The VariableContainer (VC) plugin provides a convenient way in which values may be entered and changed without requiring a Vera restart. It also provides a form of scratchpad that can be used to convey values from one scene or plugin to another.
@@ -281,8 +231,7 @@ else
     return (((mNow >= mStart) or (mNow <= mEnd)) == allow) end
 ```
 
----
-# Day Range
+## Day Range
 RexBeckett:
 
 This code will enable you to set a range of days during which your scene will, or will not, be run. Set dFirst and dLast to define the range. These are day numbers (1-7) where 1 is Sunday. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current day is within the specified range.
@@ -302,8 +251,7 @@ else
 end
 ```
 
----
-# Date Range
+## Date Range
 RexBeckett:
 
 This code will enable you to set a range of dates during which your scene will, or will not, be run. Set mdStart and mdEnd to define the range. These are dates in the form of MM/DD (in deference to our US members). The included period may span the change of year if required. As with previous generic examples, the variable allow determines whether to allow or block the scene when the current date is within the specified range.
@@ -349,8 +297,7 @@ local tCurrent = tonumber((luup.variable_get("urn:upnp-org:serviceId:Temperature
 return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow) and isDay
 ```
 
----
-# Multiple Conditions
+## Multiple Conditions
 RexBeckett:
 
 You can combine multiple conditions in scene or trigger Luup by converting each piece of code into a Lua function. Then you can combine the results of each test in a single return statement using and/or operators.
@@ -403,8 +350,7 @@ end
 return checkTime() and checkDay()
 ```
 
----
-# Using Functions
+## Using Functions
 RexBeckett:
 
 I showed in Multiple Conditions 1 how a code chunk could be converted to a function. With small adjustments, the function call can pass the parameters to be used for the test. Now a single piece of code can be used to test several devices. The function code can even be added to your Startup Lua so it may be called from any scene. In the following examples, I changed the original lines that set the parameters to comments (with --) as a reminder of what each parameter means.
@@ -451,8 +397,7 @@ Adding functions to Startup Lua
 
 Select the APPS tab, click on Develop Apps and select Edit Startup Lua. Add your functions to the end of the existing code and click GO. Now click on Vera’s Reload button to restart the luup engine. Your functions should now be available to the luup in any scene.
 
----
-# Multiple Triggers
+## Multiple Triggers
 RexBeckett:
 
 Sometimes we want to have several different events or schedules result in essentially the same action but with different settings. An example would be setting different temperature setpoints or dimmer levels depending and time schedules or any of the conditions in the previous examples. The obvious way to do this is with several scenes but there is another way. We can use a global variable to transport our required settings from Trigger Luup event to the main scene LUUP.
@@ -522,8 +467,7 @@ setTemp = nil
 Version 1 of the Main scene LUUP will do nothing if run from the UI because, if a trigger did not occur, setTemp will be nil. Version 2, if run from the UI, will set the temperature setpoint to 20.
 16 days later
 
----
-# Time Window
+## Time Window
 RexBeckett:
 
 There were two requests for this type of scene condition in the last 24 hours so it must be worth posting here. The objective is to allow or prevent a scene executing when triggers occur in a short time period (window).
@@ -559,8 +503,7 @@ local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
 return (((tNow - tLastOn) <= twSecs) == allow)
 ```
 
----
-# Service IDs, Variables and Actions
+## Service IDs, Variables and Actions
 RexBeckett:
 
 One of the most frequent problems we see in requests for help with Lua code, is errors in Service IDs and variable or parameter names in luup function calls. These errors can be tricky to find. Even one character in the wrong case will prevent the call working correctly: A luup.variable_get(…) will return a nil instead of the expected value; A luup.call_action(…) may do absolutely nothing.
@@ -688,8 +631,7 @@ local itsday = luup.variable_get("urn:rts-services-com:serviceId:DayTime", "Stat
 luup.variable_set("urn:rts-services-com:serviceId:DayTime", "Status", "1", dID)
 ```
 
----
-# Delayed Actions
+## Delayed Actions
 RexBeckett:
 
 Another favourite forum question concerns using delays in scene Lua. It is tempting to do this with luup.sleep(milliseconds) but this can lead to problems. While luup.sleep(…) is executing, other Vera events can be blocked. A peak of activity at this point can cause a Vera restart. This is one possible cause of unexplained restarts.
@@ -778,8 +720,7 @@ Parameters may also be passed as a serialized table. See Passing a Serialized Ta
 
 I hope some of these examples will help to point the way to a solution for your particular requirements. If not, I recommend taking a look at the Program Logic Event Generator (PLEG) plugin.
 
----
-# Delayed Actions - Passing a Serialized Table
+## Delayed Actions - Passing a Serialized Table
 RexBeckett:
 
 As explained in an earlier post, the optional parameter passed by luup.call_delay(…) is a single string. If you need to pass several parameters to the called function, a Lua table can be serialized into that string and recreated when the called function executes.
@@ -855,8 +796,7 @@ function delayDim(parms)
 end
 ```
 
----
-# Debugging Lua Code - kwikLog
+## Debugging Lua Code - kwikLog
 RexBeckett:
 
 Debugging Lua code in scenes can be very frustrating. When something doesn’t work as you expected, you need to be able to see which parts of your code are being executed and, often, the value of key variables. Vera provides luup.log(…) to help with this but it is not always easy to find your log entries in LuaUPnP.log with all the other activity there.
@@ -925,8 +865,7 @@ kwikLog("Next Sunset: " … sstime)
 
 Enter /kwikLog.txt in a browser window to see if your location data is correct. Replace with the IP address of your Vera (without the <>).
 
----
-# Running a scene when a variable changes
+## Running a scene when a variable changes
 RexBeckett:
 
 There have been several recent posts on this subject so I think it is worth including here. The issue is that normal scene triggers that include conditions, like temperature is lower than 18, will fire when the temperature drops below 18 but will not fire again unless it rises to or above 18 and then drops below it again.
@@ -986,8 +925,7 @@ luup.call_delay("setWatch",30)
 
 The last part of this code causes the setWatch function to be run 30 seconds after Vera restarts. This is to allow all devices to have completed their initialization.
 
----
-# Finding the Correct Service ID
+## Finding the Correct Service ID
 RexBeckett:
 
 First adventures into using Lua code frequently fail due to the use of incorrect Service IDs in luup.variable_get(…), luup.variable_set(…) and luup.call_action(…) calls. A common error is to use the Device-type instead of the Service ID. Tip: A Service ID string will contain the word serviceId and will not contain the words schemas or device.
@@ -996,25 +934,25 @@ I listed some of the common ones in Service IDs, Variables and Actions 1. It is 
 
 One way to see the Service ID in a copy/paste-able form is to enter this command in your browser - replacing with the IP address of your Vera (without the <>):
 
-```lua
+```html
 http://<veraip>:3480/data_request?id=status&output_format=xml
 ```
 
 This will list every variable for all of your devices so you will need to scroll down the list until you find the one you want. You can also get the information for a particular device by using this - replacing 123 with the device number:
 
-```lua
+```html
 http://<veraip>:3480/data_request?id=status&output_format=xml&DeviceNum=123
 ```
 
 To see all the actions available for your devices, enter this:
 
-```lua
+```html
 http://<veraip>:3480/data_request?id=invoke
 ```
 
 or, for a single device:
 
-```lua
+```html
 http://<veraip>:3480/data_request?id=invoke&DeviceNum=123
 ```
 
@@ -1022,8 +960,7 @@ Note that not all devices will actually implement all the available actions. The
 
 If you would prefer a less-cluttered list, you could use LuaTest which has buttons to display Variables, Values, Actions and individual device Status.
 
----
-# Testing Lua Code - LuaTest
+## Testing Lua Code - LuaTest
 RexBeckett:
 
 LuaTest is Lua code designed to  faciltate debugging your own code. See the forum discussion here:
