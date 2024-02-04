@@ -1,106 +1,6 @@
-## openLuup: User Guide - ver 2020.05.12 @akbooer
+# openLuup: User Guide - ver 2020.05.12 @akbooer
 
-
-### Contents
-
-### Overview
-
-### 2020, Release x.xx (v20xx.xx)
-
-### Installation
-1. Lua installation
-2. openLuup Installation
-3. Making openLuup run at system boot time
-4. Linking to Vera
-
-### Backing up the system
-
-### More about VeraBridge
-1. Bridging to multiple Veras
-2. Mirroring individual device variables from openLuup to Vera
-3. Synchronising House Mode
-
-Other configuration variables
-
-### The Data Historian
-
-### The user_data.json file
-
-### More about the port 3480 HTTP server
-1. File Access
-2. index.html Files
-3. CGI processing
-
-### Something about openLuup log files
-
-### More about Scenes
-1. VeraBridge and Remote Scenes
-2. Porting Vera scenes to openLuup
-3. Scene Finalisers – Running Lua Code after Individual Scene Execution
-4. Scene Prolog and Epilog Lua code – Global Functions
-
-### Appendix: Starting openLuup at system boot time
-
-1. systemctl with /etc/systemd/system/openluup.service
-
-2. /etc/init.d/openLuup
-
-3. /etc/rc.local
-
----
-
-### Appendix: Configuring key openLuup parameters at Startup
-
-### Appendix: Directory Structure and Additional Files
-1. Vera & openLuup directory structures and ancillary files
-2. /usr/bin/GetNetworkState.sh and /etc/cmh/ui
-3. openLuup_reload.bat for Windows
-4. code for /usr/bin/GetNetworkState.sh
-
-### Appendix: openLuup SMTP and POP3 (eMail) servers
-1. SMTP server
-
-2. Testing the SMTP server
-
-3. POP3 server
-
-### Appendix: Using Cameras with openLuup
-
-1. I_openLuupCamera1.xml implementation file
-
-2. Configuration
-
-### Appendix: openLuup – Databases and Data Visualisation
-
-1. InfluxDB
-
-2. DataYours / Graphite
-
-### Appendix: Sending and receiving UDP datagrams
-
-### Appendix: openLuup plugin Actions and Variables
-
-1. House Mode related actions and variables
-
-2. File Management actions and variables
-
-3. AltUI-related variables
-
-4. System Status Variables
-
-### Appendix: Undocumented features of Luup
-
-### Appendix: Unimplemented features of openLuup
-1. unimplemented luup API calls
-2. unimplemented HTTP requests
-
-### Appendix: Differences between openLuup and Vera / MiOS
-
-1. Features of Vera / MiOS not in openLuup
-2. Features of openLuup not in Vera / MiOS
-
----
-# Overview
+## Overview
 
 openLuup is an environment which supports the running of some MiOS (Vera) plugins on generic Unix systems (or, indeed, Windows systems.) Processors such as Raspberry Pi and BeagleBone Black are ideal for running this environment, although it can also run on Apple Mac, Microsoft Windows PCs, anything, in fact, which can run Lua code (most things can.) The intention is to offload processing (cpu and memory use) from a running Vera to a remote machine to increase system reliability.
 
@@ -230,7 +130,7 @@ https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 Run the file using the command line:
 
 ```text
-# lua5.1 openLuup_install.lua
+lua openLuup_install.lua
 ```
 
 If successful, the script produces console output like this:
@@ -727,7 +627,7 @@ This assumes you installed openLuup at: /etc/cmh-ludl
 
 Create a bash script to run openLuup in the background:
 
-```bash
+```text
 $ sudo nano /etc/cmh-ludl/run_openLuup.sh
 ```
 
@@ -746,7 +646,7 @@ $ sudo chmod +x run_openLuup.sh
 
 Next create the systemd service for openLuup setting it up to wait for network before starting
 
-```bash
+```text
 $ sudo nano /etc/systemd/system/openluup.service
 ```
 
@@ -1044,16 +944,12 @@ echo -n 172.16.42.88
 
 ...with the IP address appropriately set (manually) …
 
-or a more sophisticated approach using a Lua script to return the result (automatic) which is
-described here:
-
-http://forums.coronalabs.com/topic/21105-found-undocumented-way-to-get-your-devices-ipaddress-from-lua-socket/
-
+or a more sophisticated approach using a Lua script to return the result.
 ```lua
 #! /usr/bin/env lua
 
 -- discover main IP address of machine and write to standard output
--- http://forums.coronalabs.com/topic/21105-found-undocumented-way-to-get-yourdevices-
+-- dead link: http://forums.coronalabs.com/topic/21105-found-undocumented-way-to-get-yourdevices-
 -- ip-address-from-lua-socket/
 
 local socket = require "socket"
@@ -1474,7 +1370,7 @@ Here’s what I’ve found - if you know more, let me know.
 
 - **urn:micasaverde-com:serviceId:HaDevice1, HideDeleteButton** – according to @reneboer:
 
->>"If you set that to 1 on UI7 it will not show the delete button at the bottom of the device Control Panel. I now use this to hide that on the child devices that are under full control of the parent device, including proper deletion."
+>"If you set that to 1 on UI7 it will not show the delete button at the bottom of the device Control Panel. I now use this to hide that on the child devices that are under full control of the parent device, including proper deletion."
 
 - **The ordering of the files tag and the functions tag matters** – in implementation files, they are concatenated in that order and it matters to the scope of local variables defined there (thanks to @logread and @cybrmage for that nugget.)
 
