@@ -563,7 +563,7 @@ tables:
 ```
 
 # Subgroups
-The table above indicate further sub groups. We can examin each one using the example. Note "luup.chdev".
+The table above indicate further sub groups. We can examine each one using the example. Note "luup.chdev".
 ```
 local numbersInfo, stringsInfo, functionsInfo, tables = getLuupInfo(luup.chdev)lua
 ```
@@ -575,6 +575,10 @@ functions:
    append
    start
    sync
+
+
+luup.devices
+   tables = table of device ids
 
 
 luup.inet
@@ -612,5 +616,5 @@ luup.rooms
 
 
 luup.devices
-   tables = table of room devices ids
+   tables = table of scene ids
 ```
