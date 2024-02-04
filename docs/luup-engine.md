@@ -577,12 +577,12 @@ functions:
    sync
 
 
-luup.inet
+luup.inet
 functions:
    wget
 
 
-luup.io
+luup.io
 functions:
    intercept
    is_connected
@@ -591,19 +591,19 @@ functions:
    write
 
 
-luup.ir
+luup.ir
 functions:
    pronto_to_gc100
 
 
-luup.job
+luup.job
 functions:
    set
    setting
    status
 
 
-luup.remotes
+luup.remotes
    nil
 
 
@@ -612,5 +612,5 @@ luup.rooms
 
 
 luup.devices
-   tables = table of room devices ids
+   tables = table of room devices ids
 ```
