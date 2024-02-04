@@ -1,9 +1,6 @@
 # Graphing data
 openLuup provides a variety of ways to graph data.
 
-## Grafana
-openLuup includes a Grafana Data Source API.
-
 ## Influx
 Set the server address.
 
@@ -12,7 +9,10 @@ Set the server address.
 luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
-## Graphite
+## Grafana
+openLuup includes a Grafana Data Source API.
+
+### Graphite Carbon databases
 Set the server address.
 
 ```lua
@@ -20,8 +20,8 @@ Set the server address.
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 ```
 
-## Whisper
-TBA
+### Whisper
+Databse
 
 ## Data historian
 Set up the directory.
