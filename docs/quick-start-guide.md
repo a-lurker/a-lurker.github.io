@@ -54,3 +54,12 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 [systemctl](https://a-lurker.github.io/docs/#/openluup?id=systemctl-with-etcsystemdsystemopenluupservice)
 
 That's it!!
+
+## WinSCP
+The latest RasPi OS releases don't set up a root login. But you can set up winSCP so it has root priviledges:
+
+In WinSCP:
+Select Site and Edit then select Advanced and navigate to Environment > SCP/Shell
+
+In the Shell pull down list: change from 'Default' to 'sudo -s' and save. Your account will log in using sudo privileges, letting you SCP files anywhere as root.
+
