@@ -38,7 +38,7 @@ attr_get (attribute, device)
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|attribute|string|eg id, name |
+|attribute|string|eg "id", "name", etc |
 |device|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
@@ -349,6 +349,24 @@ Example:
 local lightStatus, timeStamp = luup.variable_get ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
+**openLuup enhancement:**
+
+Two additional arguments:
+- start time as a UNIX timestamp
+- start time as a UNIX timestamp
+
+Returns a table, containing two nested tables, with the historical result as times and values. eg
+
+```lua
+local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33, {os.time()-3600, os.time()})
+print ("over the last hour", pretty {value = v2, times=t2})
+
+-- over the last hour 	{
+--   times = {1530023886,1530023926.5466,1530024526.9677,1530025127.1189,1530026327.7046,1530026929.0275,1530027486},
+--   value = {31.1,31,31.2,31.3,31.2,31.3,31.3}
+}
+```
+
 ### variable_set
 variable_set (service, variable_name, variable_value, device)
 
@@ -375,7 +393,7 @@ variable_watch (function_name, service, variable_name, device)
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|function_name|string|Called when the variable changes.|
+|function_name|string|The function is called when the variable changes.|
 |service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
 |variable_name|string||
 |device|string or integer|String is the device's udn, else it's the device number.|
@@ -397,7 +415,6 @@ print(luup.latitude))
 ```
 
 ### longitude
-Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
 Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
 ```lua
 print(luup.longitude))
@@ -445,6 +462,223 @@ UTC offset including DST.
 ```lua
 print(luup.version)
 -- shows "1.7.0"
+```
+
+
+## luup.chdev
+
+### append
+luup.chdev.append (
+device, 
+ptr, 
+id, 
+description, 
+device_type, 
+device_file_name, 
+implementation_file_name, 
+parameters, 
+embedded, 
+invisible
+)
+
+Existing children:
+- if mentioned - are updated. You can change their info.
+- if not mentioned - are deleted.
+
+Any new children are added (the typical scenario).
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|device|string|eg id of this parent|
+|ptr|C++ reference|eg pointer to all the children located by luup.chdev.start()|
+|id|string|The "altid" attribute. You decide what it's called.|
+|description|string|A name for the child. You decide what it's called.|
+|device_type|string|eg 'urn:schemas-upnp-org:device:BinaryLight:1'|
+|device_filename|string|eg 'D_BinaryLight1.xml'|
+|implementation_file_name|string| Use empty string, if implementation file is mentioned in the device file|
+|parameters|string|eg Set up child variable defaults. Easier to set to empty string and set up vars in child code.|
+|embeddend|boolean|eg If true children cannot be split between rooms|
+|invisible|boolean|optional - makes child invisible in the UI|
+|.|||
+|Returns:|||
+|nil|||
+
+
+Example:
+```lua
+
+local childDevices = luup.chdev.start(THIS_LUL_DEVICE)
+
+luup.chdev.append(
+    THIS_LUL_DEVICE,
+    childDevices,
+    'Group'..groupAddressStr,        -- altid
+    "C-Bus Group "..groupAddressStr, -- name
+    veraDevice,                      -- device type
+    veraFile,                        -- device filename
+    '',                              -- implementation filename
+    '',                              -- parameters
+    false)                           -- embedded
+
+```
+
+### start
+luup.chdev.start (device)
+
+Get a reference to the children info. Child data store may be empty or it may contain valid children.
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|device|string|eg id of this parent. String or integer. String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|ptr|C++ reference|eg pointer to all the children located by this function|
+
+
+Example:
+```lua
+local childDevices = luup.chdev.start(THIS_LUL_DEVICE)
+```
+
+### sync
+luup.chdev.sync (device)
+
+Tell the Luup engine that all the children have been set up. The luup engine will restart. If you code is problematic, you are now in danger of a loop of continual restarts.
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|device|string|eg id of this parent. String or integer. String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|nil|||
+
+Example:
+```lua
+-- childDevices from luup.chdev.start(THIS_LUL_DEVICE)
+luup.chdev.sync(THIS_LUL_DEVICE, childDevices)
+```
+
+Refer to `luup.chdev.append` where most of these parameters are set up.
+
+## luup.devices
+Table of devices by indexed by device id.
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|device_id|string or integer|String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|room_num|integer|The device is in this room|
+|device_type|string||
+|category_num|integer||
+|subcategory_num|integer||
+|device_num_parent|integer|If this a child, then this its parent. |
+|ip|string|ip address if relevant|
+|mac|string|mac address if relevant|
+|user|string|For authentication at ip address|
+|pass|string|For authentication at ip address|
+|id|string|AltID as seen in the UI - used to identify children|
+|embedded|boolean|If child - can't be detacjhed from its parent|
+|hidden|boolean|If true device is not shown in the UI|
+|invisible|boolean|If true device is completely isolated from the user|
+|description|string|Users descrption seen in the UI|
+|udn|string|udnn of the device, can be used instead of device id|
+
+```lua
+local ip_address = luup.devices[THIS_LUL_DEVICE].ip)
+```
+
+## luup.inet
+
+### luup.inet.wget
+
+wget(url, time_out, username, password)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|url|string||
+|time_out|string||
+|username|string||
+|password|string||
+|.|||
+|Returns:|||
+|status_code|||
+|msg|||
+|http_staus_code|||
+
+**openLuup enhancement:**
+luup.inet.wget() now supports Basic and Digest authentication,
+
+Username/Password parameters may be defined in either the wget() parameter list or embedded in the URL.
+
+## luup.io
+All these functions are deprecated. They are a complete waste of time, as they can be unbelievably slow. Use [luasocket](https://lunarmodules.github.io/luasocket/) instead.
+
+**Functions:**
+- luup.io.intercept
+- luup.io.is_connected
+- luup.io.open
+- luup.io.read
+- luup.io.write
+
+## luup.ir
+
+### luup.ir.pronto_to_gc100
+   
+This function is deprecated. Not particularly useful unless you have a [gc100](https://www.globalcache.com/). There are plugins that do this and more.
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|pronto code|string||
+|.|||
+|Returns:|||
+|gc100 IR code|string||
+
+```lua
+local gc100Code = luup.ir.pronto_to_gc100 (pronto_IR_code)
+```
+
+## luup.job
+
+### luup.job.set
+
+### luup.job.setting
+
+### luup.job.status
+
+
+## luup.remotes
+
+nil - not used
+
+## luup.rooms
+   strings = ordered list of room names
+
+```lua
+print ("The broken light is in room "..luup.rooms[66])
+```
+
+## luup.scenes
+   tables = table of scenes indexed by id
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|scene_id|integer||
+|.|||
+|Returns:|||
+|room_num|integer||
+|description|string||
+|hidden|boolean||
+
+```lua
+print ("Scene 21 is attached to room "..luup.scenes[21].room)
 ```
 
 ## Examining the Luup engine
@@ -563,7 +797,7 @@ tables:
 ```
 
 # Subgroups
-The table above indicate further sub groups. We can examine each one using the example. Note "luup.chdev".
+The table above indicate further sub groups. We can examine each one using the following example. See "luup.chdev" in this example.
 ```
 local numbersInfo, stringsInfo, functionsInfo, tables = getLuupInfo(luup.chdev)lua
 ```
@@ -615,6 +849,6 @@ luup.rooms
    strings = ordered list of room names indices
 
 
-luup.devices
-   tables = table of scene ids
+luup.scenes
+   tables = table of scenes indexed by id
 ```
