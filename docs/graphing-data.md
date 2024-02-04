@@ -20,7 +20,7 @@ Set the server address.
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 ```
 
-## Whisper
+## Whisper
 TBA
 
 ## Data historian
