@@ -388,7 +388,7 @@ Example:
 luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
-# Numbers
+## Numbers
 
 ### latitude
 Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
