@@ -1,7 +1,7 @@
 - Getting started
 
   - [Quick start guide](quick-start-guide.md)
-  - [openluup](openluup.md)
+  - [openluup - deep dive](openluup.md)
 
 - Customisation
 
