@@ -44,6 +44,7 @@ luup.attr_set ("openLuup.Logfile.Versions", 3)
 ```
 
 ## User data update period
+The user_data.json file holds the openLuup configuration and is updated regularly in order to retain your changes. It's also saved on openLuup shutdown.
 ```lua
 -- checkpoint every 60 minutes
 luup.attr_set ("openLuup.UserData.Checkpoint", 60)
@@ -107,7 +108,7 @@ luup.attr_set ("openLuup.MQTT.Port", 1883)    -- choose any free port, you might
 ```
 
 ## openLuup MQTT publishing
-openLuup publishes all of its variables and device status. The latter as a json block. The publishing can be turned on and off with these attributes. They both default to on.
+openLuup publishes all of its variables and device status. The latter as a json block. The publishing can be turned on and off with these attributes. They both default to false.
 
 ```lua
 luup.attr_set ("openLuup.MQTT.PublishVariableUpdates", true) -- publish every variable update
@@ -126,7 +127,6 @@ The prefix and topics for the Tasmota devices can be set. The default values are
 
 ```lua
 luup.attr_set ("openLuup.Tasmota.Prefix", "tele, tasmota/tele, stat")
-
 luup.attr_set ("openLuup.Tasmota.Topic", "SENSOR, STATE, RESULT, LWT")
 ```
 
@@ -136,7 +136,6 @@ Turn the debugging on.
 ```lua
 luup.attr_set ("openLuup.MQTT.DEBUG", true)
 ```
-
 
 ## openLuup remote access
 While accessing openLuup via wireguard or similar, over world wide distances: You may get timeouts. Fine tune this value to allow the internet to keep up. Time is in fractions of a second.
