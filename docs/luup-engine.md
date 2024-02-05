@@ -106,7 +106,7 @@ call_delay (function_name, seconds, argument_for_function, thread)
 
 Example:
 ```lua
-luup.call_delay ("lightOn", "3600", "color")
+luup.call_delay ("lightOn", "3600", "colorRed")
 ```
 
 ### call_timer
@@ -134,7 +134,7 @@ call_timer (function_name, type, time, days, argument_for_function)
 
 Example:
 ```lua
-luup.call_timer ("flashLight", 1, "5m", ,"color")
+luup.call_timer ("flashLight", 1, "5m", ,"colorBlue")
 ```
 
 ### create_device
@@ -469,15 +469,15 @@ print(luup.version)
 
 ### append
 luup.chdev.append (
-device, 
-ptr, 
-id, 
-description, 
-device_type, 
-device_file_name, 
-implementation_file_name, 
-parameters, 
-embedded, 
+device,
+ptr,
+id,
+description,
+device_type,
+device_file_name,
+implementation_file_name,
+parameters,
+embedded,
 invisible
 )
 
@@ -491,7 +491,7 @@ Any new children are added (the typical scenario).
 |---|---|---|
 |Arguments:|||
 |device|string|eg id of this parent|
-|ptr|C++ reference|eg pointer to all the children located by luup.chdev.start()|
+|ptr|C code reference|eg pointer to all the children located by luup.chdev.start()|
 |id|string|The "altid" attribute. You decide what it's called.|
 |description|string|A name for the child. You decide what it's called.|
 |device_type|string|eg 'urn:schemas-upnp-org:device:BinaryLight:1'|
@@ -534,7 +534,7 @@ Get a reference to the children info. Child data store may be empty or it may co
 |device|string|eg id of this parent. String or integer. String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
-|ptr|C++ reference|eg pointer to all the children located by this function|
+|ptr|C code reference|eg pointer to all the children located by this function|
 
 
 Example:
@@ -551,13 +551,14 @@ Tell the Luup engine that all the children have been set up. The luup engine wil
 |---|---|---|
 |Arguments:|||
 |device|string|eg id of this parent. String or integer. String is the device's udn, else it's the device number.|
+|ptr|C code reference|eg pointer to all the children located by the start function|
 |.|||
 |Returns:|||
 |nil|||
 
 Example:
 ```lua
--- childDevices from luup.chdev.start(THIS_LUL_DEVICE)
+-- childDevices value comes from executing luup.chdev.start(THIS_LUL_DEVICE)
 luup.chdev.sync(THIS_LUL_DEVICE, childDevices)
 ```
 
@@ -576,7 +577,7 @@ Table of devices by indexed by device id.
 |device_type|string||
 |category_num|integer||
 |subcategory_num|integer||
-|device_num_parent|integer|If this a child, then this its parent. |
+|device_num_parent|integer|If this is a child, then this its parent's id.|
 |ip|string|ip address if relevant|
 |mac|string|mac address if relevant|
 |user|string|For authentication at ip address|
@@ -586,7 +587,7 @@ Table of devices by indexed by device id.
 |hidden|boolean|If true device is not shown in the UI|
 |invisible|boolean|If true device is completely isolated from the user|
 |description|string|Users descrption seen in the UI|
-|udn|string|udnn of the device, can be used instead of device id|
+|udn|string|udn of the device, can be used instead of device id|
 
 ```lua
 local ip_address = luup.devices[THIS_LUL_DEVICE].ip)
@@ -629,7 +630,7 @@ All these functions are deprecated. They are a complete waste of time, as they c
 ## luup.ir
 
 ### luup.ir.pronto_to_gc100
-   
+
 This function is deprecated. Not particularly useful unless you have a [gc100](https://www.globalcache.com/). There are plugins that do this and more.
 
 |Identifier|Type|Comments|
@@ -648,23 +649,69 @@ local gc100Code = luup.ir.pronto_to_gc100 (pronto_IR_code)
 
 ### luup.job.set
 
+luup.job.set(job, setting, value)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|job|C code reference|eg pointer to the job's internal C code.
+|setting|string||
+|value|string||
+|.|||
+|Returns:|||
+|nil|||
+
 ### luup.job.setting
+
+luup.job.setting(job, setting)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|job|C code reference|eg pointer to the job's internal C code.
+|setting|string||
+|.|||
+|Returns:|||
+|value|string||
 
 ### luup.job.status
 
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|job_number|integer||
+|device|string|String or integer. String is the device's udn, else it's the device number.|
+|.|||
+|Returns:|||
+|job_status|integer|
+|notes|string|
 
-## luup.remotes
+|status|meaning|
+|---|---|
+|-1|job is nil|
+|0|waiting to start|
+|1|in progress|
+|2|error|
+|3|aborted|
+|4|done|
+|5|??|
+|6|??|
+|7|??|
+|8|??|
+
+
+## luup.remotes[]
 
 nil - not used
 
-## luup.rooms
+## luup.rooms[]
    strings = ordered list of room names
 
 ```lua
 print ("The broken light is in room "..luup.rooms[66])
 ```
 
-## luup.scenes
+## luup.scenes[]
    tables = table of scenes indexed by id
 
 |Identifier|Type|Comments|
@@ -678,7 +725,7 @@ print ("The broken light is in room "..luup.rooms[66])
 |hidden|boolean||
 
 ```lua
-print ("Scene 21 is attached to room "..luup.scenes[21].room)
+print ("Scene 21 is attached to room "..luup.scenes[20].room_num)
 ```
 
 ## Examining the Luup engine
@@ -796,7 +843,7 @@ tables:
 "scenes"}
 ```
 
-# Subgroups
+## Code subsections
 The table above indicate further sub groups. We can examine each one using the following example. See "luup.chdev" in this example.
 ```
 local numbersInfo, stringsInfo, functionsInfo, tables = getLuupInfo(luup.chdev)lua
