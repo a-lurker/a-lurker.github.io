@@ -638,7 +638,7 @@ luup.chdev.sync(THIS_LUL_DEVICE, childDevices)
 Refer to `luup.chdev.append` where most of these parameters are set up.
 
 ## luup.devices
-Table of devices by indexed by device id.
+Table of devices indexed by device id.
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -668,9 +668,9 @@ local ip_address = luup.devices[THIS_LUL_DEVICE].ip)
 
 ## luup.inet
 
-### luup.inet.wget
+### wget
 
-wget(url, time_out, username, password)
+luup.inet.wget(url, time_out, username, password)
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -702,14 +702,16 @@ All these functions are deprecated. They are a complete waste of time, as they c
 
 ## luup.ir
 
-### luup.ir.pronto_to_gc100
+### pronto_to_gc100
+
+luup.ir.pronto_to_gc100(pronto_code)
 
 This function is deprecated. Not particularly useful unless you have a [gc100](https://www.globalcache.com/). There are plugins that do this and more.
 
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|pronto code|string||
+|pronto_code|string||
 |.|||
 |Returns:|||
 |gc100 IR code|string||
@@ -720,7 +722,7 @@ local gc100Code = luup.ir.pronto_to_gc100 (pronto_IR_code)
 
 ## luup.job
 
-### luup.job.set
+### set
 
 luup.job.set(job, setting, value)
 
@@ -734,7 +736,7 @@ luup.job.set(job, setting, value)
 |Returns:|||
 |nil|||
 
-### luup.job.setting
+### setting
 
 luup.job.setting(job, setting)
 
@@ -747,7 +749,9 @@ luup.job.setting(job, setting)
 |Returns:|||
 |value|string||
 
-### luup.job.status
+### status
+
+luup.job.status(job_number, device)
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -802,7 +806,7 @@ print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
 ```
 
 ## openLuup enhancements
-These functions have enhanced
+These functions have been enhanced:
 - luup.variable_get
 - luup.register_handler
 
@@ -821,7 +825,7 @@ which are updated every two minutes.
 
 These calculations have always been done by openLuup to support scene times of sunrise/sunset, but are available for use (negating the need for a separate plugin, eg. Heliotrope.)
 
-There is a GetSolarCoords action which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location.)
+There is a GetSolarCoords action, which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location as set up in the startup code).
 
 ```lua
 luup.call_action ("solar", "GetSolarCoords", coords, 2)
@@ -829,7 +833,7 @@ luup.call_action ("solar", "GetSolarCoords", coords, 2)
 
 The defaults can be overloaded:
 ```lua
--- default to current time & location set up in startup ode
+-- default to current time & location set up in startup code. Not necessary. Illustrative only.
 local coords = {Epoch = '', Latitude = '', Longitude = ''}
 
 -- default to current time and specify location
