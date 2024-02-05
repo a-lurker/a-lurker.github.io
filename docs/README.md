@@ -6,7 +6,7 @@ Written by [akbooer](https://github.com/akbooer/openLuup).
 
 ## History
 
-The developement of the Vera software and hardware slowly came to a standstill. Regardless it was a great setup and was well supported. There was a need for it to continue, hence this open source replacement.
+The developement of the Vera software and hardware slowly came to a standstill. Regardless it is a great setup and well supported. There is a need for it to continue, hence this open source replacement.
 
 ## openLuup overview
 
@@ -20,7 +20,7 @@ The developement of the Vera software and hardware slowly came to a standstill. 
   * [ZigBee](https://www.zigbee2mqtt.io/)
   * Shelley
   * Tasmota
-- Plugin for Zwave using Zway
+- Plugin for Zwave using [Zway](https://z-wave.me/products/uzb/)
 - Email server
 - Console
 - Third party plugins of varying quality!
