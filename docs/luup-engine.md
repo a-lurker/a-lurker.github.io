@@ -237,9 +237,82 @@ print(luup.modelID())
 ```
 
 ### register_handler
-register_handler ()
 
-We love this function. It is extremely useful!
+Great function. It is very useful!
+
+register_handler (callback_handler_function_name, request_id)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|callback_handler_function_name|string|When the handler is hit this function is executed. The function will look at the passed in request and act accordingly.|
+|request_id|string|URL?id=thisParameter|
+|.|||
+|Returns:|||
+|Nil|||
+
+The callback handler is passed three variables as follows:
+
+|Identifier|Type|Comments|
+|---|---|---|
+|lul_request|string|This indicates what needs to be done with the associated parameters|
+|lul_parameters|table|All the stuff left in the url string after filtering out the request and the "output_format". Can be empty.|
+|lul_outputformat|string|output_format=xml, json, gpx, etc. All optional and you decide on the format abbreviation and act accordingly.|
+
+**openLuup enhancement:**
+Different proctocols can be regcognised and acted on accordingly.
+
+```lua
+luup.register_handler ("myHandler", "tcp:1234")                  -- incoming TCP connection on port 1234
+luup.register_handler ("myHandler", "udp:1234")                  -- incoming UDP -- " --
+luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
+luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
+luup.register_handler ("myHandler", "mqtt:My/Topic/Name")        -- MQTT
+```
+
+MQTT: One additional argument:
+- message number (integer)
+
+The MQTT callback handler is passed three variables as follows:
+
+|Identifier|Type|Comments|
+|---|---|---|
+|topic|string|MQTT topic|
+|message|table|Topic json payload - needs to be decoded|
+|messageNumber|integer|Matches the number in the registration of the handler|
+
+Example:
+```lua
+local PLUGIN_URL_ID = callmyplugin
+
+-- url = http://192.32.26.10/port_3480/data_request?id=callMyPlugin&fnc=getWebPage1
+
+function myPluginCallbackHandler (lul_request, lul_parameters, lul_outputformat)
+
+    debug('request is: '..tostring(lul_request))
+    for k,v in pairs(lul_parameters) do debug ('parameters are: '..tostring(k)..'='..tostring(v)) end
+    debug('outputformat is: '..tostring(lul_outputformat))
+
+    if not (lul_request:lower() == PLUGIN_URL_ID) then return end
+
+    -- set the parameters key and value to lower case
+    local lcParameters = {}
+    for k, v in pairs(lul_parameters) do lcParameters[k:lower()] = v:lower() end
+
+    -- output the intro web page?
+    if not lcParameters.fnc then return htmlIntroPage() end -- no 'fnc' parameter so do the intro
+
+    if (lcParameters.fnc == 'getwebpage1') then return getLog(lcParameters) end
+    if (lcParameters.fnc == 'getwebpage2') then return getZWInfo() end
+    if (lcParameters.fnc == 'getwebpage3') then return getZWDeviceInfo(lcParameters) end
+    if (lcParameters.fnc == 'getwebpage4') then return getIP() end
+
+    return 'Error', 'text/html'
+end
+
+    luup.register_handler ('myPluginCallbackHandler', callmyplugin)
+```
+
 
 ### reload
 reload ()
@@ -273,7 +346,7 @@ set_failure ()
 
 Example:
 ```lua
--- heart beat function indicates device at far end is off line
+-- heart beat function indicates device at far end is off line. We can't continue.
 luup.set_failure (1)
 ```
 
@@ -498,7 +571,7 @@ Any new children are added (the typical scenario).
 |device_filename|string|eg 'D_BinaryLight1.xml'|
 |implementation_file_name|string| Use empty string, if implementation file is mentioned in the device file|
 |parameters|string|eg Set up child variable defaults. Easier to set to empty string and set up vars in child code.|
-|embeddend|boolean|eg If true children cannot be split between rooms|
+|embedded|boolean|eg If true children cannot be split between rooms|
 |invisible|boolean|optional - makes child invisible in the UI|
 |.|||
 |Returns:|||
@@ -577,7 +650,7 @@ Table of devices by indexed by device id.
 |device_type|string||
 |category_num|integer||
 |subcategory_num|integer||
-|device_num_parent|integer|If this is a child, then this its parent's id.|
+|device_num_parent|integer|If this is a child, then this its parent's id.|
 |ip|string|ip address if relevant|
 |mac|string|mac address if relevant|
 |user|string|For authentication at ip address|
@@ -608,9 +681,9 @@ wget(url, time_out, username, password)
 |password|string||
 |.|||
 |Returns:|||
-|status_code|||
+|status_code||0 is success|
 |msg|||
-|http_staus_code|||
+|http_status_code|||
 
 **openLuup enhancement:**
 luup.inet.wget() now supports Basic and Digest authentication,
@@ -686,7 +759,7 @@ luup.job.setting(job, setting)
 |job_status|integer|
 |notes|string|
 
-|status|meaning|
+|job_status|meaning|
 |---|---|
 |-1|job is nil|
 |0|waiting to start|
@@ -725,7 +798,7 @@ print ("The broken light is in room "..luup.rooms[66])
 |hidden|boolean||
 
 ```lua
-print ("Scene 21 is attached to room "..luup.scenes[20].room_num)
+print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
 ```
 
 ## Examining the Luup engine
