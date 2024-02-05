@@ -238,7 +238,7 @@ print(luup.modelID())
 
 ### register_handler
 
-Great function. It is very useful!
+Great function. It's very useful!
 
 register_handler (callback_handler_function_name, request_id)
 
@@ -255,12 +255,12 @@ The callback handler is passed three variables as follows:
 
 |Identifier|Type|Comments|
 |---|---|---|
-|lul_request|string|This indicates what needs to be done with the associated parameters|
+|lul_request|string|This indicates what needs to be done with the associated URL parameters|
 |lul_parameters|table|All the stuff left in the url string after filtering out the request and the "output_format". Can be empty.|
 |lul_outputformat|string|output_format=xml, json, gpx, etc. All optional and you decide on the format abbreviation and act accordingly.|
 
 **openLuup enhancement:**
-Different proctocols can be regcognised and acted on accordingly.
+Different proctocols can be recognised and acted on accordingly.
 
 ```lua
 luup.register_handler ("myHandler", "tcp:1234")                  -- incoming TCP connection on port 1234
@@ -285,7 +285,7 @@ Example:
 ```lua
 local PLUGIN_URL_ID = callmyplugin
 
--- url = http://192.32.26.10/port_3480/data_request?id=callMyPlugin&fnc=getWebPage1
+-- url = http://192.32.26.10/port_3480/data_request?id=callMyPlugin&fnc=getWebPage1&output_format=notNeededThisTime
 
 function myPluginCallbackHandler (lul_request, lul_parameters, lul_outputformat)
 
@@ -800,6 +800,66 @@ print ("The broken light is in room "..luup.rooms[66])
 ```lua
 print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
 ```
+
+## openLuup enhancements
+These functions have enhanced
+- luup.variable_get
+- luup.register_handler
+
+In addition we have:
+
+### Solar functionality
+
+The openLuup plugin device has variables for solar:
+
+- Right Ascension (RA)
+- Declination (DEC)
+- Altitude (ALT)
+- Azimuth (AZ)
+
+which are updated every two minutes.
+
+These calculations have always been done by openLuup to support scene times of sunrise/sunset, but are available for use (negating the need for a separate plugin, eg. Heliotrope.)
+
+There is a GetSolarCoords action which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location.)
+
+```lua
+luup.call_action ("solar", "GetSolarCoords", coords, 2)
+```
+
+The defaults can be overloaded:
+```lua
+-- default to current time & location set up in startup ode
+local coords = {Epoch = '', Latitude = '', Longitude = ''}
+
+-- default to current time and specify location
+local coords = {Epoch = '', Longitude  = -0.0045417, Latitude = 51.4820845}
+```
+
+Example:
+```lua
+local openLuupID = 2 -- always the case
+
+-- default to current time and specify location
+local coords = {Epoch = '', Latitude = 51.4820845, Longitude = -0.0045417}
+
+luup.call_action ("solar", "GetSolarCoords", coords, openLuupID)
+
+-- read RA, DEC, ALT and AZ as needed
+local RA  = luup.variable_get("solar", "RA",  openLuupID)
+local DEC = luup.variable_get("solar", "DEC", openLuupID)
+local ALT = luup.variable_get("solar", "ALT", openLuupID)
+local AZ  = luup.variable_get("solar", "AZ",  openLuupID)
+
+-- all in degrees
+print (RA)
+print (DEC)
+print (ALT)
+print (AZ)
+
+```
+
+
 
 ## Examining the Luup engine
 
