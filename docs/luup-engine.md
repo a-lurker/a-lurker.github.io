@@ -426,7 +426,7 @@ Example:
 local lightStatus, timeStamp = luup.variable_get ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
-WARNING. If you do this you will get an error.
+WARNING. If you do this you will get an error:
 ```lua
 local temperature = tonumber(luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105))
 ERROR: [string "LuaTestCode2"]:1: bad argument #2 to 'tonumber' (base out of range)
@@ -457,7 +457,7 @@ local temperature = tonumber((luup.variable_get("urn:upnp-org:serviceId:Temperat
 
 Two additional arguments:
 - start time as a UNIX timestamp
-- start time as a UNIX timestamp
+- end   time as a UNIX timestamp
 
 Returns a table, containing two nested tables, with the historical result as times and values. eg
 
