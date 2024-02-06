@@ -426,6 +426,33 @@ Example:
 local lightStatus, timeStamp = luup.variable_get ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
+WARNING. If you do this you will get an error.
+```lua
+local temperature = tonumber(luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105))
+ERROR: [string "LuaTestCode2"]:1: bad argument #2 to 'tonumber' (base out of range)
+```
+
+Because variable_get() returns two variables and tonumber() accepts two variables. However the code is placing a timeStamp into the base variable of tonumber() like so:
+
+```lua
+        local s, ts =luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33)
+              |  |
+              ▼  ▼
+? = tonumber (s, base)
+```
+
+You can avoid this in one of two ways eg:
+
+```lua
+-- discard the timestamp
+local temperatureString = luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105)
+local temperature = tonumber(temperatureString)
+
+-- This works but as a coding style is somewhat unclear. Note the extra set of parentheses.
+local temperature = tonumber((luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105)))
+```
+
+
 **openLuup enhancement:**
 
 Two additional arguments:
