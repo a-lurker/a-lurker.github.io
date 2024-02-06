@@ -112,11 +112,10 @@ openLuup publishes all of its variables and device status. The latter as a json 
 
 ```lua
 luup.attr_set ("openLuup.MQTT.PublishVariableUpdates", true) -- publish every variable update
-
 luup.attr_set ("openLuup.MQTT.PublishDeviceStatus", 2)       -- publish a single device status every N seconds (0 = never)
 ```
 
-## UDP -> MQTT bridge
+## UDP ➔ MQTT bridge
 The bridge is always running and you can set the listening port here.
 
 ```lua
