@@ -1,4 +1,4 @@
-# Luup Engine
+# Luup Engine - details
 
 ## Functions
 
@@ -120,6 +120,7 @@ call_timer (function_name, type, time, days, argument_for_function)
 |time|string||
 |days|string||
 |argument_for_function|string|Multiple arguments need to be serialiased|
+|repeat|boolean|openLuup only. false: oneshot, true: timer repeats|
 |.|||
 |Returns:|||
 |result|integer|0 on success|
@@ -131,6 +132,9 @@ call_timer (function_name, type, time, days, argument_for_function)
 |3|Day of month|
 |4|Absolute|
 
+**openLuup enhancement:**
+
+In Vera, this call is one-shot and if you want repeating timers you have to call it again within the callback. In openLuup, there is an extra boolean parameter which, if true, reschedules the callback automatically. Important, if using this, NOT to call it again in the callback hander!
 
 Example:
 ```lua
@@ -563,8 +567,8 @@ Any new children are added (the typical scenario).
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|device|string|eg id of this parent|
-|ptr|C code reference|eg pointer to all the children located by luup.chdev.start()|
+|device|string|id of this parent|
+|ptr|C code reference|pointer to all the children located by luup.chdev.start()|
 |id|string|The "altid" attribute. You decide what it's called.|
 |description|string|A name for the child. You decide what it's called.|
 |device_type|string|eg 'urn:schemas-upnp-org:device:BinaryLight:1'|
@@ -686,7 +690,7 @@ luup.inet.wget(url, time_out, username, password)
 |http_status_code|||
 
 **openLuup enhancement:**
-luup.inet.wget() now supports Basic and Digest authentication,
+luup.inet.wget() now supports Basic and Digest authentication.
 
 Username/Password parameters may be defined in either the wget() parameter list or embedded in the URL.
 
@@ -806,9 +810,17 @@ print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
 ```
 
 ## openLuup enhancements
+
+### function enhancements
+
 These functions have been enhanced:
-- luup.variable_get
-- luup.register_handler
+
+|Function|Enhancement|
+|---|---|
+|luup.call_timer|Supports automatic timer repeat, rather than one shot only.|
+|luup.register_handler|Supports other protocols such as MQTT.|
+|luup.variable_get|Supports returning the historical time series of the variable.|
+|luup.inet.wget|Supports Basic and Digest authentication.|
 
 In addition we have:
 
