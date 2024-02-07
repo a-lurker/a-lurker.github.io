@@ -1,5 +1,10 @@
 # MQTT
-openLuup has built in support for MQTT:
+openLuup has built in support for MQTT.
+
+New to MQTT? Recommend making use of [mqtt explorer](http://mqtt-explorer.com/).
+
+## MQTT initialisation
+MQTT config such as username, passwords, etc are all set up in the [openLuup startup code](openLuup-startupcode.md).
 
 ## MQTT server
 This server provides Quality of Service (QoS) 0: At most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
@@ -27,60 +32,46 @@ luup.register_handler ("MyMQTThandler", "mqtt:My/Topic/Name")
 
 You can register any number of handlers to different topics, or a single handler to many topics. Currently only one wildcard topic is allowed, '#', which subscribes you to all user messages.
 
-## Monitoring and control of openLuup via MQTT
-Monitoring and control of devices via MQTT, represents an intention to move away from the need for any UPnP Vera-style requests or polling.
+## Zigbee
+openLuup can subscribe to topics published by [zigbee2mqtt](https://www.zigbee2mqtt.io/). zigbee2mqtt supports hundreds of [devices](https://www.zigbee2mqtt.io/supported-devices/).
 
-### openluup status publishing
-Using the built-in MQTT QoS 0 server, two new sets of PUBLISH topics may be sent by openLuup:
+openLuup automatically recognises many Zigbee devices and will create native openLuup devices to make use of them. Where the device is unknown, a generic device is produced and you can write startup or scene code to act on any variables the device publishes.
 
-- topics named openLuup/update/device_no/short_service_id/var_name (where short_service_id is the useful part of the serviceId – ie. the last alphanumeric bit.) These are sent as the named variable changes value (ie. not if it is set to the same value.) The message text is simply the new string content of the variable.
+## Shelly
+Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of.
 
-- a single topic named openLuup/status is sent every few seconds (user definable) cycling in a round-robin way through all of the devices. The JSON-formatted text message contains the current status of all the variables in that particular device. This, then, is the 'push' replacement for long-polling with a /data_request?id=status HTTP request.
+Devices available in openLuup:
 
-### openluup device control
-Simple Shelly-style HTTP requests can be used to control switches and lights. These will be extended to dimmers and other controls in due course. TBA
+|Device name|Function|Device model|
+|---|---|---|
+|Shelly 1L|Relay|SHSW-1|
+|Shelly 1PM|Relay with power meter|SHSW-PM|
+|Shelly ix3|3 by AC input sensors|SHIX3-1|
+|Shelly 2.5|2 relays with power measurement|SHSW-25|
+|Shelly Plug-S|Power plug with power measurement|SHPLG-S|
+|Shelly Plug|Power plug |SHPLG2-1|
+|Shelly HT|temperature & humidity sensor|SHHT-1|
+|Shelly Dimmer 2|Dimmer - neutral not required|SHDM-2|
 
-```text
-openLuup_IP:3480/relay/NNN?turn=[on/off/toggle] allows device Id or name for NNN
+Shelley Plus
 
-openLuup_IP:3480/scene/NNN? allows scene Id or name for NNN
-```
+|Device name|Function|
+|---|---|
+|shellyplusi4|4-digital inputs|
+|shellyplus2pm|2 relays with power measurement|
+|shellyplusht|temperature & humidity sensor with display|
 
-### JSON format of device status report
-openLuup.MQTT.PublishDeviceStatus:
+Not on the list above? A generic device is created.
 
-The JSON format of a single device status report, which is very compact, is that of nested tables indexed by strings: device number / short ServiceId / variable name; such that flattening the table appropriately would give the MQTT topic used in openLuup/update messages (aside from that prefix.) For example, for openLuup (device #2):
+List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
 
-```json
-{"2":{
-    "HaDevice1":{
-      "CommFailure":"0",
-      "CommFailureTime":"0"
-    },
-    "altui1":{
-      "DisplayLine1":"8Mb, 0.1%cpu, 0.1days",
-      "DisplayLine2":"[Home]"
-    },
-    "openLuup":{
-      "CpuLoad":"0.1",
-      "HouseMode":"1",
-      "Memory_Mb":"7.6",
-      "StartTime":"2021-03-11T14:53:02",
-      "Uptime_Days":"0.06",
-      "Version":"v21.3.11",
-      "Vnumber":"210311"
-    }
-  }}
-```
-
-With a round-robin interval of 2 seconds, a moderately-sized setup of 150 devices would be cycled through in five minutes, providing a sanity check that no transient device variable updates have been missed.
+## Tasmota
+Example [Tasmota](https://tasmota.github.io/docs/) setup [here](https://smarthome.community/topic/506/openluup-tasmota-mqtt-bridge/47).
 
 ### UDP ➔ MQTT bridge
 The openLuup MQTT QoS 0 server incorporates a UDP ➔ MQTT bridge, which is uni-directional.
 
 This means that any machine which can send a UDP datagram (and, frankly, that should be everything) can publish to subscribers of the openLuup MQTT server without the need for any MQTT client library. The use of UDP means that there is very little overhead to sending the data, and that there is absolutely no possibility of blocking the host process. The UDP 'fire and forget' concept also meshes very well with the MQTT QoS 0 service level.
-
-
 
 The UDP datagram format for publishing is:
 
@@ -131,42 +122,18 @@ IMAGE HERE Screenshot 2021-03-17 at 16.52.34.png
 
 The updates are effectively instantaneous. There are plenty of basic devices, which could benefit from this transport mechanism. eg Arduino PCBs.
 
-## Zigbee
-openLuup can subscribe to topics published by [zigbee2mqtt](https://www.zigbee2mqtt.io/). zigbee2mqtt supports hundreds of [devices](https://www.zigbee2mqtt.io/supported-devices/).
+## MQTT virtual sensors
+It is sometimes the case you have a device that sends lots of informtion but you are only interested in some of the info. You don't need a plugin that creates a plethora of child devices, many of which you will never make use of and clog up up your user interface.
 
-openLuup automatically recognises many Zigbee devices and will create native openLuup devices to make use of them. Where the device is unknown, a generic device is produced and you can write startup or scene code to act on any variables the device publishes.
-
-## Shelly
-Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of.
-
-Devices available in openLuup:
-
-|Device name|Function|Device model|
-|---|---|---|
-|Shelly 1L|Relay|SHSW-1|
-|Shelly 1PM|Relay with power meter|SHSW-PM|
-|Shelly ix3|3 by AC input sensors|SHIX3-1|
-|Shelly 2.5|2 relays with power measurement|SHSW-25|
-|Shelly Plug-S|Power plug with power measurement|SHPLG-S|
-|Shelly Plug|Power plug |SHPLG2-1|
-|Shelly HT|temperature & humidity sensor|SHHT-1|
-|Shelly Dimmer 2|Dimmer - neutral not required|SHDM-2|
-
-Not on the list above? A generic device is created.
-
-List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
-
-## Tasmota
-TBA
-
-## MQTT initialisation
-MQTT config such as username, passwords, etc are all set up in the [openLuup startup code](openLuup-startupcode.md).
+In this case you can make use of the [Virtual Sensor](https://github.com/toggledbits/VirtualSensor) plugin. The plugin allows to you dial up what sort sensor it is eg temeperature, switch state, etc and it will create a virtusl sensor to suit your needs.
 
 ## MQTT virtual devices
+If there is no support for your device, you can create a virtual device. See the [Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices?tab=readme-ov-file#mqtt-support-version-30) plugin.
 
-Use a virtual device for a MQTT topic not supported. This code makes use of the [Switchboard plugin](https://github.com/toggledbits/Switchboard-Vera) and is just a coding example.
+## Example MQTT handler
+This code handles some arbitary MQTT message made use of it.
 
-The [Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices) plugin would be a better approach as it handles MQTT directly.
+This code makes use of the [Switchboard plugin](https://github.com/toggledbits/Switchboard-Vera).
 
 MQTT server port:
 ```lua
@@ -215,9 +182,58 @@ Register the MQTT handler:
    luup.register_handler ('MQTThandler', topic, 1)
 ```
 
+## Monitoring and control of openLuup via MQTT
+Monitoring and control of devices via MQTT, represents an intention to move away from the need for any UPnP Vera-style requests or polling.
+
+### openluup status publishing
+Using the built-in MQTT QoS 0 server, two new sets of PUBLISH topics may be sent by openLuup:
+
+- topics named openLuup/update/device_no/short_service_id/var_name (where short_service_id is the useful part of the serviceId – ie. the last alphanumeric bit.) These are sent as the named variable changes value (ie. not if it is set to the same value.) The message text is simply the new string content of the variable.
+
+- a single topic named openLuup/status is sent every few seconds (user definable) cycling in a round-robin way through all of the devices. The JSON-formatted text message contains the current status of all the variables in that particular device. This, then, is the 'push' replacement for long-polling with a /data_request?id=status HTTP request.
+
+### openluup device control
+Simple Shelly-style HTTP requests can be used to control switches and lights. These will be extended to dimmers and other controls in due course. TBA
+
+```text
+openLuup_IP:3480/relay/NNN?turn=[on/off/toggle] allows device Id or name for NNN
+
+openLuup_IP:3480/scene/NNN? allows scene Id or name for NNN
+```
+
+### JSON format of device status report
+openLuup.MQTT.PublishDeviceStatus:
+
+The JSON format of a single device status report, which is very compact, is that of nested tables indexed by strings: device number / short ServiceId / variable name; such that flattening the table appropriately would give the MQTT topic used in openLuup/update messages (aside from that prefix.) For example, for openLuup (device #2):
+
+```json
+{"2":{
+    "HaDevice1":{
+      "CommFailure":"0",
+      "CommFailureTime":"0"
+    },
+    "altui1":{
+      "DisplayLine1":"8Mb, 0.1%cpu, 0.1days",
+      "DisplayLine2":"[Home]"
+    },
+    "openLuup":{
+      "CpuLoad":"0.1",
+      "HouseMode":"1",
+      "Memory_Mb":"7.6",
+      "StartTime":"2021-03-11T14:53:02",
+      "Uptime_Days":"0.06",
+      "Version":"v21.3.11",
+      "Vnumber":"210311"
+    }
+  }}
+```
+
+With a round-robin interval of 2 seconds, a moderately-sized setup of 150 devices would be cycled through in five minutes, providing a sanity check that no transient device variable updates have been missed.
+
 ## Possibilities
 
 ### Other MQTT devices that could be integrated into openLuup:
 
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
+- [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via Mqtt.
