@@ -7,6 +7,7 @@
 
   - [openLuup startup attributes](openLuup-startup-code.md)
   - [List of Plugins](plugins-list.md)
+  - [json parser](json-parser.md)
 
 - Guide
 
