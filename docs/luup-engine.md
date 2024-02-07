@@ -1,7 +1,6 @@
 # Luup Engine - details
 
 ## Functions
-
 luup.function_name:
 
 - attr_get
@@ -97,12 +96,16 @@ call_delay (function_name, seconds, argument_for_function, thread)
 |---|---|---|
 |Arguments:|||
 |function_name|string|eg lightOn|
-|seconds|integer|eg 3600 is one hour|
+|seconds|float|eg 3600 is one hour. Was an integer in Vera.|
 |argument_for_function|string|Multiple arguments need to be serialiased|
 |thread|boolean|deprecated - not required|
 |.|||
 |Returns:|||
 |result|integer|0 on success|
+
+**openLuup enhancement:**
+
+In Vera the delay was an integer, so the shortest delay was one second. In openLuup, it's a float, so delays can go down to the millisecond level.
 
 Example:
 ```lua
@@ -241,7 +244,6 @@ print(luup.modelID())
 ```
 
 ### register_handler
-
 Great function. It's very useful!
 
 register_handler (callback_handler_function_name, request_id)
@@ -262,28 +264,6 @@ The callback handler is passed three variables as follows:
 |lul_request|string|This indicates what needs to be done with the associated URL parameters|
 |lul_parameters|table|All the stuff left in the url string after filtering out the request and the "output_format". Can be empty.|
 |lul_outputformat|string|output_format=xml, json, gpx, etc. All optional and you decide on the format abbreviation and act accordingly.|
-
-**openLuup enhancement:**
-Different proctocols can be recognised and acted on accordingly.
-
-```lua
-luup.register_handler ("myHandler", "tcp:1234")                  -- incoming TCP connection on port 1234
-luup.register_handler ("myHandler", "udp:1234")                  -- incoming UDP -- " --
-luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
-luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
-luup.register_handler ("myHandler", "mqtt:My/Topic/Name")        -- MQTT
-```
-
-MQTT: One additional argument:
-- message number (integer)
-
-The MQTT callback handler is passed three variables as follows:
-
-|Identifier|Type|Comments|
-|---|---|---|
-|topic|string|MQTT topic|
-|message|table|Topic json payload - needs to be decoded|
-|messageNumber|integer|Matches the number in the registration of the handler|
 
 Example:
 ```lua
@@ -316,6 +296,51 @@ end
 
     luup.register_handler ('myPluginCallbackHandler', callmyplugin)
 ```
+
+**openLuup enhancement:**
+Different proctocols can be recognised and acted on accordingly.
+
+```lua
+luup.register_handler ("myHandler", "tcp:1234")                  -- incoming TCP connection on port 1234
+luup.register_handler ("myHandler", "udp:1234")                  -- incoming UDP -- " --
+luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
+luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
+luup.register_handler ("myHandler", "mqtt:My/Topic/Name")        -- MQTT
+```
+
+### UDP
+The luup.register_handler function has been extended to be able to specify the UDP protocol and a port to listen on. The handler is called with a similar parameter list to regular callback functions, but with slightly different semantics:
+
+-  port - the incoming port as a string, eg. “2222”
+-  data - a table with \{datagram = received_datagram_string, ip = sender_ip}
+-  protocol - “udp”, in this case
+
+So, for example, in Lua Startup, or within a plugin you could write:
+
+```lua
+function myUDPcallback (port, data, protocol)
+    print "Incoming UDP!"
+    print (port)
+    print ((json.encode(data)))
+    print (protocol)
+end
+
+luup.register_handler ("myUDPcallback", "udp:2222")
+```
+
+The callback handler is called for each incoming datagram.
+
+### MQTT
+
+One additional argument - message number (integer)
+
+The MQTT callback handler is passed three variables as follows:
+
+|Identifier|Type|Comments|
+|---|---|---|
+|topic|string|MQTT topic|
+|message|table|Topic json payload - needs to be decoded|
+|messageNumber|integer|Matches the number in the registration of the handler|
 
 
 ### reload
@@ -405,7 +430,7 @@ local next_sunset = luup.sunset ()
 ```
 
 ### task
-task ()
+task
 
 ### variable_get
 variable_get (service, variable_name, device)
@@ -429,7 +454,7 @@ local lightStatus, timeStamp = luup.variable_get ("urn:upnp-org:serviceId:Switch
 WARNING. If you do this you will get an error:
 ```lua
 local temperature = tonumber(luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105))
-ERROR: [string "LuaTestCode2"]:1: bad argument #2 to 'tonumber' (base out of range)
+-- ERROR: [string "LuaTestCode"]:1: bad argument #2 to 'tonumber' (base out of range)
 ```
 
 Because variable_get() returns two variables and tonumber() accepts two variables. However the code is placing a timeStamp into the base variable of tonumber() like so:
@@ -451,7 +476,6 @@ local temperature = tonumber(temperatureString)
 -- This works but as a coding style is somewhat unclear. Note the extra set of parentheses.
 local temperature = tonumber((luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105)))
 ```
-
 
 **openLuup enhancement:**
 
@@ -734,7 +758,6 @@ All these functions are deprecated. They are a complete waste of time, as they c
 ## luup.ir
 
 ### pronto_to_gc100
-
 luup.ir.pronto_to_gc100(pronto_code)
 
 This function is deprecated. Not particularly useful unless you have a [gc100](https://www.globalcache.com/). There are plugins that do this and more.
@@ -754,7 +777,6 @@ local gc100Code = luup.ir.pronto_to_gc100 (pronto_IR_code)
 ## luup.job
 
 ### set
-
 luup.job.set(job, setting, value)
 
 |Identifier|Type|Comments|
@@ -768,7 +790,6 @@ luup.job.set(job, setting, value)
 |nil|||
 
 ### setting
-
 luup.job.setting(job, setting)
 
 |Identifier|Type|Comments|
@@ -781,7 +802,6 @@ luup.job.setting(job, setting)
 |value|string||
 
 ### status
-
 luup.job.status(job_number, device)
 
 |Identifier|Type|Comments|
@@ -809,7 +829,6 @@ luup.job.status(job_number, device)
 
 
 ## luup.remotes[]
-
 nil - not used
 
 ## luup.rooms[]
@@ -839,11 +858,11 @@ print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
 ## openLuup enhancements
 
 ### function enhancements
-
 These functions have been enhanced:
 
 |Function|Enhancement|
 |---|---|
+|luup.call_delay|Delay is a float, so delays can go down to the millisecond level.|
 |luup.call_timer|Supports automatic timer repeat, rather than one shot only.|
 |luup.register_handler|Supports other protocols such as MQTT.|
 |luup.variable_get|Supports returning the historical time series of the variable.|
@@ -852,7 +871,6 @@ These functions have been enhanced:
 In addition we have:
 
 ### Solar functionality
-
 The openLuup plugin device has variables for solar:
 
 - Right Ascension (RA)
@@ -902,10 +920,7 @@ print (AZ)
 
 ```
 
-
-
 ## Examining the Luup engine
-
 With some code along the lines of the following, we can see what the Luup Engine encapsulates:
 
 ```lua
