@@ -8,14 +8,26 @@ The data historian also uses the Graphite Finder standard as an interface to the
 
 Note: ONLY numeric variable values are supported by the historian.
 
-Set up the directory.
+Set up the Historian directory.
 ```lua
 -- place this line in in your startup code
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
-### Whisper
-Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
+### Choosing what variables to monitor
+In the openLuup console go to "Home-->Historian-->Cache". Two possibilities are presented:
+
+1. Show a quick simple graph of any variable in the cache. Just click the little graph icon.
+2. If the on disk archiving has been enabled: Then all the variable checkboxes will not be grayed out and you can decide, which variables to monitor.
+
+If the on disk archiving has been enabled the Data Historian Grafana Data Source API can be used.
+
+Data may be easily visualised if you already have a Grafana installation.
+
+A similar arrangement allows Influx to be used via UDP.
+
+### Whisper database
+Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files. See also DataYours below for more info.
 
 ### Influx
 Set the server address.
@@ -69,7 +81,7 @@ A simple naming convention with a one-letter suffix will, by default, configure 
     .m1 - five minute resolution for one month (30 days)
     .q1 - twenty minute resolution for one quarter (90 days)
     .y1 - one hour resolution for one year
-    
+
     yMin - y axis minimum
     yMax - y axis maximum
 ```
@@ -87,7 +99,6 @@ Uses Google charts. eg:
 ```http
 http://openLuup_IP:3480/data_request?id=lr_render&target={temp_hot_water_pipe.w,temp_outside.w}&title=HW%20pipe&height=750&from=-y&yMin=0&yMax=50
 ```
-
 
 ## Datamine
 A venerable plugin by @Chris Jackson. Deprecated.
