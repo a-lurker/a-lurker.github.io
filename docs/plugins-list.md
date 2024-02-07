@@ -4,7 +4,7 @@ Both the Alternative User Interface (AltUI) and AltAppStore (AltAppStore) plugin
 
 The Alternative App Store can be found [here](https://github.com/akbooer/AltAppStore).
 
-Publishing a plugin in the store is pretty easy. First your plugin code must be available in GitHub. Publish it, using the Publish command in the AltAppStore web page. You need to enter the salient information and it's ready to go. 
+Publishing a plugin in the store is pretty easy. First your plugin code must be available in GitHub. Publish it, using the Publish command in the AltAppStore web page. You need to enter the salient information and it's ready to go.
 
 Plugin icons can be stored on GitHub eg [like so](https://github.com/a-lurker/a-lurker.github.io/tree/master/icons). After a "few days" the raw json describing the plugin appears [here](https://raw.githubusercontent.com/akbooer/AltAppStore/data/J_AltAppStore.json).
 
@@ -90,7 +90,7 @@ For those just interested in what the store contains; refer to the list below - 
 |[UPS Sensor](https://github.com/reneboer/vera-UPSSensor)||
 |[UPnP Event Proxy](https://github.com/a-lurker/Vera-Plugin-UPnP-Event-Proxy)|**OpenWRT only** - originated by Futzle|
 |[VeraAlexa](https://github.com/dbochicchio/VeraAlexa)||
-|[Virtual HTTP Devices](https://github.com/dbochicchio/vera-VirtualDevices)|MQTT commands & status are only available with openLuup. http & Lua can be used by Vera and openLuup.|
+|[Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices)|MQTT commands & status are only available with openLuup. http & Lua can be used by Vera and openLuup.|
 |[Virtual Pronto Remote](https://github.com/a-lurker/Vera-Plugin-Virtual-Pronto-Remote)||
 |[Virtual Sensor](https://github.com/toggledbits/VirtualSensor)||
 |[VW CarNet](https://github.com/reneboer/openLuup-CarNet)||
@@ -103,5 +103,3 @@ For those just interested in what the store contains; refer to the list below - 
 |[ZiGate Gateway](https://github.com/vosmont/Vera-Plugin-ZiGateGateway)
 
 Eample of plugins shown in the [openLuup console - App Store](https://smarthome.community/assets/uploads/files/1604754181183-screenshot_2020-11-07-openluup-resized.png):
-
-
