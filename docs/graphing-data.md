@@ -1,7 +1,23 @@
 # Graphing data
 openLuup provides a variety of ways to graph data.
 
-## Influx
+## Data historian
+The data historian monitors pretty much every openLuup variable and saves it to a cache. Optionally it saves the same data to disk.
+
+The data historian also uses the Graphite Finder standard as an interface to the WSAPI CGI graphite_cgi, which may then be accessed by dashboard applications or servers like Grafana.
+
+Note: ONLY numeric variable values are supported by the historian.
+
+Set up the directory.
+```lua
+-- place this line in in your startup code
+luup.attr_set ("openLuup.Historian.Directory","history/")
+```
+
+### Whisper
+Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
+
+### Influx
 Set the server address.
 
 ```lua
@@ -9,7 +25,7 @@ Set the server address.
 luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
-## Grafana
+### Grafana
 openLuup includes a Grafana Data Source API.
 
 ### Graphite Carbon databases
@@ -20,20 +36,23 @@ Set the server address.
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 ```
 
-### Whisper
-Database
+## Console
+A quick chart of the data cached by the Data Historian.
 
-## Data historian
-Set up the directory.
-```lua
--- place this line in in your startup code
-luup.attr_set ("openLuup.Historian.Directory","history/")
-```
+Refer to page /home/cache.
+
+## AltUI
+AltUI allows for any selected variable to be watched and pushed to:
+
+- datayours
+- emoncms
+- IFTTT
+- thingspeak
 
 ## DataYours
-Plugin by @akbooer. Superseded by native openLuup processes.
+Plugin by @akbooer. Superseded by native openLuup processes. Deprecated.
 
-Refer to storage-schemas.conf  in   /etc/cmh-ludl/whisper/
+Refer to storage-schemas.conf in /etc/cmh-ludl/whisper/
 
 DataYours will register itself with AltUI, if installed, and be available as a Data Storage Provider under the graphing menu for each variable.
 
@@ -55,6 +74,10 @@ A simple naming convention with a one-letter suffix will, by default, configure 
     yMax - y axis maximum
 ```
 
+Files end up in /etc/cmh-ludl/whisper/
+
+Examples: temp_outside.w.wsp, Watts_Solar.d.wsp
+
 You need to make your entries on the AltUI page and then press the (red) "graph" icon button at the top (the same one you used to enter the page.)
 
 The configuration will not be permanently saved until the next user_data.json checkpoint (might be up to 6 minutes away) or the next Luup reload (whichever the sooner.)
@@ -66,18 +89,5 @@ http://openLuup_IP:3480/data_request?id=lr_render&target={temp_hot_water_pipe.w,
 ```
 
 
-## Console
-A quick chart of cached data.
-
-Refer to page /home/cache.
-
-## AltUI
-AltUI allows for any selected variable to be watched and pushed to:
-
-- datayours
-- emoncms
-- IFTTT
-- thingspeak
-
 ## Datamine
-A venerable plugin by @Chris Jackson
+A venerable plugin by @Chris Jackson. Deprecated.
