@@ -2,23 +2,30 @@
 openLuup provides a variety of ways to graph data.
 
 ## Data historian
-The data historian monitors pretty much every openLuup variable and saves it to a cache. Optionally it saves the same data to disk.
+The data historian monitors pretty much every openLuup variable and saves it to a cache. Optionally it saves the same data to disk. All graphing uses this data.
 
 The data historian also uses the Graphite Finder standard as an interface to the WSAPI CGI graphite_cgi, which may then be accessed by dashboard applications or servers like Grafana.
 
 Note: ONLY numeric variable values are supported by the historian.
 
-Set up the Historian directory.
+The Historian maintains an in-memory cache of the 1000, or so, most recent values for numeric variables by default. Note that an openLuup restart will empty the cache.
+
+To save the data to disk, enable the archiving by placing this line in the start code. The data on disk can then be used by Grafana and influx.
+
 ```lua
 -- place this line in in your startup code
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
-### Choosing what variables to monitor
-In the openLuup console go to "Home-->Historian-->Cache". Two possibilities are presented:
+### Quick graph view
+In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest.
 
-1. Show a quick simple graph of any variable in the cache. Just click the little graph icon.
-2. If the on disk archiving has been enabled: Then all the variable checkboxes will not be grayed out and you can decide, which variables to monitor.
+### Choosing what variables to monitor
+If the on disk archiving has been enabled:
+
+Then all the variable checkboxes will show what is being retained on disk. Note: these checkboxes are read only.
+
+To see the variable archiving possibilities refer to the console:  Historian --> Rules page.
 
 If the on disk archiving has been enabled the Data Historian Grafana Data Source API can be used.
 
@@ -92,7 +99,7 @@ Examples: temp_outside.w.wsp, Watts_Solar.d.wsp
 
 You need to make your entries on the AltUI page and then press the (red) "graph" icon button at the top (the same one you used to enter the page.)
 
-The configuration will not be permanently saved until the next user_data.json checkpoint (might be up to 6 minutes away) or the next Luup reload (whichever the sooner.)
+The configuration will not be permanently saved until the next user_data.json checkpoint (might be up to 6 minutes away) or the next Luup reload (whichever is the sooner.)
 
 Uses Google charts. eg:
 
