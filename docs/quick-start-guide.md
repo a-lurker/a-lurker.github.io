@@ -48,12 +48,12 @@ and browsing the **reported URL** http://172.16.42.131:3480 will take you to the
 
 Access the console at: http://172.16.42.131:3480/console
 
+That's it!!
+
 ## Persist openLuup
 Setup a systemd service to start up openLuup at boot time. Refer to the following.
 
 [systemctl](https://a-lurker.github.io/docs/#/openluup?id=systemctl-with-etcsystemdsystemopenluupservice)
-
-That's it!!
 
 ## Not working.
 Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
