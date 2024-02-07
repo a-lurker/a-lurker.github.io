@@ -15,6 +15,7 @@
   - [Luup Engine](luup-engine.md)
   - [Luup scenes how to by Rex Beckett](rex-beckett-posts.md)
   - [MQTT](mqtt.md)
+  - [Notifications](notifications.md)
 
 - Reference
   - [Vera hardware versions](vera-versions.md)
