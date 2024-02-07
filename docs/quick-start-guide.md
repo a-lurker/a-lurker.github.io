@@ -55,8 +55,11 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 
 That's it!!
 
+## Not working.
+Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
+
 ## WinSCP
-The latest RasPi OS releases don't set up a root login. But you can set up winSCP so it has root priviledges:
+The latest RasPi OS releases don't set up a root login. But you can set up WinSCP so it has root priviledges:
 
 In WinSCP:
 Select Site and Edit then select Advanced and navigate to Environment > SCP/Shell
