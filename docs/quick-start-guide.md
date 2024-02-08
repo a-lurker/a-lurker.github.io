@@ -53,7 +53,7 @@ That's it!!
 ## Persist openLuup
 Setup a systemd service to start up openLuup at boot time. Refer to the following.
 
-[systemctl](/openluup?id=ssystemctl-with-/etc/systemd/system/openluup.service)
+[systemctl](/openluup?id=systemctl-with-/etcsystemd/system/openluup.service)
 
 ## Not working.
 Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
