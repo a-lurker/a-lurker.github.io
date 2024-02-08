@@ -8,12 +8,14 @@ The data historian also uses the Graphite Finder standard as an interface to the
 
 Note: ONLY numeric variable values are supported by the historian.
 
-The Historian maintains an in-memory cache of the 1000, or so, most recent values for numeric variables by default. Note that an openLuup restart will empty the cache.
+The Historian maintains an in-memory cache of the 1024 most recent values for numeric variables by default. Note that an openLuup restart will empty the cache.
 
-To save the data to disk, enable the archiving by placing this line in the start code. The data on disk can then be used by Grafana and influx.
+The act of inserting this line into the startup code, enables the archiving process, ie saving the data to disk. The data can then be utilised by Grafana and influx.
 
 ```lua
 -- place this line in in your startup code
+-- it's possible to place the data at any other favourite
+-- spot, noting the path is relative to cmh-ludl/
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
@@ -23,7 +25,7 @@ In the openLuup console go to "Home-->Historian-->Cache. Just click the little g
 ### Choosing what variables to monitor
 If the on disk archiving has been enabled:
 
-Then all the variable checkboxes will show what is being retained on disk. Note: these checkboxes are read only.
+Then all the variable checkboxes will show what is being retained on disk. Note: these checkboxes are READ ONLY.
 
 To see the variable archiving possibilities refer to the console:  Historian --> Rules page.
 
@@ -34,9 +36,22 @@ Data may be easily visualised if you already have a Grafana installation.
 A similar arrangement allows Influx to be used via UDP.
 
 ### Whisper database
-Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files. See also DataYours below for more info.
+Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
 
-### Influx
+The choices for the aggregation functions are:
+- average
+- sum
+- last
+- max
+- min
+
+You can set up a [schema for different variables](https://graphite.readthedocs.io/en/latest/config-carbon.html#storage-schemas-conf) that define the time interval and the maximum number of points to retain.
+
+Refer to files `storage-schemas.conf` and `storage-aggregation.conf`. [This post](https://community.ezlo.com/t/openluup-data-historian/199464/120) is also useful.
+
+Refer also to the file[../cmh-ludl/openLuup/openLuup/servertables.lua](https://github.com/akbooer/openLuup/blob/f5db7abc964595ba4db6f5f373918cae6ec312b8/openLuup/servertables.lua#L229)
+
+### InfluxDB
 Set the server address.
 
 ```lua
@@ -44,7 +59,7 @@ Set the server address.
 luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
-### Grafana
+### Grafana (Graphite db)
 openLuup includes a Grafana Data Source API.
 
 ### Graphite Carbon databases
@@ -93,7 +108,9 @@ A simple naming convention with a one-letter suffix will, by default, configure 
     yMax - y axis maximum
 ```
 
-Files end up in /etc/cmh-ludl/whisper/
+Files end up in `/etc/cmh-ludl/whisper/`
+
+However the file location can be changed in the plugin. Refer to variable LOCAL_DATA_DIR, which defaults to `whisper/`
 
 Examples: temp_outside.w.wsp, Watts_Solar.d.wsp
 
