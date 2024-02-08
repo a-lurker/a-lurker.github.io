@@ -1,7 +1,7 @@
-# openLuup: User Guide - ver 2020.05.12 @akbooer
+# openLuup user guide
+Ver 2020.05.12 @akbooer
 
 ## Overview
-
 openLuup is an environment which supports the running of some MiOS (Vera) plugins on generic Unix systems (or, indeed, Windows systems.) Processors such as Raspberry Pi and BeagleBone Black are ideal for running this environment, although it can also run on Apple Mac, Microsoft Windows PCs, anything, in fact, which can run Lua code (most things can.) The intention is to offload processing (cpu and memory use) from a running Vera to a remote machine to increase system reliability.
 
 Running on non-specific hardware means that there is no native support for Z-wave, although plugins to handle Z-wave USB sticks support this (the latest openLuup versions support a ZWay plugin for Z-Wave.me Razberry boards or UZB slicks.) The full range of MySensors (http://www.mysensors.org/) Arduino devices are supported though the Ethernet Bridge plugin available on that site. A plugin, VeraBridge, to provide a bidirectional ‘bridge’ (monitoring / control, including scenes) to remote MiOS (Vera) systems is provided in the openLuup installation.
@@ -51,7 +51,6 @@ Razberry board or UZB stick
 - File retention policy manager with SendToTrash and EmptyTrash actions
 
 ## What it doesn't do:
-
 - Some less-used HTML requests are not yet implemented (see Appendix.)
 - Doesn't support the <incoming> or <timeout> action tags in service files, but does support the device-level <incoming> tag.
 - Doesn’t directly support local serial I/O hardware (there are work-arounds: ser2net)
@@ -67,7 +66,6 @@ See the relevant appendix for more discussion of Vera / openLuup differences.
 
 ---
 ## Installation
-
 There are just a few basic installation steps to set up an openLuup system running the
 AltUI interface and bridging to a remote Vera:
 
@@ -78,8 +76,7 @@ AltUI interface and bridging to a remote Vera:
 That’s all that’s needed!
 
 ---
-## 1. Lua installation
-
+### 1. Lua installation
 For compatibility with Vera systems, openLuup has been written in Lua version 5.1 and requires the appropriate installation to be loaded on your target machine. You will also need the LuaSocket library, LuaFileSystem, and, for secure (SSL) network connections, the LuaSec library. It’s not difficult, but the guide assumes some familiarity with Linuxtype systems (although much is also applicable to Windows.)
 
 The installation process is target machine dependent (other machines may require source code compilation of the libraries, but that is beyond the scope of this document) but a few of the simpler cases are:
@@ -116,7 +113,7 @@ The installation process is target machine dependent (other machines may require
 ```
 
 ---
-## 2. openLuup Installation
+### 2. openLuup Installation
 This is very straight-forward: create a directory **cmh-ludl/** for the openLuup installation on your machine (in your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions) **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
 
 ```lua
@@ -152,12 +149,10 @@ visit http://172.16.42.131:3480 to start using the system
 
 and browsing the reported URL will take you to the AltUI interface and show two devices: openLuup and AltUI. From here on, the interface can be used to configure the system.
 
-## 3. Making openLuup run at system boot time
-
+### 3. Making openLuup run at system boot time
 This initial running instance of openLuup will not persist between system reboots. To do that, some system-specific file editing is required. There are at least three options for doing this as described in the Appendix: Starting openLuup at system boot time.
 
-## 4. Linking to Vera
-
+### 4. Linking to Vera
 Using the AltUI menus to navigate More > Plugins takes you to the plugin page:
 
 IMAGE HERE
@@ -176,7 +171,7 @@ This will copy all device files (D_xxx.xml, D_xxx.json, I_xxx.xml, S_xxx.xml, J_
 
 Read more about VeraBridge capabilities in a later section of this guide.
 
-# Backing up the system
+## Backing up the system
 AltUI makes it very easy to create a backup of your system configuration – all of which is defined in one (large) JSON-encoded file: **/etc/cmh-ludl/user_data.json**.
 
 The More > Controllers page provides a button to save a copy to **/etc/cmh-ludl/backup/** in a file named something like **backup.openLuup-88800000-2016-05-01.lzap**. Repeated backups on the same day overwrite one another. Different days have unique names and are not automatically purged.
@@ -192,8 +187,7 @@ luup.inet.wget "/cgi-bin/cmh/backup.sh?"
 ```
 
 ---
-# More about VeraBridge
-
+## More about VeraBridge
 The VeraBridge plugin is an openLuup plugin which links to remote Veras. Unlike the built-in Vera ‘bridge’ capability (which, I think, uses UPnP discovery) this has no limitation as to the Vera firmware version that it links to, and you can quite happily run multiple copies of this linking to UI5 and UI7 remote machines (which, themselves, require no special software installation.)
 
 VeraBridge provides local clones of devices and scenes from a remote Vera:
@@ -217,16 +211,14 @@ The bridge device also has a variable which reflects the remote House Mode (if t
 
 Action calls with serviceId urn:micasaverde-com:serviceId:HomeAutomationGateway1 made to the VeraBridge plugin are relayed to the remote Vera. This means that requests made to VeraBridge for actions like "SetHouseMode" and "SetGeoFence" will be effective on the bridged Vera.
 
-## 1. Bridging to multiple Veras
-
+### 1. Bridging to multiple Veras
 Multiple bridges may be installed (through the Create button on the devices page.)
 
 The first Vera linked to is special, for a number of reasons:
 
 TBD…
 
-## 2. Mirroring individual device variables from openLuup to Vera
-
+### 2. Mirroring individual device variables from openLuup to Vera
 Any openLuup device variable may be ‘mirrored’ to any bridged Vera. That is, a variable on a remote Vera device can actively track the value of a local variable.
 
 Each instance of the VeraBridge plugin registers itself with AltUI as a Data Storage Provider with a name of the form **Vera@xxx.xx.xx.xx** where the ‘x’s represent the IP address of the remote Vera.
@@ -238,7 +230,7 @@ A device number on its own means that the current variable’s serviceId and nam
 device.serviceId.variable (eg. 42.urn:something:serviceId:newservice.NewName)
 device.*.variable (eg. 42.*.NewName to retain existing serviceId)
 
-## 3. Synchronising House Mode
+### 3. Synchronising House Mode
 The bridge has a device variable HouseModeMirror, which you can set to one of three values:
 
 - "0" : no mirroring,
@@ -252,8 +244,7 @@ Note that it’s not easily possible to have this synchronisation work in both d
 Also note that the openLuup plugin itself has a HouseMode variable which may be used as a variable watch trigger to kick off scenes when the house mode is changed (no need for a separate HouseMode plugin.)
 
 ---
-## Other configuration variables
-
+### Other configuration variables
 My thanks to openLuup enthusiast @explorer for having made the original suggestion to add more customisation to VeraBridge:
 
 Selecting devices in VeraBridge. To quote from that post:
@@ -273,7 +264,6 @@ Also:
 
 ---
 ## The Data Historian
-
 openLuup includes a 'Data Historian' which stores previous device variable values in both inmemory cache and (optionally) on-disk archives. Taking lessons learned from DataYours and EventWatcher, also from AltUI's Data Storage Providers, it offers an almost configuration-free approach to storing (and retrieving) variable values. In addition, and in contrast to those other options and the dataMine plugin, it provides a natural way of reading historic variable values through the usual Luup interface. Also included is a Grafana Data Source API so that data may be easily visualised if you already have a Grafana installation, or plotted directly (using Google Charts.) A big plus here is that you don't have to have set up storage for any specific variable, they are (almost) all available.
 
 In summary:
@@ -294,9 +284,7 @@ In summary:
 
 On my 'production' system which is linked to 3 Veras, Netatmo, Philips Hue, and some MySensors Arduinos, there are over 4000 device variables. About 300 of those are cached in memory, and their on-disk archives take about 90 Mbyte. There are, on average, 12 updates per minute, each one taking about 1.5 mS on an RPi. (I don't have any security sensors triggering frequently on this system.)
 
-
 For plugin developers, reading data from the cache/archive is trivial, using an additional {start,end} time parameter to variable_get():
-
 
 ```lua
 local v0,t0 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33)
@@ -349,8 +337,7 @@ serviceId^EnergyMetering1.EnergyUsage",
 bridged Vera.)
 
 ---
-# The user_data.json file
-
+## The user_data.json file
 Configuration changes to the system happen in different ways in the three major phases of normal running, startup and shutdown:
 
 ### STARTUP
@@ -391,10 +378,10 @@ done
 Even after a system reboot, the only thing required to get openLuup restored to its previous state is to start the openLuup_reload script (with no parameters) since this just picks up the latest user_data.json file and runs with it.
 
 ---
-# More about the port 3480 HTTP server
+## More about the port 3480 HTTP server
 As well as supporting Luup HTML requests, the openLuup HTTP server on port 3480 has some of the functionality of any normal web server, but also some special features:
 
-## 1. File Access
+### 1. File Access
 The root directory for the port 3480 server is cmh-ludl/ (or wherever the openLuup process is started.) However, in addition, the server will search in ../cmh-lu/ if it fails to find the requested file. This mimics Vera’s use of that directory. It means that you can put .xml, .json, and other files there for convenience.
 
 Note, however, that a plugin which expects to find a file in /etc/cmh-ludl/ using io.open() will NOT automatically find it if it resides in ../cmh-lu/.
@@ -403,7 +390,7 @@ The Lua package path has also been modified to search ../cmh-lu/ so that require
 
 Additionally, file-based icon references in .json files are redirected during loading to access the cmh-ludl/icons/ directory through the port 3480 server. This means that the requests do not go from AltUI to port 80, but to port 3480, which in turn means that device icons work over a secure connection to port 3480 only. It also means that the icon directories under /www/cmh/skins/default/… are not required. Existing HTPP icon references are untouched.
 
-## 2. index.html Files
+### 2. index.html Files
 The server looks for an index.html file if the request is for a directory (ends with ‘/‘). This means that an index.html file may be used to present any web page you like, but in particular it may be used to redirect the request. For example: With the following text in cmh-ludl/index.html
 
 ```html
@@ -422,8 +409,7 @@ then http://openLuupIP:3480/ redirects to AltUI.
 Once again, this is useful functionality for access over a secure connection.
 
 ---
-## 3. CGI processing
-
+### 3. CGI processing
 The openLuup HTTP server has a Lua Web Server API (WSAPI) connector to allow it to run Lua applications as CGIs. This is an industry-standard used on web servers such as Xavante, Apache, Lighttpd, and others.
 
 This means that arbitrary web server functionality can be added to openLuup simply by writing a short, stand-alone, Lua module. The first time a CGI URL is accessed, the module is compiled and loaded. Thereafter, it runs just as quickly as any built-in server code. The API implementation adheres exactly to the (brief) documentation here: http://keplerproject.github.io/wsapi/manual.html.
@@ -463,8 +449,7 @@ Any other CGI action can be implemented in the same way.
 Note that shell scripts and other CGI language implementations are not (yet) supported by the port 3480 server, but this mechanism does enable some of the key CGIs used by Vera to be emulated through a small amount of effort.
 
 ---
-# Something about openLuup log files
-
+## Something about openLuup log files
 On startup, openLuup writes its log data initially to cmh-ludl/logs/Startup_LuaUPnP.log until the initial devices and scenes are loaded and the Startup Lua has been run. This file is retained for the last 5 versions.
 
 By default, openLuup writes its main log file to cmh-ludl/log/LuaUPnP.log. This location, and other logging parameters may be changed by defining openLuup attributes in the Startup Lua.
@@ -494,7 +479,6 @@ FIX ME
 
 ---
 ## More about Scenes
-
 Scene timers and actions can be defined with the AltUI interface in exactly the same way as on Vera. Triggers, however, are treated differently, because the Vera approach, itself based on UPnP definitions in various files, is deeply flawed and inflexible. Instead, the AltUI-supported mechanism of device variable triggers are used.
 
 Using the appropriate button under the scene / trigger definition menu, you may select any device and variable as a trigger. The trigger will fire whenever the variable changes value, and using a small amount of Lua code, or the blocky graphical interface, you can construct arbitrary logic expressions combining, times, old and new variable values, other device variables, in fact almost anything you want, to determine whether or not the scene should actually execute.
@@ -503,7 +487,7 @@ openLuup also provides the capability to run a specified Lua function after the 
 
 Scenes on remote Veras may be linked to openLuup, or copied and saved to assist in the migration of automation logic.
 
-## 1. VeraBridge and Remote Scenes
+### 1. VeraBridge and Remote Scenes
 A Vera scene that has been linked to by VeraBridge is simply a perfectly normal openLuup scene (hence totally isolated from any scene code on your actual Vera) with one-line in the Lua code section (which you're able to view and edit) which fires off the remote scene.
 
 This means you can add local triggers, timers, even other Lua code (before the the statement that runs the remote scene!) without any code impact on your actual Vera... very comforting when developing!
@@ -516,7 +500,7 @@ They are really there as a basis for re-writing them to operate entirely locally
 
 VeraBridge has a BridgeScenes variable. Set to **true or 1** to enable linking to remote scenes, or anything else (including **false or 0**) to disable this on startup.
 
-## 2. Porting Vera scenes to openLuup
+### 2. Porting Vera scenes to openLuup
 VeraBridge also has an action GetVeraScenes which creates **temporary** local copies of Vera scenes as an aid in migrating automation to openLuup.
 
 IMAGE HERE
@@ -536,7 +520,7 @@ Things to note:
 
 All you have to do is go to the Actions tab for the VeraBridge you're interested in and press GetVeraScenes which runs a job (very quickly.) Switch immediately to the Scenes page and you should find them there. To make a scene permanent, use the 'Copy' button on the Scene and it will create a new scene, with a low scene number, called 'Clone of XXX’. Don’t forget to delete the original scene on Vera when you’re ready to use the new openLuup one.
 
-## 3. Scene Finalisers
+### 3. Scene Finalisers
 Running Lua Code after Individual Scene Execution Normal Lua scene code runs BEFORE any action in the scene. Scene finalisers allow you to run Lua code some time AFTER all the actions of a scene have executed.
 
 In each scene that you want to do something, you return a SECOND parameter which is a function to be run when the scene 'finishes'. The default is 30 seconds after the START of the LAST delayed action (which may take an indeterminate time to run, depending on what it does.) There is an additional optional THIRD return parameter which overrides this default delay time in seconds. So your scene Lua looks something like this:
@@ -567,7 +551,7 @@ return true, final
 
 Obviously, if you return false anywhere, the second parameter is not needed anyway.
 
-## 4. Scene Prolog and Epilog Lua code – Global Functions
+### 4. Scene Prolog and Epilog Lua code – Global Functions
 Thanks to constant pestering by forum member @DesT ;-) openLuup now has the ability to run global code as a pre/post for all scenes without having to edit them individually. There are two parts to enabling these calls which can both be done in Startup Lua:
 
 **1) set the openLuup parameters which reference the calls**
@@ -606,7 +590,6 @@ The possibilities are endless.
 
 ---
 ## Appendix: Starting openLuup at system boot time
-
 For openLuup to start up at system boot time, there are various approaches suggested by experts
 on the forum. Details are taken directly from the posts there:
 
@@ -795,7 +778,6 @@ If using nano, press cntrl-o, press [enter], press cntrl-x to exit editor.
 
 ---
 ## Appendix: Configuring key openLuup parameters at Startup
-
 There is a special top-level system attribute called "openLuup" (created at startup and not saved in the user_data.json file) which contains a table with some key system parameters some of which are user-configurable in the Lua Startup code.
 
 The default structure includes:
@@ -848,7 +830,6 @@ IMAGE HERE
 
 ---
 ## Appendix: Directory Structure and Additional Files
-
 The installations steps 1, 2, 3, give you a functioning system, linked to a remote Vera. But to allow as many plugins as possible to run on openLuup, you may need additional files and directories.
 
 ### 1. Vera & openLuup directory structures and ancillary files
@@ -905,7 +886,6 @@ At least one plugin (IOSPush) requires the file /etc/cmh/ui with the single line
 ```
 
 ### 3. openLuup_reload.bat for Windows
-
 For Windows, you will need an alternative shell file to run the basic openLuup reload loop. I’m indebted to @vosmont for the following information which I’ve copied directly from the post here https://community.ezlo.com/t/systems-to-run-at-share-experiences/189409/29
 
 For the moment, I use openLuup on Windows.
@@ -965,7 +945,6 @@ io.write (myIP())
 
 ---
 ## Appendix: openLuup SMTP and POP3 (eMail) servers
-
 SMTP server
 
 openLuup (v18.3.14 and subsequent) includes a built-in SMTP server to receive email messages, Although included specifically for cameras which use this to trigger an associated motion detector device, this is a minimal implementation of an RFC 5321 compliant server with the LOGIN authentication method and no Transport Layer Security (TLS / SSL.)
@@ -1057,11 +1036,10 @@ end
 It really is as simple as that.
 
 ---
-## Testing the SMTP server
+### Testing the SMTP server
 You can manually test the SMTP server easily from any machine on the network (here, I'm doing it on the same machine)...
 
 ### WITH NO AUTHORISATION
-
 ```text
 % nc 127.0.0.1 2525
 220 (openLuup.smtp v18.3.24) [0.0.0.0] Service ready helo from here
@@ -1144,14 +1122,12 @@ Of course, if you want this to work when you are away from your home LAN, then y
 Your email client can be used to manage the deletion of files from the mailboxes, or, alternatively, a timed scene using the openLuup SendToTrash and EmptyTrash actions will do the job automatically.
 
 ---
-# Appendix: Using Cameras with openLuup
-
+## Appendix: Using Cameras with openLuup
 **I_openLuupCamera1.xml implementation file**
 
 A camera device created with this implementation file will create an associated child Motion Sensor device which is triggered when the camera's own motion detection algorithm sends an email.
 
 ### Configuration
-
 The camera's device implementation file may be set on the openLuup device's Attributes page, followed by a Luup reload. The only other significant parameters are the usual: ip attribute, and the URL and DirectStreamingURL device variables.
 
 Camera configuration is obviously device-specific. For my Foscam camera (thanks to @Spanners) the important parameters are:
@@ -1172,8 +1148,7 @@ The Motion Sensor device will remain triggered for 30 seconds (or longer if the 
 The **ArchiveVideo** action may be used to save single camera snapshots to openLuup's images/ folder. At present, the Format and Duration parameters are unused (since this is currently only implemented for single frames.)
 
 ---
-# Appendix: openLuup – Databases and Data Visualisation
-
+## Appendix: openLuup – Databases and Data Visualisation
 External databases are useful for long-term storage, and visualisation, of sensor data and events. Several plugins have been written specifically for Vera/openLuup to provide this functionality:
 
 - dataMine – the original! Entirely Vera-based with possible USB storage. A self-contained eco-system with custom database format and graphics.
@@ -1193,8 +1168,7 @@ The Graphite DSP is fully compatible with both DataYours and a real Graphite sys
 Whilst a number of these options provide their own data visualisations, the best experience for browsing and plotting data seems to be offered by third-party tools. Probably one of the best is Grafana which is able to access many of the above database systems through its own connectors. The Graphite CGI also allows Grafana to connect with data from DataMine and DataYours.
 
 ---
-## InfluxDB
-
+### InfluxDB
 My choice is for simplicity of use, which means configuring the UDP port of InfluxDB. Once
 installed, the InfluxDB configuration file is at /etc/influxdb/influxdb.conf In that file, I have:
 
@@ -1218,13 +1192,12 @@ For each watched variable you need just to specify a measurement name, optionall
 
 IMAGE HERE
 
-## DataYours / Graphite
+### DataYours / Graphite
 
 TO BE DONE.
 
 ---
 ## Appendix: Sending and receiving UDP datagrams
-
 Most communications protocols (HTTP, SMTP, POP3, …) along with standard device plugin I/O
 are handled over the TCP connections. However, UDP officers a very lightweight, transaction-free
 communication mechanism used by some systems. DataYours, for example (a Lua
@@ -1233,7 +1206,6 @@ metrics.
 
 openLuup includes a mechanism to send UDP datagrams and also a callback to listen for incoming
 UDP datagrams arriving at specified ports.
-
 
 The luup.register_handler() function has been extended to be able to specify the UDP
 protocol and a port to listen on. The handler is called with a similar parameter list to regular
@@ -1278,13 +1250,11 @@ Again, it’s as simple as that.
 
 ---
 ## Appendix: openLuup plugin Actions and Variables
-
 The openLuup system itself runs a plugin called openLuup (always device #2) which offers useful variables and actions to assist in home automation tasks.
 
 All of these element are within the "openLuup" serviceId. Note that openLuup does not implement UPnP so does not use the Vera / MiOS / UPnP syntax "urn:xxx.com:serviceId:abcd1" for its own native services. Of course, for standard devices and third-party plugins, their own full serviceId should be used.
 
 ### House Mode related actions and variables
-
 When it comes to using house modes in Vera, you quickly run into two problems:
 
 1. Mode is a system attribute, not a variable, so you can’t use it as a trigger
@@ -1297,7 +1267,6 @@ may be used as a scene trigger.
 It also has its own SetHouseMode action which may be selected from the list of scene actions for the openLuup plugin.
 
 ### File Management actions and variables
-
 **action = "SendToTrash"**
 
 This action moves selected files to openLuup's trash/ folder, and has four parameters:
@@ -1333,7 +1302,6 @@ The purpose of the AreYouSure parameter is to avoid accidental clicks on the Emp
 The above actions are easily included into scheduled scenes which might, for example, run the SendToTrash action early in the morning every day, and the EmptyTrash every weekend.
 
 ### AltUI-related variables
-
 AltUI has its own actions and services with the serviceId of "urn:upnp-org:serviceId:altui1".
 
 openLuup uses several of these variables to display information on its device panel, as do some related plugins like AltApStore and VeraBridge.
@@ -1341,7 +1309,6 @@ openLuup uses several of these variables to display information on its device pa
 DisplayLine1 and DisplayLine2 are the relevant device variables.
 
 ### System Status Variables
-
 Global system parameters:
 - **MemAvail_Mb**
 - **MemFree_Mb**
@@ -1355,8 +1322,7 @@ openLuup system parameters:
 - **StartTime** – the time of the last Luup restart
 
 ---
-# Appendix: Undocumented features of Luup
-
+## Appendix: Undocumented features of Luup
 The documentation for Luup is poor: out of date, misleading, incomplete, unclear, and sometimes just plain wrong. However, "hats off" to those stalwart members of the forum who have contributed to the Wiki. During the implementation of openLuup a number of undocumented ‘features’ have come to light. In some cases, these features are used by various plugins, either deliberately or unknowingly, through sins of commission or omission. As a result, I’ve had to include them in the openLuup implementation.
 
 If you’re a developer, please try NOT to rely on these things in your plugin code.
@@ -1382,20 +1348,17 @@ Here’s what I’ve found - if you know more, let me know.
 - …
 
 ---
-# Appendix: Unimplemented features of openLuup
-
+## Appendix: Unimplemented features of openLuup
 openLuup is, as of this time, an unfinished work. The following features are known to be
 unimplemented, poorly implemented, or non-functional, for a variety of reasons.
 
 ### 1. unimplemented luup API calls
-
 - **luup.devices_by_service** – the definition of the functionality here _Luup_Lua_Extensions_ is not adequate to make an implementation.
 - **luup.job_watch** – not yet implemented.
 - **luup.require** – undocumented.
 - **luup.xj** – undocumented.
 
 ### 2. unimplemented HTTP requests
-
 - **id=scene** – only create, delete, list, and rename are implemented (ie. no interactive creation of scenes.) Also note that scene triggers (or notifications) are stored, but not used. Any scene with a defined trigger will have one additional trigger added with a warning that these triggers are un-implemented.
 - **id=action** – the virtual category 999 is not implemented. Actions on groups of devices defined by category is not implemented.
 - **id=finddevice** – not implemented.
@@ -1404,8 +1367,7 @@ unimplemented, poorly implemented, or non-functional, for a variety of reasons.
 - **id=jobstatus** – not implemented.
 - **id=relay** – not implemented.
 
----
-# Appendix: Differences between openLuup and Vera / MiOS
+## Appendix: Differences between openLuup and Vera / MiOS
 
 ### Features of Vera / MiOS not in openLuup
 Hard to give an exhaustive list, but notable omissions include:
@@ -1425,17 +1387,14 @@ The original goal for the development of openLuup was to have a system which was
 However, there are some blatantly obvious omissions from Vera’s Luup which are very much ‘nice to have’ and don’t break forward compatibility when moving from Vera to openLuup.
 
 ### lul_scene:
-
 In device implementation code, there is a variable **lul_device** which defines the current device number to the code. This may be used to index the **luup.devices** table for more information. However, there is no equivalent when executing scene code.
 
 The variable **lul_scene** is now available to fill that gap, indicating the active scene number which may, in turn, be used to index the **luup.scenes** table to extract other information such as the name (description) of the current scene.
 
 ### luup.call_timer():
-
 In Vera, this call is one-shot and if you want repeating timers you have to call it again within the callback. In openLuup, there is an extra boolean parameter which, if true, reschedules the callback automatically. Important, if using this, NOT to call it again in the callback hander!
 
 ### Scene finalisers, prolog and epilog code:
-
 See the relevant section above on these topics.
 
 ### ShutdownCode:
@@ -1445,4 +1404,4 @@ There is an additional global attribute in the user_data called ShutdownCode. Th
 luup.attr_set ("ShutdownCode", "-- Lua code goes here")
 ```
 
- and defines Lua code which is run prior to system shutdown (or restart.) This has been used to tidy up connections to external devices and servers prior to disconnection.
+and defines Lua code which is run prior to system shutdown (or restart.) This has been used to tidy up connections to external devices and servers prior to disconnection.
