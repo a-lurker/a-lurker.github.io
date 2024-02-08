@@ -1,5 +1,70 @@
 # Luup Engine - details
 
+## openLuup enhancements
+
+### function enhancements
+These functions have been enhanced:
+
+|Function|Enhancement|
+|---|---|
+|luup.call_delay|Delay is a float, so delays can go down to the millisecond level.|
+|luup.call_timer|Supports automatic timer repeat, rather than one shot only.|
+|luup.register_handler|Supports other protocols such as MQTT.|
+|luup.variable_get|Supports returning the historical time series of the variable.|
+|luup.inet.wget|Supports Basic and Digest authentication.|
+
+In addition we have:
+
+### Solar functionality
+The openLuup plugin device has variables for solar:
+
+- Right Ascension (RA)
+- Declination (DEC)
+- Altitude (ALT)
+- Azimuth (AZ)
+
+which are updated every two minutes.
+
+These calculations have always been done by openLuup to support scene times of sunrise/sunset, but are available for use (negating the need for a separate plugin, eg. Heliotrope.)
+
+There is a GetSolarCoords action, which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location as set up in the startup code).
+
+```lua
+luup.call_action ("solar", "GetSolarCoords", coords, 2)
+```
+
+The defaults can be overloaded:
+```lua
+-- default to current time & location set up in startup code. Not necessary. Illustrative only.
+local coords = {Epoch = '', Latitude = '', Longitude = ''}
+
+-- default to current time and specify location
+local coords = {Epoch = '', Longitude  = -0.0045417, Latitude = 51.4820845}
+```
+
+Example:
+```lua
+local openLuupID = 2 -- always the case
+
+-- default to current time and specify location
+local coords = {Epoch = '', Latitude = 51.4820845, Longitude = -0.0045417}
+
+luup.call_action ("solar", "GetSolarCoords", coords, openLuupID)
+
+-- read RA, DEC, ALT and AZ as needed
+local RA  = luup.variable_get("solar", "RA",  openLuupID)
+local DEC = luup.variable_get("solar", "DEC", openLuupID)
+local ALT = luup.variable_get("solar", "ALT", openLuupID)
+local AZ  = luup.variable_get("solar", "AZ",  openLuupID)
+
+-- all in degrees
+print (RA)
+print (DEC)
+print (ALT)
+print (AZ)
+
+```
+
 ## Functions
 luup.function_name:
 
@@ -536,6 +601,13 @@ luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1
 
 ## Numbers
 
+- latitude
+- longitude
+- pk_accesspoint
+- version_branch
+- version_major
+- version_minor
+
 ### latitude
 Used to calculate sunset, sunrise, etc. Can be altered in the start up code.
 ```lua
@@ -564,6 +636,14 @@ print(luup.version_branch.."."..luup.version_major.."."..luup.version_minor)
 -- shows "1.7.0"; same as print(luup.version)
 ```
 ## Strings
+- city
+- event_server
+- event_server_backup
+- hw_key
+- ra_server
+- ra_server_backup
+- timezone
+- version
 
 ### city
 Can be altered in the start up code. We know where you live.
@@ -853,71 +933,6 @@ print ("The broken light is in room "..luup.rooms[66])
 
 ```lua
 print ("Scene 20 is attached to room "..luup.scenes[20].room_num)
-```
-
-## openLuup enhancements
-
-### function enhancements
-These functions have been enhanced:
-
-|Function|Enhancement|
-|---|---|
-|luup.call_delay|Delay is a float, so delays can go down to the millisecond level.|
-|luup.call_timer|Supports automatic timer repeat, rather than one shot only.|
-|luup.register_handler|Supports other protocols such as MQTT.|
-|luup.variable_get|Supports returning the historical time series of the variable.|
-|luup.inet.wget|Supports Basic and Digest authentication.|
-
-In addition we have:
-
-### Solar functionality
-The openLuup plugin device has variables for solar:
-
-- Right Ascension (RA)
-- Declination (DEC)
-- Altitude (ALT)
-- Azimuth (AZ)
-
-which are updated every two minutes.
-
-These calculations have always been done by openLuup to support scene times of sunrise/sunset, but are available for use (negating the need for a separate plugin, eg. Heliotrope.)
-
-There is a GetSolarCoords action, which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location as set up in the startup code).
-
-```lua
-luup.call_action ("solar", "GetSolarCoords", coords, 2)
-```
-
-The defaults can be overloaded:
-```lua
--- default to current time & location set up in startup code. Not necessary. Illustrative only.
-local coords = {Epoch = '', Latitude = '', Longitude = ''}
-
--- default to current time and specify location
-local coords = {Epoch = '', Longitude  = -0.0045417, Latitude = 51.4820845}
-```
-
-Example:
-```lua
-local openLuupID = 2 -- always the case
-
--- default to current time and specify location
-local coords = {Epoch = '', Latitude = 51.4820845, Longitude = -0.0045417}
-
-luup.call_action ("solar", "GetSolarCoords", coords, openLuupID)
-
--- read RA, DEC, ALT and AZ as needed
-local RA  = luup.variable_get("solar", "RA",  openLuupID)
-local DEC = luup.variable_get("solar", "DEC", openLuupID)
-local ALT = luup.variable_get("solar", "ALT", openLuupID)
-local AZ  = luup.variable_get("solar", "AZ",  openLuupID)
-
--- all in degrees
-print (RA)
-print (DEC)
-print (ALT)
-print (AZ)
-
 ```
 
 ## Examining the Luup engine
