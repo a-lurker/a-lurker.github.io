@@ -6,8 +6,9 @@
 - Customisation
 
   - [openLuup startup attributes](openLuup-startup-code.md)
-  - [List of Plugins](plugins-list.md)
   - [json parser](openluup-and-json.md)
+  - [List of Plugins](plugins-list.md)
+  - [Writing a plugin]{writing-a-plugin.md}
 
 - Guide
 
