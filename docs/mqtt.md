@@ -133,7 +133,7 @@ In this case you can make use of the [Virtual Sensor](https://github.com/toggled
 If there is no support for your device, you can create a virtual device. See the [Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices?tab=readme-ov-file#mqtt-support-version-30) plugin.
 
 ## Example MQTT handler
-This code handles some arbitrary MQTT message made use of it.
+This code handles some arbitrary MQTT message:
 
 This code makes use of the [Switchboard plugin](https://github.com/toggledbits/Switchboard-Vera).
 
@@ -232,10 +232,11 @@ The JSON format of a single device status report, which is very compact, is that
 
 With a round-robin interval of 2 seconds, a moderately-sized setup of 150 devices would be cycled through in five minutes, providing a sanity check that no transient device variable updates have been missed.
 
-## Possibilities
+## Lots of MQTT possibilities
 
 ### Other MQTT devices that could be integrated into openLuup:
 
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
 - [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via MQTT.
+- We like MQTT - got any more good ideas? Let us know on the [smarthome forum](smarthome.community/).
