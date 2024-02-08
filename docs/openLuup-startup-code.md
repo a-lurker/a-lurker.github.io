@@ -72,8 +72,11 @@ luup.attr_set ("openLuup.SMTP.Port", 1234) -- use port 1234 instead
 ```
 
 ## Data historian
-Set up the directory.
+The act of inserting this line into the start code, enables the archiving process ie saving the data to disk. The data can then be utilised by Grafana and influx.
+
 ```lua
+-- it's possible to place the data at any other favourite
+-- spot, noting the path is relative to cmh-ludl/
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
