@@ -4,7 +4,7 @@ openLuup has built in support for MQTT.
 New to MQTT? Recommend making use of [mqtt explorer](http://mqtt-explorer.com/).
 
 ## MQTT initialisation
-MQTT config such as username, passwords, etc are all set up in the [openLuup startup code](openLuup-startupcode.md).
+MQTT config such as username, passwords, etc are all set up in the [openLuup startup code](openLuup-startup-code.md).
 
 ## MQTT server
 This server provides Quality of Service (QoS) 0: At most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
@@ -37,6 +37,8 @@ openLuup can subscribe to topics published by [zigbee2mqtt](https://www.zigbee2m
 
 openLuup automatically recognises many Zigbee devices and will create native openLuup devices to make use of them. Where the device is unknown, a generic device is produced and you can write startup or scene code to act on any variables the device publishes.
 
+Got a Hue hub? Set up zigbee2mqtt and you won't need it!
+
 ## Shelly
 Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of.
 
@@ -68,7 +70,7 @@ List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-dev
 ## Tasmota
 Example [Tasmota](https://tasmota.github.io/docs/) setup [here](https://smarthome.community/topic/506/openluup-tasmota-mqtt-bridge/47).
 
-### UDP ➔ MQTT bridge
+## UDP ➔ MQTT bridge
 The openLuup MQTT QoS 0 server incorporates a UDP ➔ MQTT bridge, which is uni-directional.
 
 This means that any machine which can send a UDP datagram (and, frankly, that should be everything) can publish to subscribers of the openLuup MQTT server without the need for any MQTT client library. The use of UDP means that there is very little overhead to sending the data, and that there is absolutely no possibility of blocking the host process. The UDP 'fire and forget' concept also meshes very well with the MQTT QoS 0 service level.
@@ -131,7 +133,7 @@ In this case you can make use of the [Virtual Sensor](https://github.com/toggled
 If there is no support for your device, you can create a virtual device. See the [Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices?tab=readme-ov-file#mqtt-support-version-30) plugin.
 
 ## Example MQTT handler
-This code handles some arbitary MQTT message made use of it.
+This code handles some arbitrary MQTT message made use of it.
 
 This code makes use of the [Switchboard plugin](https://github.com/toggledbits/Switchboard-Vera).
 
@@ -236,4 +238,4 @@ With a round-robin interval of 2 seconds, a moderately-sized setup of 150 device
 
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
-- [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via Mqtt.
+- [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via MQTT.
