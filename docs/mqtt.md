@@ -239,4 +239,4 @@ With a round-robin interval of 2 seconds, a moderately-sized setup of 150 device
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
 - [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via MQTT.
-- We like MQTT - got any more good ideas? Let us know on the [smarthome forum](smarthome.community/).
+- We like MQTT - got any more good ideas? Let us know on the [smarthome forum](https://smarthome.community/).
