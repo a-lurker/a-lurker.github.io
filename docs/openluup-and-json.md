@@ -1,6 +1,6 @@
 # openLuup and json
 
-openLuup has a json parser loading hierarchy depending on what is available on the host device.
+openLuup has a decode json parser loading hierarchy depending on what is available on the host device.
 
 1. [rapidjson](http://miloyip.github.io/rapidjson/) -- very rapid
 2. [cjson](https://www.kyne.com.au/%7Emark/software/lua-cjson.php) -- at least 10x faster than the openLuup module
@@ -19,14 +19,14 @@ sudo apt-cache search lua-cjson
 ```
 
 ## Plugin developers
-Developers can make use of the openluup parser like so:
+Developers can make use of the selected openluup parser like so:
 
 ```lua
 local json = require "openLuup.json"
 ```
 
 ## Vera and json
-Early Vera incantations had no json parser available at all. Later on, dkjson was included. So plugin developers used any old parser they could find (if lucky). Consequently you ended up with bizarre code such as this:
+Early Vera incantations had no json parser available at all. Later on, dkjson was included. So plugin developers used any old parser they could find (if lucky). Consequently you ended up with bizarre code such as this. Plus the huge risk of the different parsers being subtly incompatible.
 
 ```lua
 -- If possible, get a JSON parser. If none available, returns nil. Note that typically UI5 may not have a parser available.
