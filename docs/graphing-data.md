@@ -49,7 +49,33 @@ You can set up a [schema for different variables](https://graphite.readthedocs.i
 
 Refer to files `storage-schemas.conf` and `storage-aggregation.conf`. [This post](https://community.ezlo.com/t/openluup-data-historian/199464/120) is also useful.
 
-Refer also to the file[../cmh-ludl/openLuup/openLuup/servertables.lua](https://github.com/akbooer/openLuup/blob/f5db7abc964595ba4db6f5f373918cae6ec312b8/openLuup/servertables.lua#L229)
+Refer also to the file [../cmh-ludl/openLuup/openLuup/servertables.lua](https://github.com/akbooer/openLuup/blob/f5db7abc964595ba4db6f5f373918cae6ec312b8/openLuup/servertables.lua#L229)
+
+Setting a up Whisper file to monitor a variable is a bit cryptic:
+
+A one-off file create can be done with code like this run in Lua Test:
+
+```lua
+local whisper = require "openLuup.whisper"
+
+local filename = "history/0.377.Weather1.TodayHighTemp.wsp"
+local archives = "10m:7d,1h:30d,3h:1y,1d:10y"
+
+whisper.create (filename,archives,0)
+
+print((whisper.info (filename)).retentions)
+```
+
+The key parameters you will need to change are filename and archives. This also assumes that the historian folder is `history/`.
+
+The filename syntax is `0.deviceNumber.shortServiceId.variableName`, and the archives are in the usual Whisper syntax. The example make sense for most measurements, with a 10 minute basic sample rate, but you could, for example, switch that to 5.
+
+If the code is successful, it will echo the archive retentions read from the newly created file, eg:
+
+10m:7d,1h:30d,3h:1y,1d:10y
+
+You have to reload for the historian to start using this new set of archives.
+
 
 ### InfluxDB
 Set the server address.
@@ -70,11 +96,6 @@ Set the server address.
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
 ```
 
-## Console
-A quick chart of the data cached by the Data Historian.
-
-Refer to page /home/cache.
-
 ## AltUI
 AltUI allows for any selected variable to be watched and pushed to:
 
@@ -84,9 +105,9 @@ AltUI allows for any selected variable to be watched and pushed to:
 - thingspeak
 
 ## DataYours
-Plugin by @akbooer. Superseded by native openLuup processes. Deprecated.
+Plugin by @akbooer. Superseded by native openLuup processes. **Deprecated**.
 
-Refer to storage-schemas.conf in /etc/cmh-ludl/whisper/
+Refer to storage-schemas.conf in `/etc/cmh-ludl/whisper/`
 
 DataYours will register itself with AltUI, if installed, and be available as a Data Storage Provider under the graphing menu for each variable.
 
@@ -112,7 +133,7 @@ Files end up in `/etc/cmh-ludl/whisper/`
 
 However the file location can be changed in the plugin. Refer to variable LOCAL_DATA_DIR, which defaults to `whisper/`
 
-Examples: temp_outside.w.wsp, Watts_Solar.d.wsp
+Examples: `temp_outside.w.wsp`, `Watts_Solar.d.wsp`
 
 You need to make your entries on the AltUI page and then press the (red) "graph" icon button at the top (the same one you used to enter the page.)
 
@@ -125,4 +146,4 @@ http://openLuup_IP:3480/data_request?id=lr_render&target={temp_hot_water_pipe.w,
 ```
 
 ## Datamine
-A venerable plugin by @Chris Jackson. Deprecated.
+A venerable plugin by @Chris Jackson. **Deprecated**.
