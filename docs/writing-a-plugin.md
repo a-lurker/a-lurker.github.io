@@ -9,12 +9,14 @@ A plugin typically consists of five files with a hierarchy as follows:
 |I_SimplePlugin1.xml|I_ = Implementation file|
 |L_SimplePlugin1.lua|L_ = Lua file|
 
-The file names are prefixed by a capital letter (as listed in the table above) followed by an underscore. By convention a "1" is placed after the plugin name and before the period.
+The file names are prefixed by a capital letter (as listed in the table above) followed by an underscore. By convention a "1" is placed after the plugin name and before the period. Words begin with uppercase and no separators are used.
+
+The files are placed in the `../cmh-ludl/` directory.
 
 ### D_SimplePlugin1.xml
 The `Description xml` file contains information about the plugin device itself.
 - Plugin name
-- a reference to the Service file
+- a reference to the Description json file for the UI
 - a reference to the Service file
 - a reference to the Implementation file
 - etc
