@@ -9,9 +9,10 @@ These functions have been enhanced:
 |---|---|
 |luup.call_delay|Delay is a float, so delays can go down to the millisecond level.|
 |luup.call_timer|Supports automatic timer repeat, rather than one shot only.|
-|luup.register_handler|Supports other protocols such as MQTT.|
+|luup.register_handler|Supports other protocols such as MQTT, UDP.|
 |luup.variable_get|Supports returning the historical time series of the variable.|
 |luup.inet.wget|Supports Basic and Digest authentication.|
+|Scenes|Scene code can read the variable lul_scene that identifies to the scene code what scene is running.|
 
 In addition we have:
 
@@ -396,7 +397,6 @@ luup.register_handler ("myUDPcallback", "udp:2222")
 The callback handler is called for each incoming datagram.
 
 ### MQTT
-
 One additional argument - message number (integer)
 
 The MQTT callback handler is passed three variables as follows:
@@ -405,8 +405,12 @@ The MQTT callback handler is passed three variables as follows:
 |---|---|---|
 |topic|string|MQTT topic|
 |message|table|Topic json payload - needs to be decoded|
-|messageNumber|integer|Matches the number in the registration of the handler|
+|messageNumber|?|A generic variable or function passed in from the handler registration|
 
+Example:
+```lua
+luup.register_handler ("my_MQTT_callback", "mqtt:test", {a = "A", b = "B"})
+```
 
 ### reload
 reload ()
@@ -600,7 +604,6 @@ luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1
 ```
 
 ## Numbers
-
 - latitude
 - longitude
 - pk_accesspoint
@@ -689,11 +692,10 @@ embedded,
 invisible
 )
 
-Existing children:
-- if mentioned - are updated. You can change their info.
-- if not mentioned - are deleted.
-
-Any new children are added (the typical scenario).
+Children:
+- Any new children are added (the typical scenario).
+- Existing children if mentioned are updated. You can change their info.
+- Existing children if not mentioned are deleted.
 
 |Identifier|Type|Comments|
 |---|---|---|
@@ -715,7 +717,6 @@ Any new children are added (the typical scenario).
 
 Example:
 ```lua
-
 local childDevices = luup.chdev.start(THIS_LUL_DEVICE)
 
 luup.chdev.append(
@@ -804,7 +805,6 @@ local ip_address = luup.devices[THIS_LUL_DEVICE].ip)
 ## luup.inet
 
 ### wget
-
 luup.inet.wget(url, time_out, username, password)
 
 |Identifier|Type|Comments|
