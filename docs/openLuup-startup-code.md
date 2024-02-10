@@ -77,6 +77,7 @@ The act of inserting this line into the startup code, enables the archiving proc
 ```lua
 -- it's possible to place the data at any other favourite
 -- spot, noting the path is relative to cmh-ludl/
+-- this line will start the Historian
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
@@ -104,18 +105,22 @@ luup.attr_set ("openLuup.MQTT.Password", "---password---")
 ```
 
 ## MQTT server port
-The MQTT server port defaults to 1883 but it can be altered here.
+The MQTT server port defaults to 1883 but it can be altered here. This line of code is optional.
 
 ```lua
-luup.attr_set ("openLuup.MQTT.Port", 1883)    -- choose any free port, you might not want to use this MQTT default
+-- choose any free port, you might not want to use this MQTT default
+luup.attr_set ("openLuup.MQTT.Port", 1883)
 ```
 
 ## openLuup MQTT publishing
 openLuup publishes all of its variables and device status. The latter as a json block. The publishing can be turned on and off with these attributes. They both default to false.
 
 ```lua
-luup.attr_set ("openLuup.MQTT.PublishVariableUpdates", true) -- publish every variable update
-luup.attr_set ("openLuup.MQTT.PublishDeviceStatus", 2)       -- publish a single device status every N seconds (0 = never)
+-- publish every variable update
+luup.attr_set ("openLuup.MQTT.PublishVariableUpdates", true)
+
+-- publish a single device status every N seconds (0 = never)
+luup.attr_set ("openLuup.MQTT.PublishDeviceStatus", 2)
 ```
 
 ## UDP ➔ MQTT bridge
