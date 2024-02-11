@@ -19,8 +19,15 @@ The act of inserting this line into the startup code, enables the archiving proc
 luup.attr_set ("openLuup.Historian.Directory","history/")
 ```
 
+Do a Luup engine restart. The Whisper files for every variable is then created in the history/ directory. Do another restart to get the archiving running.
+
+- Different data types have different sample rates and retention policies. For example, temperature data is sampled every 20 minutes, initially, but reduced in a number of stages to once per day after a year, and battery levels are just sampled once per day.
+- Default total on-disk archive duration is 10 years. Typical file sizes, one per variable (containing multiple resolution data) are about 300 Kbyte.
+
+- Whisper file headers are cached and renaming/changing the file mid-stream will completely trash it. Stop openLuup first.
+
 ### Quick graph view
-In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest.
+In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest. Uses Google Charts, so an internet connection is required.
 
 ### Choosing what variables to monitor
 If the on disk archiving has been enabled:
@@ -86,7 +93,7 @@ luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
 ### Grafana (Graphite db)
-openLuup includes a Grafana Data Source API.
+openLuup includes a Grafana Data Source API. The URL for the Grafana Data Source interface is your openLuup:3480 port.
 
 ### Graphite Carbon databases
 Set the server address.
@@ -139,7 +146,7 @@ You need to make your entries on the AltUI page and then press the (red) "graph"
 
 The configuration will not be permanently saved until the next user_data.json checkpoint (might be up to 6 minutes away) or the next Luup reload (whichever is the sooner.)
 
-Uses Google charts. eg:
+Uses Google Charts, so an internet connection is required. Example URL to chart:
 
 ```http
 http://openLuup_IP:3480/data_request?id=lr_render&target={temp_hot_water_pipe.w,temp_outside.w}&title=HW%20pipe&height=750&from=-y&yMin=0&yMax=50
