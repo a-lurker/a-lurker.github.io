@@ -39,6 +39,8 @@ openLuup automatically recognises many Zigbee devices and will create native ope
 
 Got a Hue hub? Set up zigbee2mqtt and you won't need it!
 
+ Newly discovered Zigbee devices are automatically placed in the "Zigbee room".
+
 ## Shelly
 Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of.
 
@@ -63,7 +65,7 @@ Shelley Plus
 |shellyplus2pm|2 relays with power measurement|
 |shellyplusht|temperature & humidity sensor with display|
 
-Not on the list above? A generic device is created.
+Not on the list above? A generic device is created. Newly discovered Shelley devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
 List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
 
@@ -125,9 +127,9 @@ IMAGE HERE Screenshot 2021-03-17 at 16.52.34.png
 The updates are effectively instantaneous. There are plenty of basic devices, which could benefit from this transport mechanism. eg Arduino PCBs.
 
 ## MQTT virtual sensors
-It is sometimes the case you have a device that sends lots of informtion but you are only interested in some of the info. You don't need a plugin that creates a plethora of child devices, many of which you will never make use of and clog up up your user interface.
+It is sometimes the case you have a device that sends lots of information but you are only interested in some of the info. You don't need a plugin that creates a plethora of child devices, many of which you will never make use of and clog up up your user interface.
 
-In this case you can make use of the [Virtual Sensor](https://github.com/toggledbits/VirtualSensor) plugin. The plugin allows to you dial up what sort sensor it is eg temeperature, switch state, etc and it will create a virtusl sensor to suit your needs.
+In this case you can make use of the [Virtual Sensor](https://github.com/toggledbits/VirtualSensor) plugin. The plugin allows to you dial up what sort sensor it is eg temperature, switch state, etc and it will create a virtusl sensor to suit your needs.
 
 ## MQTT virtual devices
 If there is no support for your device, you can create a virtual device. See the [Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices?tab=readme-ov-file#mqtt-support-version-30) plugin.
