@@ -43,7 +43,9 @@ Data may be easily visualised if you already have a Grafana installation.
 A similar arrangement allows Influx to be used via UDP.
 
 ### Grafana
-Grafana is a data visulation tool. You can connect to a database and then view the data. With openLuup choose a Graphite connection and point the URL to:
+Grafana is a data visulation tool. You can connect to a database and then view the data. 
+
+openLuup includes a Grafana Data Source API, so  in Grafana choose a Graphite connection and point the URL to:
 
 - With openLuup running on same device as Grafana enter:
     http://localhost:3480
@@ -91,10 +93,6 @@ If the code is successful, it will echo the archive retentions read from the new
 10m:7d,1h:30d,3h:1y,1d:10y
 
 You have to reload for the historian to start using this new set of archives.
-
-
-### Grafana (Graphite db)
-openLuup includes a Grafana Data Source API. The URL for the Grafana Data Source interface is your openLuup:3480 port.
 
 ### Graphite Carbon databases
 Set the server address.
