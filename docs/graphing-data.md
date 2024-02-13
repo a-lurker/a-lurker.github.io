@@ -29,10 +29,10 @@ Do a Luup engine restart. The Whisper files for every variable is then created i
 ### Quick graph view
 In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest. Uses Google Charts, so an internet connection is required.
 
-### Choosing what variables to monitor
-If the on disk archiving has been enabled:
+### Historian variables retained
+If the on disk archiving has been enabled the Historian automatically starts archiving the majority of the openLuup bariables.
 
-Then all the variable checkboxes will show what is being retained on disk. Note: these checkboxes are READ ONLY.
+In the Console --> Historian--> cache: The checkboxes will show what variable are being retained on disk. Note: these checkboxes are READ ONLY.
 
 To see the variable archiving possibilities refer to the console:  Historian --> Rules page.
 
@@ -41,6 +41,15 @@ If the on disk archiving has been enabled the Data Historian Grafana Data Source
 Data may be easily visualised if you already have a Grafana installation.
 
 A similar arrangement allows Influx to be used via UDP.
+
+### Grafana
+Grafana is a data visulation tool. You can connect to a database and then view the data. With openLuup choose a Graphite connection and point the URL to:
+
+- With openLuup running on same device as Grafana enter:
+    http://localhost:3480
+
+- With openLuup on a different device from Grafana enter:
+   http://openLuup_IP_address:3480
 
 ### Whisper database
 Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
@@ -84,14 +93,6 @@ If the code is successful, it will echo the archive retentions read from the new
 You have to reload for the historian to start using this new set of archives.
 
 
-### InfluxDB
-Set the server address.
-
-```lua
--- place this line in in your startup code
-luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
-```
-
 ### Grafana (Graphite db)
 openLuup includes a Grafana Data Source API. The URL for the Grafana Data Source interface is your openLuup:3480 port.
 
@@ -101,6 +102,14 @@ Set the server address.
 ```lua
 -- place this line in in your startup code
 luup.attr_set ("openLuup.Historian.Graphite_UDP", "127.0.0.1:2003")
+```
+
+### InfluxDB
+Set the server address.
+
+```lua
+-- place this line in in your startup code
+luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 ```
 
 ## AltUI
