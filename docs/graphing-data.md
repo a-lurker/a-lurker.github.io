@@ -30,9 +30,9 @@ Do a Luup engine restart. The Whisper files for every variable is then created i
 In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest. Uses Google Charts, so an internet connection is required.
 
 ### Historian variables retained
-If the on disk archiving has been enabled the Historian automatically starts archiving the majority of the openLuup bariables.
+If the on disk archiving has been enabled the Historian automatically starts archiving the majority of the openLuup variables.
 
-In the Console --> Historian--> cache: The checkboxes will show what variable are being retained on disk. Note: these checkboxes are READ ONLY.
+In the Console --> Historian--> cache: The checkboxes will show what variables are being retained on disk. Note: these checkboxes are **READ ONLY**.
 
 To see the variable archiving possibilities refer to the console:  Historian --> Rules page.
 
