@@ -19,16 +19,23 @@ In addition we have:
 ### Solar functionality
 The openLuup plugin device has variables for solar:
 
-- Right Ascension (RA)
-- Declination (DEC)
-- Altitude (ALT)
-- Azimuth (AZ)
+
+|Var name|Full name|Range & units|
+|---|---|---|
+|RA|Right Ascension|+/- 180 degrees in 24 hours, or 15° in one hour|
+|DEC|Declination|+/- 23.5 degrees between Solstices|
+|ALT|Altitude / Elevation|0 to max of +/- 90 degrees: sun angle above / below horizon|
+|AZ|Azimuth|+/- 180 degrees: sun direction from north|
 
 which are updated every two minutes.
 
 These calculations have always been done by openLuup to support scene times of sunrise/sunset, but are available for use (negating the need for a separate plugin, eg. Heliotrope.)
 
 There is a GetSolarCoords action, which gives these values for any given time (defaults to now) and latitude/longitude (defaults to current location as set up in the startup code).
+
+- Epoch is a UNIX timestamp
+- latitude is in degrees
+- longitude is in degrees
 
 ```lua
 luup.call_action ("solar", "GetSolarCoords", coords, 2)
