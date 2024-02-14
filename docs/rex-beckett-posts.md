@@ -965,16 +965,16 @@ RexBeckett:
 
 LuaTest is Lua code designed to  faciltate debugging your own code. See the forum discussion here:
 
->[LuaTest - A Tool for Testing Scene Lua Code](https://community.ezlo.com/t/luatest-a-tool-for-testing-scene-lua-code/180205)
+[LuaTest - A Tool for Testing Scene Lua Code](https://community.ezlo.com/t/luatest-a-tool-for-testing-scene-lua-code/180205)
 
-The documentation is here:
+The User Guide is here:
 
->[LuaTest: Documentation](LuaTest-Documentation)
+[LuaTest: Documentation](https://drive.google.com/file/d/0BykZKwGsCBsATkUyaEs3QVo3ZEE/edit?resourcekey=0-BDsSTPkNJlp5jSc6Msr9QA)
 
 and the code itself here:
 
->[LuaTest: code](LuaTest-code)
+[LuaTest: code](https://drive.google.com/file/d/1ve5sCq-NASQS3WUQT86VhVkXwbNrZsLt/view)
 
 with some updates here:
 
->[LuaTest: code 2](cgmartin/RBLuaTest.lua)
+[LuaTest: code 2](https://gist.github.com/cgmartin/d52409fe473e1d4fc5044c3d676d109c)
