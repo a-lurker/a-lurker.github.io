@@ -11,17 +11,18 @@ The developement of the Vera software and hardware slowly came to a standstill. 
 - Light weight
 - Courtesy of [@amg0](https://github.com/amg0/ALTUI), a nice Alternative User Interface "AltUI"
 - Fast
+- Easy graphing with Grafana
 - MQTT with built in broker
 - UDP to MQTT bridge
 - Built in support for and via MQTT:
   * [ZigBee](https://www.zigbee2mqtt.io/)
-  * Shelly
+  * [Shelly](https://www.shelly.com/en)
   * Tasmota
 - Plugin for Zwave using [Zway](https://z-wave.me/products/uzb/)
 - CGI
 - Email server on local LAN
 - Console
-- Third party plugins of varying quality!
+- Plugin store with about seventy or more plugins of varying quality!
   * See the [list of plugins](plugins-list.md)
   * [Multi System Reactor](https://reactor.toggledbits.com/docs/)
   * [MySensors](https://www.mysensors.org/)
@@ -30,4 +31,4 @@ The developement of the Vera software and hardware slowly came to a standstill. 
 Please consider [donating](https://www.justgiving.com/DataYours/). The money goes to "Cancer Research UK".
 
 ## Community
-The developer and users can generally be found at [Smarthome Community Forum](https://smarthome.community/).
+The developer and users can generally be found at the [Smarthome Community Forum](https://smarthome.community/).
