@@ -594,8 +594,8 @@ For openLuup to start up at system boot time, there are various approaches sugge
 on the forum. Details are taken directly from the posts there:
 
 1. openLuup Start on Bootup using Systemctl on Raspberry Pi by @groundglass
-2. /etc/rc.local, as used in turnkey systems by @CudaNet
-3. openLuup: init.d script by @martynwendon
+2. Deprecated - use systemctl: /etc/rc.local, as used in turnkey systems by @CudaNet
+3. Deprecated - use systemctl: openLuup: init.d script by @martynwendon
 
 I’m currently using the Systemctl approach…
 
@@ -668,6 +668,8 @@ $ sudo systemctl disable openluup
 ```
 
 ### /etc/init.d/openLuup
+Deprecated - use systemctl.
+
 Thanks to @martynwendon:
 
 So I whipped up a quick init.d script for openLuup, it works well for me on debian based systems.
@@ -738,6 +740,8 @@ esac
 ```
 
 ### /etc/rc.local
+Deprecated - use systemctl.
+
 Thanks to @CudaNet:
 
 Adjust startup(server) script for openLuup persistence....
@@ -1342,7 +1346,8 @@ Here’s what I’ve found - if you know more, let me know.
 
 - **only devices with a device file appear in the status request response** – what this means is that if you create a ‘dummy’ device on Vera, just to hang variables off, or as a holder for VeraBridge mirrored variables, those device variable values won’t appear on a bridged openLuup system unless you create the dummy device with a valid device file (just a device type will not do.) I usually use D_ComboDevice1.xml for this.
 
-- **luup.inet.wget()** – returns a third parameter, which is the actual http.request status code. luup.io.intercept() – returns a boolean with complex meaning. See post by @a-lurker here: https://community.ezlo.com/t/openluup-vs-vera-comms-protocol/196129
+- **luup.inet.wget()** – returns a third parameter, which is the actual http.request status code.
+- **luup.io.intercept()** – returns a boolean with complex meaning. See post by @a-lurker here: https://community.ezlo.com/t/openluup-vs-vera-comms-protocol/196129
 - **/data_request?id=static** – This is just a subset of the &id=user_data request, which contains the static data. It’s the opposite of &id=user_data&ns=1, which suppresses the static data.
 
 - …
