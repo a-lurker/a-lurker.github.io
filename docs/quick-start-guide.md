@@ -55,7 +55,10 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 
 [systemctl](/openluup?id=systemctl-with-etcsystemdsystemopenluupservice)
 
-## Not working.
+## json encoders / decoders
+You can optimise the json decoding, if needed. Refer to [json parser](openluup-and-json.md).
+
+## Not working?
 Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
 
 ## WinSCP
