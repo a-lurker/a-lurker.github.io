@@ -12,10 +12,63 @@ It's highly recommended to have rapidjson or cjson (lua version) be made availab
 
 There is potentially a huge benefit for plugins such as VeraBridge and ZWay. As the openLuup JSON module will use the C-library based cjson module or rapidjson for decoding.
 
-Raspberry Pis typically have the cjson module installed already. Check with this command:
+You can check the console startup log to see what json decoder is currently being used by openLuup at:
 
+http://ip_address:3480/console?page=startup_log
+
+1. rapidjson decoder:
+```text
+TBA
+```
+
+2. cjson decoder:
+```text
+2024-02-18 14:14:18.568  openLuup.json::   version Cjson (2.1.0.10) + openLuup
+```
+
+3. Internal openLuup json decoder:
+```text
+2024-02-15 08:08:01.139  openLuup.json::  version 2021.05.01  @akbooer
+```
+
+## Installing rapidjson or cjson:
+
+To install rapidjson on a Raspberry Pi:
 ```bash
-sudo apt-cache search lua-cjson
+# Do updates ready for install
+sudo apt update
+sudo apt upgrade
+
+# Get Lua Rocks package installer
+sudo apt-get install luarocks
+
+# Get the lua-cjson parser/encoder for Lua
+sudo luarocks install rapidjson
+
+# Check the installation
+luarocks show rapidjson
+
+# Probably best to reboot
+# sudo reboot
+```
+
+To install cjson on a Raspberry Pi:
+```bash
+# Do updates ready for install
+sudo apt update
+sudo apt upgrade
+
+# Get Lua Rocks package installer
+sudo apt-get install luarocks
+
+# Get the lua-cjson parser/encoder for Lua
+sudo luarocks install lua-cjson
+
+# Check the installation
+luarocks show lua-cjson
+
+# Probably best to reboot
+# sudo reboot
 ```
 
 ## Plugin developers
@@ -26,7 +79,9 @@ local json = require "openLuup.json"
 ```
 
 ## Vera and json
-Early Vera incantations had no json parser available at all. Later on, dkjson was included. So plugin developers used any old parser they could find (if lucky). Consequently you ended up with bizarre code such as this. Plus the huge risk of the different parsers being subtly incompatible.
+More recent versions of Vera hardware provided `dkjson.lua` located at `/etc/cmh-ludl/`. openLuup installs this file, so plugins that use it can find it.
+
+Early Vera incantations had no json parser available at all. Later on, as mentioned above , dkjson was included. So plugin developers used any old parser they could find (if lucky). Consequently you ended up with bizarre code such as this. Plus the huge risk of the different parsers being subtly incompatible - particuarly on handling "nil".
 
 ```lua
 -- If possible, get a JSON parser. If none available, returns nil. Note that typically UI5 may not have a parser available.
