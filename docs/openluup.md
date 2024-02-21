@@ -84,39 +84,39 @@ The installation process is target machine dependent (other machines may require
 **RASPBIAN (RASPBERRY PI)**
 
 (Lua 5.1 is pre-installed)
-```text
-# sudo apt-get update
-# sudo apt-get install lua-socket
-# sudo apt-get install lua-filesystem
-# sudo apt-get install lua-sec
+```bash
+sudo apt update
+sudo apt install lua-socket
+sudo apt install lua-filesystem
+sudo apt install lua-sec
 ```
 
 **DEBIAN (BEAGLEBONE BLACK)**
 
-```text
-# apt-get update
-# apt-get install lua5.1
-# apt-get install lua-socket
-# apt-get install lua-filesystem
-# apt-get install lua-sec
+```bash
+apt update
+apt install lua5.1
+apt install lua-socket
+apt install lua-filesystem
+apt install lua-sec
 ```
 
 **OPEN-WRT (AS USED BY VERA!)**
 
 (Lua 5.1 is pre-installed)
 
-```text
-# opkg update
-# opkg install luasocket
-# opkg install luafilesystem
-# opkg install luasec
+```bash
+opkg update
+opkg install luasocket
+opkg install luafilesystem
+opkg install luasec
 ```
 
 ---
 ### 2. openLuup Installation
 This is very straight-forward: create a directory **cmh-ludl/** for the openLuup installation on your machine (in your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions) **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
 
-```lua
+```bash
 wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 ```
 
@@ -126,14 +126,15 @@ https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 
 Run the file using the command line:
 
-```text
+```bash
 lua openLuup_install.lua
 ```
 
 If successful, the script produces console output like this:
 
 ```text
-# lua5.1 install.lua
+lua5.1 install.lua
+
 openLuup_install 2016.06.08 @akbooer
 getting latest openLuup version tar file from GitHub...
 un-zipping download files...
@@ -296,7 +297,7 @@ local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","Cu
 print ("over the last hour", pretty {value = v2, times=t2})
 ```
 
-gives
+gives:
 
 ```text
 normal current value 31.3 1530026929
@@ -1155,23 +1156,27 @@ The **ArchiveVideo** action may be used to save single camera snapshots to openL
 ## Appendix: openLuup – Databases and Data Visualisation
 External databases are useful for long-term storage, and visualisation, of sensor data and events. Several plugins have been written specifically for Vera/openLuup to provide this functionality:
 
-- dataMine – the original! Entirely Vera-based with possible USB storage. A self-contained eco-system with custom database format and graphics.
+- Deprecated. DataYours – a Lua implementation of the Graphite / Whisper distributed database. Industry-standard protocols allow data to be sent to multiple databases. Includes a crude Google-charts powered graphics interface.
 
-- DataYours – a Lua implementation of the Graphite / Whisper distributed database. Industry-standard protocols allow data to be sent to multiple databases. Includes a crude Google-charts powered graphics interface.
+- Deprecated. dataMine – the original! entirely Vera-based with optional USB storage. A self-contained eco-system with custom database format and graphics.
 
 Since Vera-based storage is limited, and mounting USBs often challenging, CIFS (Common Internet File System) may be installed to access network-connected storage over the network. Whilst openLuup systems usually have massively more connected storage than Vera, the CIFS approach may also be used to good effect.
 
 AltUI itself provides a facility called Data Storage Providers (DSP) which enables the sending of device variable data to remote databases, typically over HTTP. Currently, the default supported databases are: ThingsSpeak, Emoncms, and IfThisThenThat (IFTTT). It also provides a capability for users to extend the feature to additional databases. openLuup builds on these tools to allow a number of further options:
 
-- InfluxDB DSP – UDP connection to an externally configured InfluxDB database.
 - Graphite DSP – UDP connection to an externally configured Graphite database.
 - Graphite CGI – HTTP API to retrieve data from multiple dataMine & DataYours databases.(installed as part of the DataYours plugin)
+- InfluxDB DSP – UDP connection to an externally configured InfluxDB database.
 
 The Graphite DSP is fully compatible with both DataYours and a real Graphite system. This means that you can send data to a remote DataYours installation without having DataYours installed on your local machine.
 
 Whilst a number of these options provide their own data visualisations, the best experience for browsing and plotting data seems to be offered by third-party tools. Probably one of the best is Grafana which is able to access many of the above database systems through its own connectors. The Graphite CGI also allows Grafana to connect with data from DataMine and DataYours.
 
 ---
+### DataYours / Graphite
+
+TO BE DONE.
+
 ### InfluxDB
 My choice is for simplicity of use, which means configuring the UDP port of InfluxDB. Once
 installed, the InfluxDB configuration file is at /etc/influxdb/influxdb.conf In that file, I have:
@@ -1195,10 +1200,6 @@ luup.attr_set ("openLuup.Databases.Influx", "172.16.42.129:8089")
 For each watched variable you need just to specify a measurement name, optionally followed by any tags you want to do with it…
 
 IMAGE HERE
-
-### DataYours / Graphite
-
-TO BE DONE.
 
 ---
 ## Appendix: Sending and receiving UDP datagrams
