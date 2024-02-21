@@ -40,7 +40,7 @@ sudo apt update
 sudo apt upgrade
 
 # Get Lua Rocks package installer
-sudo apt-get install luarocks
+sudo apt install luarocks
 
 # Get the lua-cjson parser/encoder for Lua
 sudo luarocks install rapidjson
@@ -49,7 +49,7 @@ sudo luarocks install rapidjson
 luarocks show rapidjson
 
 # Probably best to reboot
-# sudo reboot
+sudo reboot
 ```
 
 To install cjson on a Raspberry Pi:
@@ -59,7 +59,7 @@ sudo apt update
 sudo apt upgrade
 
 # Get Lua Rocks package installer
-sudo apt-get install luarocks
+sudo apt install luarocks
 
 # Get the lua-cjson parser/encoder for Lua
 sudo luarocks install lua-cjson
@@ -68,7 +68,7 @@ sudo luarocks install lua-cjson
 luarocks show lua-cjson
 
 # Probably best to reboot
-# sudo reboot
+sudo reboot
 ```
 
 ## Plugin developers
