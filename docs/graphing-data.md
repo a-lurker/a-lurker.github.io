@@ -43,7 +43,7 @@ Data may be easily visualised if you already have a Grafana installation.
 A similar arrangement allows Influx to be used via UDP.
 
 ### Grafana
-Grafana is a data visulation tool. You can connect to a database and then view the data. 
+Grafana is a data visulation tool. You can connect to a database and then view the data.
 
 openLuup includes a Grafana Data Source API, so  in Grafana choose a Graphite connection and point the URL to:
 
@@ -52,6 +52,17 @@ openLuup includes a Grafana Data Source API, so  in Grafana choose a Graphite co
 
 - With openLuup on a different device from Grafana enter:
    http://openLuup_IP_address:3480
+
+Use the additional functions at the trailing end of the Grafana data chooser: alias, aliasByNode, aliasByMetric to make your metrics legend and labels look nice. Suppose you have a metric like this:
+
+openLuup.303_OutdoorTemperature.TemperatureSensor1.CurrentTemperature
+
+Following that metric selection with these functions will give:
+
+- alias ("Foo") - "Foo"
+- aliasByMetric - "CurrentTemperature"
+- aliasByNode (1) - "303_OutdoorTemperature"
+- aliasByNode (0,3) - "openLuup.CurrentTemperature"
 
 ### Whisper database
 Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
