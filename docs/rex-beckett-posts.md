@@ -355,7 +355,7 @@ RexBeckett:
 
 I showed in Multiple Conditions 1 how a code chunk could be converted to a function. With small adjustments, the function call can pass the parameters to be used for the test. Now a single piece of code can be used to test several devices. The function code can even be added to your Startup Lua so it may be called from any scene. In the following examples, I changed the original lines that set the parameters to comments (with --) as a reminder of what each parameter means.
 
-Function to check if a temperature is within a range
+Function to check if a temperature is within a range:
 
 ```lua
 function checkTemp(dID, tLow, tHigh, allow) --dID = 55
@@ -372,7 +372,7 @@ return (((tCurrent >= tLow) and (tCurrent <= tHigh)) == allow)
 end
 ```
 
-Function to check the state of a Z-Wave switch
+Function to check the state of a Z-Wave switch:
 
 ```lua
 function checkSwitch(dID, allow) local dID = 66
@@ -384,7 +384,7 @@ local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1","Status",
 return ((status == "1") == allow) end
 ```
 
-We can use these two functions to implement a more-complex set of conditions. This example, suggested by @parkerc, checks the temperature in three different rooms. If any of the temperatures are out of range, checkTemp(device,min,max,true) returns false. In this case we check if the switch controlling our heating is off and, if so, allow the scene to run to turn it on.
+We can use these two functions to implement a more-complex set of conditions. This example, suggested by @parkerc, checks the temperature in three different rooms. If any of the temperatures are out of range, checkTemp(device,min,max,true) returns false. In this case we check if the switch controlling our heating is off and, if so, allow the scene to run to turn it on:
 
 ```lua
 if checkTemp(123,18,22,true) and checkTemp(124,18,22,true) and checkTemp(125,18,22,true)
@@ -393,9 +393,9 @@ then return false
 -- All temperatures are in range, don't run scene else return checkSwitch(101,false) -- Run scene if switch is off end
 ```
 
-Adding functions to Startup Lua
+Adding functions to Startup Lua:
 
-Select the APPS tab, click on Develop Apps and select Edit Startup Lua. Add your functions to the end of the existing code and click GO. Now click on Vera’s Reload button to restart the luup engine. Your functions should now be available to the luup in any scene.
+Select the Apps tab, click on Develop Apps and select Edit Startup Lua. Add your functions to the end of the existing code and click GO. Now click on Vera’s Reload button to restart the luup engine. Your functions should now be available to the luup in any scene.
 
 ## Multiple Triggers
 RexBeckett:
@@ -404,7 +404,7 @@ Sometimes we want to have several different events or schedules result in essent
 
 This example is for a scene that sets a Thermostat setpoint based on one of three triggers.
 
-Trigger 1 Luup event - Set to 20 during daytime, do nothing at night.
+Trigger 1 Luup event - Set to 20 during daytime, do nothing at night:
 
 ```lua
 local function checkDayTime()
@@ -422,7 +422,7 @@ else
 end
 ```
 
-Trigger 2 Luup event - Set to 20 during daytime or 10 at night
+Trigger 2 Luup event - Set to 20 during daytime or 10 at night:
 
 ```lua
 local function checkDayTime()
@@ -441,11 +441,10 @@ end
 return true
 ```
 
-Trigger 3 Luup event - Set to 18
+Trigger 3 Luup event - Set to 18:
 
 setTemp = 18 return true
-
-Main scene LUUP - Version 1
+Main scene LUUP - Version 1:
 
 ```lua
 local dID = 55 if (setTemp ~= nil) then
@@ -454,12 +453,13 @@ local dID = 55 if (setTemp ~= nil) then
 end
 ```
 
-Main scene LUUP - Version 2
+Main scene LUUP - Version 2:
 
 ```lua
 local dID = 55 if (setTemp == nil) then
    setTemp = 20
 end
+
 luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat","SetCurrentSetpoint",{NewCurrentSetpoint=setTemp},dID)
 setTemp = nil
 ```
@@ -504,6 +504,7 @@ return (((tNow - tLastOn) <= twSecs) == allow)
 ```
 
 ## Service IDs, Variables and Actions
+
 RexBeckett:
 
 One of the most frequent problems we see in requests for help with Lua code, is errors in Service IDs and variable or parameter names in luup function calls. These errors can be tricky to find. Even one character in the wrong case will prevent the call working correctly: A luup.variable_get(…) will return a nil instead of the expected value; A luup.call_action(…) may do absolutely nothing.
@@ -513,7 +514,7 @@ Listed below are example luup calls for the most common device types. All exampl
 The examples are also in the attached pdf file. If you drop it on your desktop, you can quickly open it to copy and paste the calls into your Lua. If the device you want to address is not listed, you can find the Service ID by hovering the mouse cursor over the name of the variable on the device’s Advanced tab.
 
 On/Off Switch
-Set Target, read Status. "0" = Off, "1" = On.
+Set Target, read Status. "0" = Off, "1" = On:
 
 ```lua
 local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1", "Status", dID)
@@ -522,7 +523,7 @@ luup.call_action("urn:upnp-org:serviceId:SwitchPower1", "SetTarget", {newTargetV
 ```
 
 Virtual Switch
-Set Target, read Status. "0" = Off, "1" = On.
+Set Target, read Status. "0" = Off, "1" = On:
 
 ```lua
 local status = luup.variable_get("urn:upnp-org:serviceId:VSwitch1", "Status", dID)
@@ -531,7 +532,7 @@ luup.call_action("urn:upnp-org:serviceId:VSwitch1", "SetTarget", {newTargetValue
 ```
 
 Dimmable Light
-Set LoadLevelTarget, read LoadLevelStatus. "0" = Off, "100" = Full.
+Set LoadLevelTarget, read LoadLevelStatus. "0" = Off, "100" = Full:
 
 ```lua
 local level = luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)
