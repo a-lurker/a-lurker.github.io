@@ -511,7 +511,7 @@ One of the most frequent problems we see in requests for help with Lua code, is 
 
 Listed below are example luup calls for the most common device types. All examples assume that local variable dID contains the ID of the device being addressed. e.g. local dID = 123 Alternatively, replace dID in the calls with the required device ID number. Examples are given for reading a device variable using luup.variable_get(…) and for initiating an action with luup.call_action(…). It is also possible to directly set device variables but, in many cases, this will have little or no apparent effect on the device. Generally it is better to use luup.call_action(…) rather than directly setting device variables.
 
-The examples are also in the attached pdf file. If you drop it on your desktop, you can quickly open it to copy and paste the calls into your Lua. If the device you want to address is not listed, you can find the Service ID by hovering the mouse cursor over the name of the variable on the device’s Advanced tab.
+If the device you want to address is not listed, you can find the Service ID by hovering the mouse cursor over the name of the variable on the device’s Advanced tab.
 
 On/Off Switch
 Set Target, read Status. "0" = Off, "1" = On:
@@ -541,7 +541,7 @@ luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLo
 ```
 
 Thermostat
-Set ModeTarget, read ModeStatus. "Off", "HeatOn", "CoolOn", "AutoChangeOver".
+Set ModeTarget, read ModeStatus. "Off", "HeatOn", "CoolOn", "AutoChangeOver":
 
 ```lua
 local mode = luup.variable_get("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "ModeStatus", dID)
@@ -549,7 +549,7 @@ local mode = luup.variable_get("urn:upnp-org:serviceId:HVAC_UserOperatingMode1",
 luup.call_action("urn:upnp-org:serviceId:HVAC_UserOperatingMode1", "SetModeTarget", {NewModeTarget = "Off"}, dID)
 ```
 
-Set and read CurrentSetpoint. (Degrees)
+Set and read CurrentSetpoint. (Degrees):
 
 ```lua
 local setpoint = luup.variable_get("urn:upnp-org:serviceId:TemperatureSetpoint1_Heat", "CurrentSetpoint", dID)
@@ -561,31 +561,31 @@ local setpoint = luup.variable_get("urn:upnp-org:serviceId:TemperatureSetpoint1_
 luup.call_action("urn:upnp-org:serviceId:TemperatureSetpoint1_Cool", "SetCurrentSetpoint", {NewCurrentSetpoint = "30"}, dID)
 ```
 
-Temperature Sensor
+Temperature Sensor:
 
 ```lua
 local temp = luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", dID)
 ```
 
-Generic Sensor
+Generic Sensor:
 
 ```lua
 local level = luup.variable_get("urn:micasaverde-com:serviceId:GenericSensor1", "CurrentLevel", dID)
 ```
 
-Light Sensor
+Light Sensor:
 
 ```lua
 local level = luup.variable_get("urn:micasaverde-com:serviceId:LightSensor1", "CurrentLevel", dID)
 ```
 
-Humidity Sensor
+Humidity Sensor:
 
 ```lua
 local level = luup.variable_get("urn:micasaverde-com:serviceId:HumiditySensor1", "CurrentLevel", dID)
 ```
 
-Security Sensor
+Security Sensor:
 
 ```lua
 
@@ -600,7 +600,7 @@ luup.call_action("urn:micasaverde-com:serviceId:SecuritySensor1", "SetArmed", {n
 ```
 
 Window Covering
-Use Dimmable Light Status variable for current position. Down = 0, Up = 100.
+Use Dimmable Light Status variable for current position. Down = 0, Up = 100:
 
 ```lua
 local level = luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)
@@ -613,7 +613,7 @@ luup.call_action("urn:upnp-org:serviceId:WindowCovering1", "Stop", {}, dID)
 ```
 
 Variable Container
-Set and read VariableN where N is 1 to 5.
+Set and read VariableN where N is 1 to 5:
 
 ```lua
 local vcvar1 = luup.variable_get("urn:upnp-org:serviceId:VContainer1", "Variable1", dID)
@@ -624,7 +624,7 @@ luup.variable_set("urn:upnp-org:serviceId:VContainer1", "Variable5","newtext", d
 ```
 
 DayTime plugin
-Set and read Status. "0" = Night, "1" = Day.
+Set and read Status. "0" = Night, "1" = Day:
 
 ```lua
 local itsday = luup.variable_get("urn:rts-services-com:serviceId:DayTime", "Status", dID)
@@ -639,7 +639,7 @@ Another favourite forum question concerns using delays in scene Lua. It is tempt
 
 Luup provides a more-robust way of achieving delays with luup.call_delay("callfunction",secs,"parmstring"). This will call the function named callfunction after a delay of secs seconds and pass it the optional parameter parmstring. The called function must be global (i.e. not local). After the luup.call_delay(…), the main code continues to execute and may terminate. Multiple luup.call_delay(…) calls may be made to the same or different called functions.
 
-For example, the following code turns on a light and then turns it off after ten seconds. You could, of course, do this simply with scene action delays but it’s a stepping stone.
+For example, the following code turns on a light and then turns it off after ten seconds. You could, of course, do this simply with scene action delays but it’s a stepping stone:
 
 ```lua
 luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },66)
@@ -654,7 +654,7 @@ end
 
 Because the called function is global, it does not have access to any of the local variables in the main part of your code. You could make your variables global but be careful how you name them to avoid side effects with other code. A cleaner approach is to pass them via the optional parameter. This parameter is a string so you will need to convert numeric data for some purposes.
 
-In this example, the device ID of the switch is passed as the parameter.
+In this example, the device ID of the switch is passed as the parameter:
 
 ```lua
 local dID = 66
@@ -667,7 +667,7 @@ function delayOff(dev)
 end
 ```
 
-The called function can also issue a luup.call_delay(…) to itself. This allows timed sequences to be programmed. The following example will dim a light by 10% every two seconds until it reaches zero.
+The called function can also issue a luup.call_delay(…) to itself. This allows timed sequences to be programmed. The following example will dim a light by 10% every two seconds until it reaches zero:
 
 ```lua
 local dID = 99
@@ -683,7 +683,7 @@ function delayDim(dev)
 end
 ```
 
-Only one parameter string can be passed to the called function. If you need to pass more than one item, you will need to encode them into the string. Simple numeric items can be passed as a comma-separated list. The next example uses this technique to pass three numeric values. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run.
+Only one parameter string can be passed to the called function. If you need to pass more than one item, you will need to encode them into the string. Simple numeric items can be passed as a comma-separated list. The next example uses this technique to pass three numeric values. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run:
 
 ```lua
 local dID = 99
