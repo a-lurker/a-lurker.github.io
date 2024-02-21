@@ -7,7 +7,7 @@ IMAGE HERE
 ## Install prerequisites
 Execute the following.
 
-```text bash
+```bash
 sudo apt update
 sudo apt install lua-socket
 sudo apt install lua-filesystem
