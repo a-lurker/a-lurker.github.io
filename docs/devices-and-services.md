@@ -66,7 +66,7 @@ In the user interface (AltUI) you can place the cursor on any variable or action
 |---|---|
 |Variable|Watts: power being consumed|
 |Variable|KWH: energy consumed|
-|Action||
+|Action|-|
 
 |urn:micasaverde-com:serviceId:GenericSensor1||
 |---|---|
@@ -102,7 +102,7 @@ In the user interface (AltUI) you can place the cursor on any variable or action
 |---|---|
 |Variable|Armed: 0 or 1|
 |Variable|Tripped: 0 or 1|
-|Action||
+|Action|-|
 
 |urn:micasaverde-com:serviceId:ZWaveDevice1||
 |---|---|
