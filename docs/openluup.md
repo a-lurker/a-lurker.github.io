@@ -127,7 +127,7 @@ https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 Run the file using the command line:
 
 ```bash
-lua openLuup_install.lua
+lua5.1 openLuup_install.lua
 ```
 
 If successful, the script produces console output like this:
