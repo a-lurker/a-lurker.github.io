@@ -615,7 +615,7 @@ Create a bash script to run openLuup in the background:
 $ sudo nano /etc/cmh-ludl/run_openLuup.sh
 ```
 
-Code:
+Script:
 
 ```bash
 #!/bin/bash
@@ -624,11 +624,15 @@ echo "To see tail of logfile: tail -f ./out.log"
 cd /etc/cmh-ludl
 sudo rm ./out.log
 nohup ./openLuup_reload >> out.log 2>&1 &
+```
 
+Privileges:
+
+```bash
 $ sudo chmod +x run_openLuup.sh
 ```
 
-Next create the systemd service for openLuup setting it up to wait for network before starting
+Next create the systemd service for openLuup setting it up to wait for network before starting:
 
 ```text
 $ sudo nano /etc/systemd/system/openluup.service
