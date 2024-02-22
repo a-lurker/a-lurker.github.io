@@ -2,7 +2,7 @@
 
 Here's your brand new shiny Rasberry Pi 4 Model B set up with the latest Rasbian, such as bookworm.
 
-IMAGE HERE
+![Raspberry Pi 4B](Raspberry-Pi-4B.jpg " Raspberry-Pi-4B with a Samsung 500GB SSD")
 
 ## Install prerequisites
 Execute the following.
@@ -24,7 +24,7 @@ wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.l
 Run the file using the command line:
 
 ```bash
-lua openLuup_install.lua
+lua5.1 openLuup_install.lua
 ```
 
 When successful, the script produces console output like this:
