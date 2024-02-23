@@ -46,6 +46,8 @@ Shellies are high performance low cost WiFi devices. They can be set up to publi
 
 Devices available in openLuup:
 
+Shelley Gen 1:
+
 |Device name|Function|Device model|
 |---|---|---|
 |Shelly 1L|Relay|SHSW-1|
@@ -54,16 +56,16 @@ Devices available in openLuup:
 |Shelly 2.5|2 relays with power measurement|SHSW-25|
 |Shelly Plug-S|Power plug with power measurement|SHPLG-S|
 |Shelly Plug|Power plug |SHPLG2-1|
-|Shelly HT|temperature & humidity sensor|SHHT-1|
+|Shelly HT|Temperature & humidity sensor|SHHT-1|
 |Shelly Dimmer 2|Dimmer - neutral not required|SHDM-2|
 
-Shelley Plus
+Shelley Plus:
 
 |Device name|Function|
 |---|---|
 |shellyplusi4|4-digital inputs|
 |shellyplus2pm|2 relays with power measurement|
-|shellyplusht|temperature & humidity sensor with display|
+|shellyplusht|Temperature & humidity sensor with display|
 
 Not on the list above? A generic device is created. Newly discovered Shelley devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
@@ -109,7 +111,7 @@ for _,sid in ipairs(services) do
 end
 ```
 
-When one of the watched variables changes, a UDP datagram of is sent to the UDP -> MQTT bridge and converted into a PUBLISH. Example datagram text:
+When one of the watched variables changes, a UDP datagram is sent to the UDP -> MQTT bridge and converted into a PUBLISH. Example datagram text:
 
 ```text
 Vera-PK_AccessPoint/update/dev_number/serviceId/var_name/=/value
@@ -238,6 +240,7 @@ With a round-robin interval of 2 seconds, a moderately-sized setup of 150 device
 
 ### Other MQTT devices that could be integrated into openLuup:
 
+- List of [MQTT resources](https://github.com/hobbyquaker/awesome-mqtt)
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
 - [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via MQTT.
