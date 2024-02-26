@@ -2,7 +2,7 @@
 
 Here's your brand new shiny Rasberry Pi 4 Model B set up with the latest Rasbian, such as bookworm.
 
-![Raspberry Pi 4B](raspberry-pi-4b.jpg " Raspberry-Pi-4B with a Samsung 500GB SSD")
+![Raspberry Pi 4B](images/raspberry-pi-4b.jpg " Raspberry-Pi-4B with a Samsung 500GB SSD")
 
 ## Install prerequisites
 Execute the following.
