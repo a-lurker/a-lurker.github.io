@@ -66,6 +66,7 @@ Shelley Plus:
 |shellyplusi4|4-digital inputs|
 |shellyplus2pm|2 relays with power measurement|
 |shellyplusht|Temperature & humidity sensor with display|
+|shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
 Not on the list above? A generic device is created. Newly discovered Shelley devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
