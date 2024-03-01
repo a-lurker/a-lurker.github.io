@@ -7,6 +7,7 @@
 
   - [openLuup startup attributes](openLuup-startup-code.md)
   - [json parser](openluup-and-json.md)
+  - [Vera Bridge](vera-bridge-plugin.md)
   - [List of Plugins](plugins-list.md)
   - [Writing a plugin](writing-a-plugin.md)
 
