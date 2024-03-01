@@ -37,12 +37,12 @@ openLuup can subscribe to topics published by [zigbee2mqtt](https://www.zigbee2m
 
 openLuup automatically recognises many Zigbee devices and will create native openLuup devices to make use of them. Where the device is unknown, a generic device is produced and you can write startup or scene code to act on any variables the device publishes.
 
-Got a Hue hub? Set up zigbee2mqtt and you won't need it!
+Got a `Hue hub`? Set up zigbee2mqtt and you won't need it!
 
- Newly discovered Zigbee devices are automatically placed in the "Zigbee room".
+Newly discovered Zigbee devices are automatically placed in the "Zigbee room".
 
 ## Shelly
-Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of.
+Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of. Newly discovered Shelley devices are automatically placed in the "Shellies room".
 
 Devices available in openLuup:
 
