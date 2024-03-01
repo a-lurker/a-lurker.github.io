@@ -25,9 +25,9 @@ There may come a time when everything has been transferred to openLuup and a bri
 ## Vera plugin compatibility with openLuup
 Some plugins may not work:
 
-- encrypted plugins simply won't run.
-- ones that rely on the OpenWrt OS eg the Sonos UPnP Event Proxy
-- particular to the Vera environment eg InfoViewer
+- Encrypted plugins simply won't run.
+- Ones that rely on the OpenWrt OS eg the Sonos UPnP Event Proxy.
+- Particular to the Vera environment eg InfoViewer.
 
 ## Room names and usage
 
@@ -88,8 +88,8 @@ GetVeraScenes action will copy, not just link, remote scenes. The action is not 
 This functionality assists in the interim period where some logic/scenes/plugins are still on Vera and yet others entirely on openLuup. Key variables which are controlled by the current openLuup logic may be 'mirrored' back onto devices in Vera and used as scene triggers or polled values by the logic there:
 
 0. No mirroring.
-1. Local mirrors remote machine: openLuup GETs the value from the REMOTE Vera.
-2. Remote mirrors local machine: openLuup SETs the value on the REMOTE Vera.
+1. Local mirrors remote machine: openLuup GETs the value from the remote Vera.
+2. Remote mirrors local machine: openLuup SETs the value on the remote Vera.
 
 You have to reload to make this change effective. Because of Vera’s built-in delay in changing HouseMode, mode 2 can take a while (typically 30 seconds or more) to kick in, but they should synchronise in the end.
 
