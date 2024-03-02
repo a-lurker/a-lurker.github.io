@@ -13,8 +13,8 @@ Note that GetVeraFiles only needs to be used once and that's during set up. Usin
 
 The bridge will also clone the room names in Vera to openLuup. If you don't want this then set the variable CloneRooms to 'false' and everything will be placed in one room. You can set this to true later on and use the GetRooms action to get the rooms. The reverse is not true. Setting the variable to false will not undo the rooms. Note that using CloneRooms can result in files being overwritten in openLuup.
 
-## Install went badly
-Delete the Vera Bridge plugin and restart the Luup Engine. You can then install the Vera Bridge again and retry.
+## Install went badly?
+Delete the Vera Bridge plugin and restart the Luup Engine. You can then install the Vera Bridge again and retry. Still not working? Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
 
 ## Day to day operation
 The bridge can be connected to a Vera for as long as you want. The connection is extremely reliable.
@@ -29,6 +29,15 @@ Some plugins may not work:
 - Ones that rely on the OpenWrt OS eg the Sonos UPnP Event Proxy.
 - Particular to the Vera environment eg InfoViewer.
 
+## Running a remote scene
+To run a scene on the remote Vera, you just need to have a local scene, call the remote scene. Put the IP address and scene number into the URL. eg:
+
+```HTML
+luup.inet.wget "http://IP_address_of_remote_Vera/port_3480/data_request?id=action&serviceId=urn:micasaverde-com:serviceId:HomeAutomationGateway1&action=RunScene&SceneNum=8"
+```
+
+This functionally is automatically set up by the bridge.
+
 ## Room names and usage
 
 ### MiOS rooms
@@ -39,7 +48,7 @@ Vera 1:  Room 'MiOS-12345678'
 Vera 2:  Room 'MiOS-87654321'
 
 ### Room 101
-We don't want to go here: It's your worst fear. Misc. stuff appears here when it appears to have no home.
+We don't want to go here: It's your worst fear. Miscellaneous stuff appears here when it appears to have no home.
 
 ## Multiple Veras
 You can bridge more than one Vera. One bridge per Vera. Each Vera will have its own arbitrary 10,000 multiple range of device IDs assigned. openLuup devices are always in the 1 to 9,999 range.
