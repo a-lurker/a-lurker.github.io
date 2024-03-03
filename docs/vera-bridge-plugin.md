@@ -5,9 +5,9 @@ The openLuup Vera Bridge can pretty much offload everything from Vera. Users wit
 ## Vera Bridge set up
 When openLuup is installed so is the Vera Bridge plugin.
 
-1. No additional software needs to be installed on the Vera.
+1. No additional software needs to be installed on the remote Vera.
 
-2. Set the remote Vera’s IP address and restart.
+2. Set the remote Vera’s IP address in the Vera Bridge plugin in openLuup and restart.
 
 3. The VeraBridge plugin has an action, under the device Action tab, called GetVeraFiles. Just clicking on the action button, with no parameters, should download all the device, service, implementation files and icons to openLuup. It may take a couple of minutes. Effectively this transfers all the Vera plugins to openLuup. You can then delete them on Vera.
 
