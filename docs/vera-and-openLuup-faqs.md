@@ -17,12 +17,12 @@ https://www.lua.org/manual/5.1/
 2. Using Vera UI7: Settings ➔ Z-Wave Settings ➔ Advanced Tab. Select 'Reload Engine'
 
 3. URL call:
+
 ```html
 http://Vera_IP_address:3480/data_request?id=reload
 
 ```
 </details>
-
 
 ## openLuup
 TBA
