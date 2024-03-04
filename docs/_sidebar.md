@@ -17,6 +17,7 @@
   - [Luup Engine](luup-engine.md)
   - [Devices and their services](devices-and-services.md)
   - [Luup scenes how to by Rex Beckett](rex-beckett-posts.md)
+  - [Miscellaneous code examples](miscellaneous-code-examples.md)
   - [MQTT](mqtt.md)
   - [Notifications](notifications.md)
 
