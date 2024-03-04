@@ -13,9 +13,10 @@
 
 - Guide
 
+  - [Devices and their services](devices-and-services.md)
+  - [FAQs](vera-and-openLuup-faqs.md)
   - [Graphing data](graphing-data.md)
   - [Luup Engine](luup-engine.md)
-  - [Devices and their services](devices-and-services.md)
   - [Luup scenes how to by Rex Beckett](rex-beckett-posts.md)
   - [Miscellaneous code examples](miscellaneous-code-examples.md)
   - [MQTT](mqtt.md)
