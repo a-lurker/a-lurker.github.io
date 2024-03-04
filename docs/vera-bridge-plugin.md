@@ -84,7 +84,7 @@ GetVeraScenes action will copy, not just link, remote scenes. The action is not 
 |Variable|Usage|
 |---|---|
 |AsyncPoll|This should be set to true to make the most of the opnLuup http async capabilities not found in Vera. Substantially improves response times.|
-|BridgeScenes|.|
+|BridgeScenes|The BridgeScenes variable should be set to true, to force all remote scenes to be accessible from openLuup.|
 |CloneRooms|The CloneRooms variable should be set to true, to force all bridged devices to be in the same rooms, as on the remote Vera. Devices which are in "No Room" on the remote Vera, are placed in the appropriately named "MiOS..." room in openLuup, which corresponds to the remote machine name.|
 |HouseModeMirror|See section further below.|
 |LastUpdate|Shows most recent communication with the remote Vera.|
@@ -109,4 +109,4 @@ Note that it's not easily possible to have this synchronisation work in both dir
 So this means that you can sync both Veras to the openLuup house mode, or indeed any of the two to the other one. But one machine has to be the 'master': you can’t have all responding to any machine which has a mode change.
 
 ## More Information
-You an read a bit more about the Vera Bridge [here](openluup?id=more-about-verabridge).
+You can read a bit more about the Vera Bridge [here](openluup?id=more-about-verabridge).
