@@ -27,7 +27,7 @@ http://Vera_IP_address:3480/data_request?id=reload
 </details>
 
 <details>
-<summary>How do make use of a scene controllers button push?</summary>
+<summary>How do make use of a scene controllers button push?</summary>
 
 The trick with all these types of devices is to set a trigger on the LastSceneTime variable and then read the value of the sl_SceneActivated variable, to get which button was pressed.
 
@@ -67,14 +67,13 @@ sudo systemctl disable openluup
 ```
 </details>
 
-
 ## Vera
 <details>
 <summary>How to migrate Zwave from a Vera to a USB stick?</summary>
 
 @Rafele has a detailed [explanation here](https://github.com/rafale77/Z-Way).
 
-The method described at that link only works for 500 series based Veras to 500 series USB sticks. To migrate a 300 series Vera  (eg a Vera 3) you have to back up to the Z-Wave data to the Micasaverde cloud and restore it to a 500 series Vera (eg a Vera Edge).
+The method described at that link, only allows for tranfers from 500 series based Veras to 500 series USB sticks. To migrate a 300 series Vera  (eg a Vera 3), you have to back up the Z-Wave data to the Micasaverde cloud and restore it to a 500 series Vera (eg a Vera Edge).
 
 </details>
 
