@@ -32,7 +32,7 @@ local y = json.decode (x)
 print(pretty(y))
 ```
 
-## Get our local IP address
+## Get our local LAN IP address
 ```lua
 local socket = require('socket')
 
@@ -60,3 +60,43 @@ local mime = require( "mime" )
 local encodedString = mime.b64("Hello World")
 print(mime.unb64(encodedString))
 ```
+
+## Escape json
+```lua
+-- escape text chars to suit json
+-- http://www.ietf.org/rfc/rfc4627.txt
+local function escJSONentities(s)
+    s = s:gsub('\\', '\\u005c')
+    s = s:gsub('\n', '\\u000a')
+    s = s:gsub('"',  '\\u0022')
+    s = s:gsub("'",  '\\u0027')
+    s = s:gsub('/',  '\\u002f')
+    s = s:gsub('\t', '\\u0009')
+    return s
+end
+```
+
+## Escape HTML 1
+```lua
+local function escHTMLentities(s)
+    s = s:gsub('&', '&amp;')
+    s = s:gsub('<', '&lt;')
+    s = s:gsub('>', '&gt;')
+    s = s:gsub('"', '&quot;')
+    s = s:gsub("'", '&#039;')
+    return s
+end
+```
+
+## Escape HTML 2
+```lua
+local function escHTMLentities2(s)
+    s = s:gsub('&', '&#x26;')
+    s = s:gsub('<', '&#x3c;')
+    s = s:gsub('>', '&#x3e;')
+    s = s:gsub('"', '&#x22;')
+    s = s:gsub("'", '&#x27;')
+    return s
+end
+```
+
