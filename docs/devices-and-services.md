@@ -6,13 +6,13 @@ The service id consist of four parts separated by colons. They are case sensitiv
 
 urn:upnp-org:serviceId:SwitchPower1
 
-1. `urn` ➔ "uniform resource name" Never changes.
+1. `urn` ➔ "uniform resource name". Never changes.
 
-2. `upnp-org` ➔ Name space. Typically a URL with dots replaced by dashes but can be anything. It's meant to indicate what organisation is associated with the service id. Plugins will typically have one "invented" by the plugin developer.
+2. `upnp-org` ➔ Name space. Typically a URL with any full stops replaced by dashes but can be anything. It's meant to indicate what organisation is associated with the service id. Plugins will typically have one "invented" by the plugin developer. 'futzle-com' is an example, as is 'a-lurker-com'.
 
-3. `serviceId` ➔ Indicates this "resoure" is a "serviceId" and always stays the same.
+3. `serviceId` ➔ Indicates this "resource" is a "serviceId" and always stays the same.
 
-4. `SwitchPower1` ➔ The actual service. It's name is generally indicative of what it's for. It always has "1" on the end. Part of the spec apparently.
+4. `SwitchPower1` ➔ The actual service. It's name is generally indicative of what it's for. It always has "1" on the end. Part of the spec. apparently.
 
 ## openLuup enhancement
 In openLuup all the services listed below can be shortened by leaving out the first three elements like so:
