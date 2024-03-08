@@ -7,9 +7,9 @@ New to MQTT? Recommend making use of [mqtt explorer](http://mqtt-explorer.com/).
 MQTT config such as username, passwords, etc are all set up in the [openLuup startup code](openLuup-startup-code.md).
 
 ## MQTT server
-This server provides Quality of Service (QoS) 0: At most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
+This server provides Quality of Service: QoS 0: ie at most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
 
-IMHO, QoS 0 is perfectly adequate for almost any home automation application operating over an internal LAN. Messages are hugely unlikely to get lost somewhere.
+QoS 0 is perfectly adequate for almost any home automation application operating over an internal LAN. Messages are hugely unlikely to get lost somewhere.
 
 From openLuup Lua Startup, Scene Lua, or plugins, you can directly publish and subscribe.
 
