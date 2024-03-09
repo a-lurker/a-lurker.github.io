@@ -21,6 +21,7 @@
   - [Miscellaneous code examples](miscellaneous-code-examples.md)
   - [MQTT](mqtt.md)
   - [Notifications](notifications.md)
+  - [Profiling code](profiling-code.md)
 
 - Reference
   - [Vera hardware versions](vera-versions.md)
