@@ -341,7 +341,7 @@ bridged Vera.)
 ## The user_data.json file
 Configuration changes to the system happen in different ways in the three major phases of normal running, startup and shutdown:
 
-### STARTUP
+### Startup
 - The default behaviour is to look for a JSON file called user_data.json in the current directory (/etc/cmh-ludl/) loading the device/room/scene configuration from that.
 - an optional startup parameter is one of:
 
@@ -350,11 +350,11 @@ Configuration changes to the system happen in different ways in the three major 
   - a .lzap compressed backup file, or
   - a Lua filename to be run in the context of a factory-reset system (with no rooms or scenes, and only devices 1 (Gateway) and 2 (Z-wave controller) defined)
 
-### RUNNING
+### Running
 - every so often, the system configuration is check-pointed to the file user_data.json. This will capture device variable and attribute changes, scene creation/deletions, etc.
 - logged events are written to the log files as they happen and not cached.
 
-### SHUTDOWN
+### Shutdown
 - on luup.reload, or full exit, the configuration will be written to the file user_data.json in the current directory
 - on luup.reload, or any other configuration change requiring a reload (eg. new child devices created) the process will exit with status 42
 - on exit (from the HTTP request id=exit) will exit with status of 0 (successful exit)
