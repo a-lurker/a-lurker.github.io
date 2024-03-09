@@ -590,7 +590,7 @@ One useful application of the Prolog handler is that you can consolidate ALL you
 The possibilities are endless.
 
 ---
-## Appendix: Starting openLuup at system boot time
+## Appendix 1: Starting openLuup at system boot time
 For openLuup to start up at system boot time, there are various approaches suggested by experts
 on the forum. Details are taken directly from the posts there:
 
@@ -786,7 +786,7 @@ IMPORTANT : 'exit 0' must NOT be removed.
 If using nano, press cntrl-o, press [enter], press cntrl-x to exit editor.
 
 ---
-## Appendix: Configuring key openLuup parameters at Startup
+## Appendix 2: Configuring key openLuup parameters at Startup
 There is a special top-level system attribute called "openLuup" (created at startup and not saved in the user_data.json file) which contains a table with some key system parameters some of which are user-configurable in the Lua Startup code.
 
 The default structure includes:
@@ -838,7 +838,7 @@ Some system internals may be inspected using the console viewer UI: http://openL
 IMAGE HERE
 
 ---
-## Appendix: Directory Structure and Additional Files
+## Appendix 3: Directory Structure and Additional Files
 The installations steps 1, 2, 3, give you a functioning system, linked to a remote Vera. But to allow as many plugins as possible to run on openLuup, you may need additional files and directories.
 
 ### 1. Vera & openLuup directory structures and ancillary files
@@ -953,7 +953,7 @@ io.write (myIP())
 ```
 
 ---
-## Appendix: openLuup SMTP and POP3 (eMail) servers
+## Appendix 4: openLuup SMTP and POP3 (eMail) servers
 SMTP server
 
 openLuup (v18.3.14 and subsequent) includes a built-in SMTP server to receive email messages, Although included specifically for cameras which use this to trigger an associated motion detector device, this is a minimal implementation of an RFC 5321 compliant server with the LOGIN authentication method and no Transport Layer Security (TLS / SSL.)
@@ -1131,7 +1131,7 @@ Of course, if you want this to work when you are away from your home LAN, then y
 Your email client can be used to manage the deletion of files from the mailboxes, or, alternatively, a timed scene using the openLuup SendToTrash and EmptyTrash actions will do the job automatically.
 
 ---
-## Appendix: Using Cameras with openLuup
+## Appendix 5: Using Cameras with openLuup
 **I_openLuupCamera1.xml implementation file**
 
 A camera device created with this implementation file will create an associated child Motion Sensor device which is triggered when the camera's own motion detection algorithm sends an email.
@@ -1157,7 +1157,7 @@ The Motion Sensor device will remain triggered for 30 seconds (or longer if the 
 The **ArchiveVideo** action may be used to save single camera snapshots to openLuup's images/ folder. At present, the Format and Duration parameters are unused (since this is currently only implemented for single frames.)
 
 ---
-## Appendix: openLuup – Databases and Data Visualisation
+## Appendix 6: openLuup – Databases and Data Visualisation
 External databases are useful for long-term storage, and visualisation, of sensor data and events. Several plugins have been written specifically for Vera/openLuup to provide this functionality:
 
 - Deprecated. DataYours – a Lua implementation of the Graphite / Whisper distributed database. Industry-standard protocols allow data to be sent to multiple databases. Includes a crude Google-charts powered graphics interface.
@@ -1206,7 +1206,7 @@ For each watched variable you need just to specify a measurement name, optionall
 IMAGE HERE
 
 ---
-## Appendix: Sending and receiving UDP datagrams
+## Appendix 7: Sending and receiving UDP datagrams
 Most communications protocols (HTTP, SMTP, POP3, …) along with standard device plugin I/O
 are handled over the TCP connections. However, UDP officers a very lightweight, transaction-free
 communication mechanism used by some systems. DataYours, for example (a Lua
@@ -1258,7 +1258,7 @@ udp: send "body of UDP datagram"
 Again, it’s as simple as that.
 
 ---
-## Appendix: openLuup plugin Actions and Variables
+## Appendix 8: openLuup plugin Actions and Variables
 The openLuup system itself runs a plugin called openLuup (always device #2) which offers useful variables and actions to assist in home automation tasks.
 
 All of these element are within the "openLuup" serviceId. Note that openLuup does not implement UPnP so does not use the Vera / MiOS / UPnP syntax "urn:xxx.com:serviceId:abcd1" for its own native services. Of course, for standard devices and third-party plugins, their own full serviceId should be used.
@@ -1331,7 +1331,7 @@ openLuup system parameters:
 - **StartTime** – the time of the last Luup restart
 
 ---
-## Appendix: Undocumented features of Luup
+## Appendix 9: Undocumented features of Luup
 The documentation for Luup is poor: out of date, misleading, incomplete, unclear, and sometimes just plain wrong. However, "hats off" to those stalwart members of the forum who have contributed to the Wiki. During the implementation of openLuup a number of undocumented ‘features’ have come to light. In some cases, these features are used by various plugins, either deliberately or unknowingly, through sins of commission or omission. As a result, I’ve had to include them in the openLuup implementation.
 
 If you’re a developer, please try NOT to rely on these things in your plugin code.
@@ -1358,7 +1358,7 @@ Here’s what I’ve found - if you know more, let me know.
 - …
 
 ---
-## Appendix: Unimplemented features of openLuup
+## Appendix 10: Unimplemented features of openLuup
 openLuup is, as of this time, an unfinished work. The following features are known to be
 unimplemented, poorly implemented, or non-functional, for a variety of reasons.
 
@@ -1377,7 +1377,7 @@ unimplemented, poorly implemented, or non-functional, for a variety of reasons.
 - **id=jobstatus** – not implemented.
 - **id=relay** – not implemented.
 
-## Appendix: Differences between openLuup and Vera / MiOS
+## Appendix 11: Differences between openLuup and Vera / MiOS
 
 ### Features of Vera / MiOS not in openLuup
 Hard to give an exhaustive list, but notable omissions include:
