@@ -41,12 +41,15 @@ Got a `Hue hub`? Set up zigbee2mqtt and you won't need it!
 
 Newly discovered Zigbee devices are automatically placed in the "Zigbee room".
 
+## Tasmota
+Example [Tasmota](https://tasmota.github.io/docs/) setup [here](https://smarthome.community/topic/506/openluup-tasmota-mqtt-bridge/47).
+
 ## Shelly
-Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of. Newly discovered Shelley devices are automatically placed in the "Shellies room".
+Shellies are high performance low cost WiFi devices. They can be set up to publish MQTT messages that openLuup can make use of. Newly discovered Shelly devices are automatically placed in the "Shellies room".
 
 Devices available in openLuup:
 
-Shelley Gen 1:
+Shelly Gen 1:
 
 |Device name|Function|Device model|
 |---|---|---|
@@ -59,7 +62,7 @@ Shelley Gen 1:
 |Shelly HT|Temperature & humidity sensor|SHHT-1|
 |Shelly Dimmer 2|Dimmer - neutral not required|SHDM-2|
 
-Shelley Plus:
+Shelly Plus:
 
 |Device name|Function|
 |---|---|
@@ -68,12 +71,20 @@ Shelley Plus:
 |shellyplusht|Temperature & humidity sensor with display|
 |shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
-Not on the list above? A generic device is created. Newly discovered Shelley devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
+Not on the list above? A generic device is created. Newly discovered Shelly devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
 List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
 
-## Tasmota
-Example [Tasmota](https://tasmota.github.io/docs/) setup [here](https://smarthome.community/topic/506/openluup-tasmota-mqtt-bridge/47).
+## Shelly like commands ➔ openLuup
+External apps can publish MQTT commands that openLuup will respond to. They are similar to the Shelly MQTT commands:
+
+```http
+    Use device Id or name for NNN
+    openLuup_IP_address:3480/relay/NNN?turn=[on/off/toggle]
+
+    Use scene Id or name for NNN
+    openLuup_IP_address:3480/scene/NNN?
+```
 
 ## UDP ➔ MQTT bridge
 The openLuup MQTT QoS 0 server incorporates a UDP ➔ MQTT bridge, which is uni-directional.
