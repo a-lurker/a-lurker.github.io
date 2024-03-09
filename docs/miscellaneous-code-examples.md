@@ -2,8 +2,8 @@
 
 ## Are we running under openLuup or the Vera OS?
 ```lua
--- if we're using openLuup this will get a table, otherwise nil
 local function isOpenLuup()
+    -- if we're using openLuup; variable openLuup will be a table, otherwise nil
     local openLuup = luup.attr_get('openLuup')
     return (openLuup ~= nil)
 end
@@ -12,6 +12,7 @@ print("Running under openLuup is " .. tostring(isOpenLuup()))
 ```
 
 ## Serialise a table
+This is useful for passing multiple parameters in luup.call_delay:
 ```lua
 -- write
 -- use this in openLuup
@@ -52,6 +53,20 @@ local function getOurIPaddress()
 end
 
 print(getOurIPaddress())
+```
+
+## Encode a URL
+```lua
+local function urlEncode(str)
+    if (str) then
+        str = string.gsub (str, "\n", "\r\n")
+        str = string.gsub (str, "([^%w %-%_%.%~])",
+            function (c) return string.format ("%%%02X", string.byte(c)) end)
+        str = string.gsub (str, " ", "+")
+    end
+    return str
+end
+
 ```
 
 ## base64 encode/decode
@@ -99,4 +114,3 @@ local function escHTMLentities2(s)
     return s
 end
 ```
-
