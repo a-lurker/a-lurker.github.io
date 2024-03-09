@@ -18,7 +18,7 @@ openLuup and Vera use Lua version 5.1 Here is the [manual](https://www.lua.org/m
 3. URL call:
 
 ```html
-http://Vera_IP_address:3480/data_request?id=reload
+http://openLuup_IP_address:3480/data_request?id=reload
 
 ```
 4. Lua code
