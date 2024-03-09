@@ -1048,7 +1048,7 @@ It really is as simple as that.
 ### Testing the SMTP server
 You can manually test the SMTP server easily from any machine on the network (here, I'm doing it on the same machine)...
 
-### WITH NO AUTHORISATION
+### With no authorisation
 ```text
 % nc 127.0.0.1 2525
 220 (openLuup.smtp v18.3.24) [0.0.0.0] Service ready helo from here
@@ -1085,7 +1085,7 @@ Entries in the log file should be something like this:
 2018-03-25 13:33:25.313 openLuup.smtp:: SMTP QUIT received tcp{client}: 0x1a15448
 ```
 
-### WITH AUTHORISATION
+### With authorisation
 Note the different client greeting EHLO instead of HELO, to which the server responds with a list of SMTP extensions, showing, in this case, that LOGIN authorisation is supported.
 
 ```text
