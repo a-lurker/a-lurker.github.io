@@ -21,6 +21,11 @@ openLuup and Vera use Lua version 5.1 Here is the [manual](https://www.lua.org/m
 http://Vera_IP_address:3480/data_request?id=reload
 
 ```
+4. Lua code
+```lua
+luup.reload()
+```
+
 </details>
 
 <details>
