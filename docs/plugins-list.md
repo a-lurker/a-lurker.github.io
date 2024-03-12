@@ -88,7 +88,7 @@ For those just interested in what the store contains; refer to the list below - 
 |[Telegram](https://github.com/dbochicchio/vera-Telegram)||
 |[Tesla Car](https://github.com/reneboer/vera-TeslaCar)||
 |[UPS Sensor](https://github.com/reneboer/vera-UPSSensor)||
-|[UPnP Event Proxy](https://github.com/a-lurker/Vera-Plugin-UPnP-Event-Proxy)|**OpenWRT only** - originated by Futzle|
+|[UPnP Event Proxy](https://github.com/a-lurker/Vera-Plugin-UPnP-Event-Proxy)|**Modified for installs that have systemd available. Not suitable for Vera** - plugin originated by Futzle.|
 |[VeraAlexa](https://github.com/dbochicchio/VeraAlexa)||
 |[Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices)|MQTT commands & status are only available with openLuup. http & Lua can be used by Vera and openLuup.|
 |[Virtual Pronto Remote](https://github.com/a-lurker/Vera-Plugin-Virtual-Pronto-Remote)||
