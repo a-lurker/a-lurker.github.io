@@ -55,7 +55,7 @@ So for example Hue light controller buttons return these values in sl_SceneActiv
 
 ## openLuup
 <details>
-<summary>Does openLuup require an internet connection required?</summary>
+<summary>Does openLuup require an internet connection?</summary>
 
 openLuup does not need an internet connection. AltUI requires an internet connection to download java script libraries. However you can copy these cloud components to a local SSD. Plugins that use internet resources eg say a weather plugin or a Hue hub, will obviously need an internet connection to function.
 </details>
