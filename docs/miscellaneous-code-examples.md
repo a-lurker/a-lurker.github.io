@@ -11,8 +11,68 @@ end
 print("Running under openLuup is " .. tostring(isOpenLuup()))
 ```
 
+## Using IDs & SIDs
+Defining IDs & SIDs makes your code clearer and life easier:
+```lua
+local ID = {
+    LIGHT_ENTRANCE_AREA         = 45,
+    LIGHT_FRONT_GARDEN          = 33,
+    LIGHT_FRONT_PORCH           = 15,
+    LIGHT_FRONT_SPOT            = 21,
+    LIGHT_HUE_ENTRANCE_AREA     = 19,
+    LIGHT_HUE_ENTRANCE_CORRIDOR = 30,
+    LIGHT_STAIRS                = 12
+}
+
+local SID = {
+    AV_TRANSPORT     = "urn:upnp-org:serviceId:AVTransport",
+    BLIND            = "urn:upnp-org:serviceId:WindowCovering1",
+    DIMMER_SWITCH    = "urn:upnp-org:serviceId:Dimming1",
+    DISCRETE_ON_OFF  = "urn:micasaverde-com:serviceId:DiscretePower1",
+    ENERGY_METER     = "urn:micasaverde-com:serviceId:EnergyMetering1",
+    HUE_COLOR        = "urn:micasaverde-com:serviceId:Color1",
+    OPEN_LUUP        = "openLuup",
+    RGBW_STRIP       = "urn:upnp-org:serviceId:RGBController1",
+    SCENE_ACTIVATED  = "urn:micasaverde-com:serviceId:SceneController1",
+    SOLAR            = "solar",
+    SWITCH           = "urn:upnp-org:serviceId:SwitchPower1",
+    TEMP_SENSOR      = "urn:upnp-org:serviceId:TemperatureSensor1"
+}
+
+local function setSwitches(switches, level)
+    for _,v in ipairs(switches) do luup.call_action(SID.SWITCH, "SetTarget", {newTargetValue=level}, v) end
+end
+
+local function setDimmers(dimmers, level)
+    for _,v in ipairs(dimmers) do luup.call_action(SID.DIMMER_SWITCH,"SetLoadLevelTarget", {newLoadlevelTarget = level}, v) end
+end
+
+local function sunset_sunrise(isSunset)
+    local theSwitches = {
+        ID.LIGHT_ENTRANCE_AREA,
+        ID.LIGHT_FRONT_GARDEN.
+        ID.LIGHT_FRONT_PORCH,
+        ID.LIGHT_FRONT_SPOT,
+        ID.LIGHT_STAIRS
+    }
+
+    local theDimmers = {
+        ID.LIGHT_HUE_ENTRANCE_AREA,
+        ID.LIGHT_HUE_ENTRANCE_CORRIDOR
+    }
+
+    if isSunset then
+       setSwitches(theSwitches, 1)
+       setDimmers (theDimmers, 10)
+    else -- sunrise
+       setSwitches(theSwitches, 0)
+       setDimmers (theDimmers,  0)
+    end
+end
+```
+
 ## Serialise a table
-This is useful for passing multiple parameters in luup.call_delay:
+This is useful for passing multiple parameters in luup.call_delay():
 ```lua
 -- write
 -- use this in openLuup
