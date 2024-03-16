@@ -3,6 +3,12 @@ Click the arrows for more info on each item.
 
 ## Vera and openLuup
 <details>
+<summary>Where's the forum?</summary>
+
+The developer and users can generally be found at the [Smarthome Community Forum](https://smarthome.community/).
+</details>
+
+<details>
 <summary>What version of Lua does openLuup and Vera use?</summary>
 
 openLuup and Vera use Lua version 5.1 Here is the [manual](https://www.lua.org/manual/5.1/).
@@ -49,7 +55,26 @@ So for example Hue light controller buttons return these values in sl_SceneActiv
 
 ## openLuup
 <details>
+<summary>Does openLuup require an internet connection required?</summary>
+
+openLuup does not need an internet connection. AltUI requires an internet connection to download java script libraries. However you can copy these cloud components to a local SSD. Plugins that use internet resources eg say a weather plugin or a Hue hub, will obviously need an internet connection to function.
+</details>
+
+<details>
+<summary>Is openLuup a subscription service?</summary>
+
+Absolutely not. It is open source. Users are encouraged to make a donation to cancer research. Please consider [donating](https://www.justgiving.com/DataYours/). The money goes to "Cancer Research UK".
+</details>
+
+<details>
+<summary>Does openLuup auto update?</summary>
+
+The user has full control on whether it updates automatically or not.
+</details>
+
+<details>
 <summary>How to stop / start openLuup?</summary>
+
 Assuming you are using systemd and enabled has already been run:
 
 ```bash
@@ -58,9 +83,9 @@ sudo systemctl stop openluup
 ```
 </details>
 
-
 <details>
 <summary>How to enable / disable at boot with openLuup?</summary>
+
 Assuming you are using systemd:
 
 ```bash
@@ -76,7 +101,5 @@ sudo systemctl disable openluup
 @Rafele has a detailed [explanation here](https://github.com/rafale77/Z-Way).
 
 The method described at that link, only allows for transfers from 500 series based Veras to 500 series USB sticks. To migrate a 300 series Vera  (eg a Vera 3), you have to back up the Z-Wave data, to the Micasaverde cloud and restore it to a 500 series Vera (eg a Vera Edge).
-
 </details>
-
 
