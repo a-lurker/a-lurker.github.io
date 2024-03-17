@@ -609,7 +609,7 @@ I've had various degrees of successes (mainly unpredictable problems) with other
 
 This assumes you installed openLuup at: /etc/cmh-ludl
 
-Create a bash script to run openLuup in the background:
+Create a bash script to run openLuup in the background. Note line endings matter in bash scripts. If using some other editor, make sure lines end with just a linefeed; ie not with a carriage return, linefeed:
 
 ```text
 $ sudo nano /etc/cmh-ludl/run_openLuup.sh
