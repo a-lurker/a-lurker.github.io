@@ -199,3 +199,22 @@ local function escHTMLentities2(s)
     return s
 end
 ```
+
+## Telegram
+You need a bot and chat ID from Telegram
+```lua
+local function telegram(msg)
+    local botID  = 'insert_bot_ID_here'
+    local chatID = 'chat_ID_here'
+    msg = urlEncode(msg)
+
+    if (msg and (msg ~= '')) then
+        luup.inet.wget('https://api.telegram.org/bot'..botID..'/sendMessage?chat_id='..chatID..'&text='..msg,5)
+    else
+        luup.log('Telegram message string is nil or blank',50)
+    end
+end
+
+telegram('The house alarm has just been triggered!')
+```
+
