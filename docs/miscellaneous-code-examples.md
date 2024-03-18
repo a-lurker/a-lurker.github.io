@@ -1,5 +1,30 @@
 # Miscellaneous code examples
 
+## Useful links: validators
+[JSONLint](http://jsonlint.com/)
+
+[HTML Validator](http://validator.w3.org/)
+
+[XML Validator](http://www.w3schools.com/xml/xml_validator.asp)
+
+[JavaScript Lint](http://www.javascriptlint.com/online_lint.php)
+
+
+[CSS Validation](http://jigsaw.w3.org/css-validator/)
+
+## Useful links: Lua
+[Lua code playground](https://onecompiler.com/lua)
+
+[Lua 5.1 Manual](http://www.lua.org/manual/5.1/)
+
+[Lua Wiki](http://lua-users.org/wiki/LuaDirectory)
+
+[Lua for windows](http://code.google.com/p/luaforwindows/)
+
+[ZeroBrane Studio for Vera](https://studio.zerobrane.com/vera.html)
+
+[Lua with Eclipse](http://www.eclipse.org/koneki/ldt/)
+
 ## Are we running under openLuup or the Vera OS?
 ```lua
 local function isOpenLuup()
