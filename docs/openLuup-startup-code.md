@@ -2,7 +2,7 @@
 The openLuup startup code is used to setup a variety of information that may be required by different programs.
 
 ## Defaults
-These are always in the startup code and are pretty self explanatory.
+These are always in the startup code and are pretty much self explanatory.
 
 ```lua
 -- You can personalise the installation by changing these attributes,
@@ -148,7 +148,14 @@ luup.attr_set ("openLuup.MQTT.DEBUG", true)
 While accessing openLuup via wireguard or similar, over world wide distances: You may get timeouts. Fine tune this value to allow the internet to keep up. Time is in fractions of a second.
 
 ```lua
+-- default 0.1 second
 luup.attr_set ("openLuup.HTTP.SelectWait", 0.5)
+```
+
+You can also try halving or doubling the chunk length eg:
+```lua
+-- default 16000 bytes
+luup.attr_set ("openLuup.HTTP.ChunkedLength", 8000)
 ```
 
 ## Your own start up code
@@ -158,4 +165,3 @@ You can load your own code like so.
 -- Any other startup processing may be inserted here...
 myLua = require("L_MyLuaCodeOpenLuup")
 ```
-
