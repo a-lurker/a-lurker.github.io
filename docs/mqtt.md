@@ -9,6 +9,8 @@ MQTT config such as username, passwords, etc are all set up in the [openLuup sta
 ## MQTT server
 This server provides Quality of Service: QoS 0: ie at most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
 
++ and # wild cards are supported.
+
 QoS 0 is perfectly adequate for almost any home automation application operating over an internal LAN. Messages are hugely unlikely to get lost somewhere.
 
 From openLuup Lua Startup, Scene Lua, or plugins, you can directly publish and subscribe.
@@ -18,6 +20,26 @@ To publish:
 ```lua
    local mqtt = luup.openLuup.mqtt
    mqtt.publish ("My/Topic/Name", "My Application message")
+```
+
+Publish a multi-line message. In this case, set the value of register xy, using a "Z-Wave JS" MQTT message:
+
+```lua
+  local topic   = "zwave/_CLIENTS/ZWAVE_GATEWAY-zwave-js-ui/api/writeValue/set"
+  local message = [[
+     {
+       "args": [
+         {
+           "nodeId": 4,
+           "commandClass": 38,
+           "endpoint": 0,
+           "property": xy
+         },
+         value_to_set_at_xy
+       ]
+     }
+  ]]
+  mqtt.publish (topic, message)
 ```
 
 To subscribe, you use a standard Luup request handler:
@@ -71,7 +93,7 @@ Shelly Plus:
 |shellyplusht|Temperature & humidity sensor with display|
 |shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
-Not on the list above? A generic device is created. Newly discovered Shelly devicesare automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
+Not on the list above? A generic device is created. Newly discovered Shelly devices are automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
 List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
 
@@ -252,7 +274,7 @@ With a round-robin interval of 2 seconds, a moderately-sized setup of 150 device
 
 ### Other MQTT devices that could be integrated into openLuup:
 
-- List of [MQTT resources](https://github.com/hobbyquaker/awesome-mqtt)
+- List of [awesome MQTT resources](https://github.com/akbooer/awesome-mqtt?tab=readme-ov-file#awesome-mqtt)
 - Paradox alarm using the [PAI - Paradox Alarm Interface](https://github.com/ParadoxAlarmInterface/pai)
 - Zwave via MQTT. See [Z-Wave JS UI](https://zwave-js.github.io/node-zwave-js/#/README)
 - [Sonos 2 mqtt](https://sonos2mqtt.svrooij.io/) via MQTT.
