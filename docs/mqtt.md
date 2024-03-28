@@ -9,7 +9,7 @@ MQTT config such as username, passwords, etc are all set up in the [openLuup sta
 ## MQTT server
 This server provides Quality of Service: QoS 0: ie at most once delivery, only. That is (according to the specification): "The message is delivered according to the capabilities of the underlying network. No response is sent by the receiver and no retry is performed by the sender. The message arrives at the receiver either once or not at all.
 
-+ and # wild cards are supported.
+Plus and hash wild cards are supported.
 
 QoS 0 is perfectly adequate for almost any home automation application operating over an internal LAN. Messages are hugely unlikely to get lost somewhere.
 
