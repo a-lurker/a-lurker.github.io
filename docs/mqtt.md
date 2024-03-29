@@ -83,7 +83,7 @@ Shelly Gen 1:
 |Shelly Plug|Power plug |SHPLG2-1|
 |Shelly HT|Temperature & humidity sensor|SHHT-1|
 |Shelly Dimmer 2|Dimmer - neutral not required|SHDM-2|
-|Shelly RGBW2|RGBW LED driver|SHRGBW2|
+|Shelly RGBW2|12V or 24V RGBW LED driver|SHRGBW2|
 
 Shelly Plus:
 
@@ -98,7 +98,7 @@ Shelly Pro - all DIN rail mountable:
 
 |Device name|Function|
 |---|---|
-|shellypro3em|Can use as three or single phase. Monitors voltage, power & energy.|
+|shellypro3em|Can use for three or single phase. Monitors voltage, power & energy.|
 
 Not on the list above? A generic device is created. Newly discovered Shelly devices are automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
