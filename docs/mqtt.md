@@ -94,11 +94,11 @@ Shelly Plus:
 |shellyplusht|Temperature & humidity sensor with display|
 |shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
-Shelly Pro:
+Shelly Pro - all DIN rail mountable:
 
 |Device name|Function|
 |---|---|
-|shellypro3em|DIN mount three or single phase voltage, power & energy monitor|
+|shellypro3em|Can use as three or single phase. Monitors voltage, power & energy.|
 
 Not on the list above? A generic device is created. Newly discovered Shelly devices are automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
 
