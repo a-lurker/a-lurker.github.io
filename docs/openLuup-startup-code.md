@@ -71,6 +71,19 @@ Set the server port.
 luup.attr_set ("openLuup.SMTP.Port", 1234) -- use port 1234 instead
 ```
 
+There are a number of predefined mailbox addresses but you can add your own:
+
+- postmaster@openLuup.local – required for an SMTP compliant server
+- openLuup@openLuup.local – general destination for openLuup messages. This mailbox performs no processing on incoming messages
+- images@openLuup.local – used for camera trigger emails, or other messages with image attachments. Images are written to the image/ folder in the openLuup home directory.
+- test@openLuup.local – all message data lines, including headers and body, will be written to the log to facilitate debugging. Beware of tryin  this on long messages!
+
+Add your own mailbox:
+
+```lua
+luup_register_handler ("MyEmailHandler", "me@mymail.local")
+```
+
 ## Data historian
 The act of inserting this line into the startup code, enables the archiving process, ie saving the data to disk. The data can then be utilised by Grafana and influx.
 
