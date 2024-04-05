@@ -1,5 +1,5 @@
 # FAQs
-Click the arrows for more info on each item.
+Click the arrow heads for more info on each item.
 
 ## Vera and openLuup
 <details>
@@ -91,6 +91,27 @@ Assuming you are using systemd:
 ```bash
 sudo systemctl enable openluup
 sudo systemctl disable openluup
+```
+</details>
+
+## Shelly
+<details>
+<summary>The Shelly web page at 192.168.33.1 is not accessible?</summary>
+
+Typing the IP address into most browsers will automatically add the https:// prefix on hitting the enter key. The web page is only accessible using the http:// prefix.
+</details>
+
+## Zigbee
+<details>
+<summary>I deleted a Zigbee device in openLuup and now I can't recreate it.</summary>
+
+openLuup use the information in the payload of the 'zigbee2mqtt/bridge/devices' topic to automatically create any missing or newly paired devices. However this topic is only issued by (pairing a new device or) by unpairing and pairing an existing device. The zigbee2mqtt app can also be manually restarted to get the topic to be sent. Both methods are somewhat inconvenient.
+
+The easiest alternative is to issue a 'zigbee2mqtt/bridge/request/restart' topic with an empty payload from say MQTT Explorer or from one of the openLuup test code test boxes. The deleted device will be recreated in openLuup. Remeber to refresh the UI.
+
+```lua
+local mqtt = luup.openLuup.mqtt
+mqtt.publish ("zigbee2mqtt/bridge/request/restart", "")
 ```
 </details>
 
