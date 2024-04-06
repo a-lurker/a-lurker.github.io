@@ -37,7 +37,33 @@ The `Implementation xml` file contains the information about how the services ar
 - what Lua code to call when an action is called.
 
 ### L_SimplePlugin1.lua
-The `Lua xml` file contains the actual Lua code that makes the plugin function.
+The `Lua` file contains the actual Lua code that makes the plugin function.
 
 ## Deep dive
 @toggledbits has written [some info on plugins here](https://github.com/toggledbits/PluginTools).
+
+## Testing code
+The console has three code test boxes at:
+Home -> lua_test, lua_test2, lua_test3
+
+Large slabs of code can be tested here and it's even possible, but prehaps no particularly desirable, to develop plugins using these test boxes.
+
+You can pretty print variables as needed eg:
+
+```lua
+local times = luup.openLuup.cpu_table()
+print (pretty(times))
+
+times = luup.openLuup.wall_table()
+print (pretty(times))
+
+local test = {33,44,55}
+print (luup.openLuup.pretty(test))
+```
+
+The above makes use of:
+```lua
+luup.openLuup.pretty()
+```
+which is accessible throughout the code base.
+
