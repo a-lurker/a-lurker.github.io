@@ -89,18 +89,18 @@ Shelly Plus:
 
 |Device name|Function|
 |---|---|
-|shellyplusi4|4-digital inputs| 
-|shellyplus2pm|2 relays with power measurement|
-|shellyplusht|Temperature & humidity sensor with display|
-|shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
+|Shellyplusi4|4-digital inputs|
+|Shellyplus2pm|2 relays with power measurement|
+|Shellyplusht|Temperature & humidity sensor with display|
+|Shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
 Shelly Pro - all DIN rail mountable:
 
 |Device name|Function|
 |---|---|
-|shellypro3em|Can use for three or single phase. Monitors voltage, power & energy.|
+|Shellypro3em|Can use for three or single phase. Monitors voltage, power & energy.|
 
-Not on the list above? A generic device is created. Newly discovered Shelly devices are automatically placed in the "Shellies room". Gen 3 devices need the "Generic status update over MQTT" checkbox to be checked in the MQTT settings.
+Not on the list above? A generic device is created. Newly discovered Shelly devices are automatically placed in the "Shellies room". In the MQTT settings; the "Generic status update over MQTT" checkbox does not need to be checked (as per the manufacturer's default).
 
 List of [Shellies](https://www.openhab.org/addons/bindings/shelly/#supported-devices)
 
