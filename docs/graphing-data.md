@@ -27,7 +27,7 @@ Do a Luup engine restart. The Whisper files for every variable is then created i
 - Whisper file headers are cached and renaming/changing the file mid-stream will completely trash it. Stop openLuup first.
 
 ### Quick graph view
-In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest. Uses Google Charts, so an internet connection is required.
+In the openLuup console go to "Home-->Historian-->Cache. Just click the little graph icon next to the variable of interest.
 
 ### Historian variables retained
 If the on disk archiving has been enabled the Historian automatically starts archiving the majority of the openLuup variables.
