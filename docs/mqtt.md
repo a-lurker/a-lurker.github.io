@@ -92,7 +92,7 @@ Shelly Plus:
 |Shellyplusi4|4-digital inputs|
 |Shellyplus2pm|2 relays with power measurement|
 |Shellyplusht|Temperature & humidity sensor with display|
-|Shellyplusuni|solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
+|Shellyplusuni|Solid state relays with potential free contacts, pulse counter, analog and 2 digital i/ps|
 
 Shelly Pro - all DIN rail mountable:
 
@@ -224,13 +224,32 @@ end
 
 Register the MQTT handler:
 ```lua
-  -- register the MQTT handler in the openLuup startup code
-  local topic = 'mqtt:zigbee2mqtt/0x54ef4220004eaa56'   -- motion detector
+   -- register the MQTT handler in the openLuup startup code
+   local topic = 'mqtt:zigbee2mqtt/0x54ef4220004eaa56'   -- motion detector
    luup.register_handler ('MQTThandler', topic, 1)
 ```
 
 ## Monitoring and control of openLuup via MQTT
 Monitoring and control of devices via MQTT, represents an intention to move away from the need for any UPnP Vera-style requests or polling.
+
+### Request the status of an openluup variable
+The MQTT server subscribes to the topic openLuup/query. Any MQTT "thing", can use this get an initial value from openLuup, as needed.
+
+The "thing" would publish a message with the format: devNo.serviceId.variable eg:
+
+```text
+    topic: openLuup/query
+    message: 2.openLuup.Memory_Mb
+```
+
+openLuup will immediately reply with the status of the requested variable:
+
+```text
+    topic: openLuup/update/2/openLuup/Memory_Mb
+    message: 8.7 (or whatever the value is)
+```
+
+Notice the formatting difference between the message and the returned topic ('.' instead of '/'). This is intentional because it is in line with openLuup's existing dev.srv.var notation and reminding you that it's not a part of the query topic, but it goes in the message This avoids the need for openLuup to use a wildcard subscription.
 
 ### openluup status publishing
 Using the built-in MQTT QoS 0 server, two new sets of PUBLISH topics may be sent by openLuup:
