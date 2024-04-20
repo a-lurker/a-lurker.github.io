@@ -12,6 +12,8 @@ The developer and users can generally be found at the [Smarthome Community Forum
 <summary>What version of Lua does openLuup and Vera use?</summary>
 
 openLuup and Vera use Lua version 5.1 Here is the [manual](https://www.lua.org/manual/5.1/).
+
+Out of interest: Lua is not an abbreviation of any particular phrase. It means moon in the Portuguese language. Lua was first developed in the Portuguese speaking country of Brazil.
 </details>
 
 <details>
@@ -105,9 +107,9 @@ Typing the IP address into most browsers will automatically add the https:// pre
 <details>
 <summary>I deleted a Zigbee device in openLuup and now I can't recreate it.</summary>
 
-openLuup use the information in the payload of the 'zigbee2mqtt/bridge/devices' topic to automatically create any missing or newly paired devices. However this topic is only issued by (pairing a new device or) by unpairing and pairing an existing device. The zigbee2mqtt app can also be manually restarted to get the topic to be sent. Both methods are somewhat inconvenient.
+openLuup uses the information in the payload of the 'zigbee2mqtt/bridge/devices' topic to automatically create any missing or newly paired devices. However this topic is only issued by (pairing a new device or) by unpairing and pairing an existing device. The zigbee2mqtt app can also be manually restarted to get the topic to be sent. Both methods are somewhat inconvenient.
 
-The easiest alternative is to issue a 'zigbee2mqtt/bridge/request/restart' topic with an empty payload from say MQTT Explorer or from one of the openLuup test code test boxes. The deleted device will be recreated in openLuup. Remeber to refresh the UI.
+The easiest alternative is to issue a 'zigbee2mqtt/bridge/request/restart' topic with an empty payload from say MQTT Explorer or from one of the openLuup test code test boxes. The deleted device will be recreated in openLuup. Remember to refresh the UI.
 
 ```lua
 local mqtt = luup.openLuup.mqtt
