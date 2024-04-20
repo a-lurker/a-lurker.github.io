@@ -10,7 +10,7 @@ Note that the openLuup module is used for all encode calls, because it sorts tab
 
 It's highly recommended to have rapidjson or cjson (lua version) be made available on the host device.
 
-There is potentially a huge benefit for plugins such as VeraBridge and ZWay. As the openLuup JSON module will use the C-library based cjson module or rapidjson for decoding.
+There is potentially a huge benefit for plugins such as VeraBridge, ZWay, AltUI and AltHue. As the openLuup JSON module will use the C-library based cjson module or rapidjson for decoding.
 
 You can check the console startup log to see what json decoder is currently being used by openLuup at:
 
@@ -18,7 +18,8 @@ http://ip_address:3480/console?page=startup_log
 
 1. rapidjson decoder:
 ```text
-TBA
+2024-04-20 15:01:54.828  openLuup.json::   version RapidJSON (0.7.1) + openLuup (2021.05.01)  @akbooer
+
 ```
 
 2. cjson decoder:
@@ -33,7 +34,8 @@ TBA
 
 ## Installing rapidjson or cjson:
 
-To install rapidjson on a Raspberry Pi:
+### To install rapidjson on a Raspberry Pi:
+
 ```bash
 # Do updates ready for install
 sudo apt update
@@ -42,7 +44,7 @@ sudo apt upgrade
 # Get Lua Rocks package installer
 sudo apt install luarocks
 
-# Get the lua-cjson parser/encoder for Lua
+# Get the rapidjson parser/encoder for Lua
 sudo luarocks install rapidjson
 
 # Check the installation
@@ -51,8 +53,20 @@ luarocks show rapidjson
 # Probably best to reboot
 sudo reboot
 ```
+If you get this error message you probably need to install cmake:
 
-To install cjson on a Raspberry Pi:
+```bash
+Error: Build error: 'cmake' program not found. Make sure CMake is installed and is available in your PATH (or you may want to edit the 'variables.CMAKE' value in file '/etc/luarocks/config-5.1.lua')
+```
+
+Installing cmake:
+
+```bash
+sudo apt install cmake
+```
+
+### To install cjson on a Raspberry Pi:
+
 ```bash
 # Do updates ready for install
 sudo apt update
