@@ -19,7 +19,6 @@ http://ip_address:3480/console?page=startup_log
 1. rapidjson decoder:
 ```text
 2024-04-20 15:01:54.828  openLuup.json::   version RapidJSON (0.7.1) + openLuup (2021.05.01)  @akbooer
-
 ```
 
 2. cjson decoder:
