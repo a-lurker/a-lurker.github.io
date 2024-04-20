@@ -73,5 +73,5 @@ The latest RasPi OS releases don't set up a root login. But you can set up WinSC
 In WinSCP:
 Select Site and Edit then select Advanced and navigate to Environment > SCP/Shell
 
-In the Shell pull down list: change from 'Default' to 'sudo -s' and save. Your account will log in using sudo privileges, letting you SCP files anywhere as root.
+In the Shell pull down list: change from 'Default' to 'sudo su -' and save. Your account will log in using sudo privileges, letting you SCP files anywhere as root. This needs to be done per site you log into.
 
