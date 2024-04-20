@@ -171,6 +171,18 @@ You can also try halving or doubling the chunk length eg:
 luup.attr_set ("openLuup.HTTP.ChunkedLength", 8000)
 ```
 
+## Add useful global variable or function definitions
+You can add useful global variable or function definitions to your startup code. They then becomes available for use, within your Lua test code or Lua scene code.
+
+For example: by including this in the startup:
+```lua
+json = require "openLuup.json"
+```
+it becomes ready for use in the Lua test boxes or in your scene code:
+```lua
+local x = json.decode (y)
+```
+
 ## Your own start up code
 You can load your own code like so.
 
