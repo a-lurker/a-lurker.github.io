@@ -5,44 +5,49 @@ Here's your brand new shiny Rasberry Pi 4 Model B set up with the latest Rasbian
 ![Raspberry Pi 4B](images/raspberry-pi-4b.jpg " Raspberry-Pi-4B with a Samsung 500GB SSD")
 
 ## Install prerequisites
-Execute the following.
+Execute the following using Putty or similar.
 
 ```bash
 sudo apt update
+sudo apt upgrade
 sudo apt install lua-socket
 sudo apt install lua-filesystem
 sudo apt install lua-sec
 ```
 
 ## openLuup Installation
-This is very straight-forward: create a directory **cmh-ludl/** for the openLuup installation on your machine (in your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions) **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
+Installation is straight-forward but note you may need to prefix the following commands with sudo: Create a directory **cmh-ludl/** for the openLuup installation on your machine. In your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions (octal 0755). **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
 
 ```bash
 wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 ```
 
-Run the file using the command line:
+**openLuup_install.lua** will now be available in the **cmh-ludl/** directory. Run the file using the command line:
 
 ```bash
 lua5.1 openLuup_install.lua
 ```
 
-When successful, the script produces console output like this:
+When successful, the script produces console output similar to this:
 
 ```text
-lua install.lua
-
-openLuup_install 2016.06.08 @akbooer
-getting latest openLuup version tar file from GitHub...
+akbooer@openLuup4:/etc/cmh-ludl $ sudo lua5.1 openLuup_install.lua
+openLuup_install   2019.02.15   @akbooer
+getting openLuup version tar file from GitHub branch master...
 un-zipping download files...
 getting dkjson.lua...
 creating required files and folders
 initialising...
 downloading and installing AltUI...
-Tue Nov 8 11:08:32 2016 device 2 ' openLuup' requesting reload
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100 29926  100 29926    0     0  64665      0 --:--:-- --:--:-- --:--:-- 64774
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  6570  100  6570    0     0  15410      0 --:--:-- --:--:-- --:--:-- 15386
+Sat Apr 20 13:44:38 2024        device 2 '    openLuup' requesting reload
 openLuup downloaded, installed, and running...
 visit http://172.16.42.131:3480 to start using the system
-
 ```
 
 and browsing the **reported URL** http://172.16.42.131:3480 will take you to the AltUI interface and show two devices: openLuup and AltUI. From here on, the interface can be used to configure the system.
