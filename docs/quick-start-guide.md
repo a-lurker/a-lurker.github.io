@@ -65,7 +65,7 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 You can optimise the json decoding, if needed. Refer to [json parser](openluup-and-json.md).
 
 ## Other popular libraries
-Some plugins, such as the UPnP Event Proxy, require an xml parser. Use the [lxp expat library]:(https://lunarmodules.github.io/luaexpat/index.html)
+Some plugins, such as the UPnP Event Proxy, require an xml parser. Use the [lxp expat library](https://lunarmodules.github.io/luaexpat/index.html):
 ```bash
 sudo apt install lua-expat
 ```
