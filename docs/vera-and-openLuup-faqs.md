@@ -1,128 +1,105 @@
-# FAQs
-Click the arrow heads for more info on each item.
+The plugins listed here are available via the Alternative App Store. The app store becomes accessible via a new menu item in the Alternative User Interface once configured.
 
-## Vera and openLuup
-<details>
-<summary>Where's the forum?</summary>
+Both the Alternative User Interface (AltUI) and AltAppStore (AltAppStore) plugins need to be installed on Vera to access the store. With openLuup; this is all "automatically" set up and ready to go as part of the openLuup suite.
 
-The developer and users can generally be found at the [Smarthome Community Forum](https://smarthome.community/).
-</details>
+The Alternative App Store can be found [here](https://github.com/akbooer/AltAppStore).
 
-<details>
-<summary>What version of Lua does openLuup and Vera use?</summary>
+Publishing a plugin in the store is pretty easy. First your plugin code must be available in GitHub. Publish it, using the Publish command in the AltAppStore web page. You need to enter the salient information and it's ready to go.
 
-openLuup and Vera use Lua version 5.1 Here is the [manual](https://www.lua.org/manual/5.1/).
+Plugin icons can be stored on GitHub eg [like so](https://github.com/a-lurker/a-lurker.github.io/tree/master/icons). After a "few days" the raw json describing the plugin appears [here](https://raw.githubusercontent.com/akbooer/AltAppStore/data/J_AltAppStore.json).
 
-Out of interest: Lua is not an abbreviation of any particular phrase. It means moon in the Portuguese language. Lua was first developed in the Portuguese speaking country of Brazil.
-</details>
+Vera 3 users should note the store will not work, as Vera 3 doesn't have the https capability required to access GitHub. However, the apps can always be downloaded from GitHub and manually installed.
 
-<details>
-<summary>How to force a Luup Engine reload?</summary>
+For those just interested in what the store contains; refer to the list below - as of 2021 July 27 there were about 75 plugins available:
 
-1. Using AltUI: Tab 'Misc', select 'Reload Luup Engine'
-
-2. Using Vera UI7: Settings ➔ Z-Wave Settings ➔ Advanced Tab: select 'Reload Engine'
-
-3. URL call:
-
-```html
-http://openLuup_IP_address:3480/data_request?id=reload
-
-```
-4. Lua code
-```lua
-luup.reload()
-```
-
-</details>
-
-<details>
-<summary>How to make use of a scene controllers button push?</summary>
-
-The trick with all these types of devices is to set a trigger on the LastSceneTime variable and then read the value of the sl_SceneActivated variable, to get which button was pressed.
-
-So for example Hue light controller buttons return these values in sl_SceneActivated (note values not verified):
-
-|Push type|Value|
+|Plugin|Comments|
 |---|---|
-|on|3|
-|dim_up_hold|9|
-|dim_up|8|
-|dim_dwn_hold|14|
-|dim_dwn|13|
-|off|18|
+|ABC:||
+|[Aeratron fans](https://github.com/a-lurker/Vera-Plugin-Aeratron)||
+|Alternative App Store|Built into openLuup|
+|[ALTHue](https://github.com/amg0/ALTHue)||
+|[ALTUI](https://github.com/amg0/ALTUI)||
+|[Amcrest Dahua](https://github.com/rafale77/Amcrest-Dahua-Openluup)||
+|[AutoVirtualThermostat](https://github.com/toggledbits/AutoVirtualThermostat)||
+|[BroadLink-Mk2](https://github.com/a-lurker/Vera-Plugin-BroadLink-Mk2)||
+|Canal Plus|Not in GitHub|
+|[Countdown Timer](https://github.com/rafale77/MiOS-CountdownTimer)|Originated by Futzle|
+|DEF:||
+|[DALI Planet](https://github.com/a-lurker/Vera-Plugin-DALI-Planet)||
+|[DarkSky Weather](https://github.com/reneboer/DarkSkyWeather)|Support for the Dark Sky API ended 31 Mar 2023. The "Multi Provider Weather Station" plugin can potentially be used as a replacement.|
+|[DataYours](https://github.com/akbooer/DataYours)||
+|[DelayLight](https://github.com/toggledbits/DelayLight)||
+|[DeusExMachinaII](https://github.com/toggledbits/DeusExMachina)||
+|[Domoticz Bridge](https://github.com/999LV/DomoticzBridge)|Non functional: needs work [check here](https://smarthome.community/topic/301/domoticz-bridge)|
+|[Domoticz Bridge 2](https://github.com/perhusaas/DomoticzBridge)|Originated by 999LV and updated by perhusaas|
+|[DreamColorESP8266](https://github.com/GreatGazoe/DreamColorESPVeraPlugIn)||
+|[DreamColorLedRGB](https://github.com/GreatGazoe/DreamColorLEDRGB)||
+|[Ecobee](https://github.com/rafale77/vera-ecobee)||
+|[Edisio Gateway](https://github.com/vosmont/Vera-Plugin-EdisioGateway)||
+|[EDS One Wire Server](https://github.com/a-lurker/Vera-Plugin-EDS-One-Wire-Server)|Originated by Chris Jackson|
+|[EKM metering](https://github.com/a-lurker/Vera-Plugin-EKM-metering)||
+|[Emby Interface](https://github.com/toggledbits/Emby)||
+|[Enphase Envoy Solar Monitor](https://github.com/reneboer/Vera-Enphase-Envoy)||
+|[EventWatcher](https://github.com/akbooer/EventWatcher)||
+|[Ezlo Bridge](https://github.com/reneboer/EzloBridge)||
+|[FritzBox Sensor](https://github.com/reneboer/vera-FritzBoxSensor)||
+|GHI:||
+|[Google Calendar 3](https://github.com/stuartofmt/GCal3)||
+|[Harmony Hub Control](https://github.com/reneboer/vera-Harmony-Hub)||
+|[Heliotrope](https://github.com/a-lurker/Vera-Plugin-Heliotrope)|Originated by Futzle. openLuup incorporates the same functionality, so this plugin is not required in that casse.|
+|[Homebridge 2 openLuup](https://github.com/ronluna/homebridge2openluup)||
+|[HomeWave Push](https://github.com/intveltr/HomeWavePush)||
+|[HundredGraphs Logger](https://github.com/ipstas/ipstas-vera-hundredgraphs)||
+|[IKEA Tradfri](https://github.com/vwout/vera-tradfri)||
+|[Image Map Remote](https://github.com/a-lurker/Vera-Plugin-Image-Map-Remote)||
+|[Info Viewer](Vera-Plugin-Info-Viewer)|**For Vera only**|
+|[IPhone Locator](https://github.com/amg0/IPhoneLocator)||
+|[IPX800](https://github.com/amg0/IPX800)||
+|[Irrigation Caddy](https://github.com/a-lurker/Vera-Plugin-Irrigation-Caddy)||
+|JKL:||
+|[KSenia Lares 16 Bridge](https://github.com/amg0/Ksenia)||
+|[LuaView](https://github.com/toggledbits/LuaView)||
+|MNO:||
+|[MetOffice DataPoint](https://github.com/akbooer/MetOffice_DataPoint)||
+|[Multi Provider Weather Station](https://github.com/reneboer/MultiStationWeather)||
+|[Netatmo](https://github.com/akbooer/Netatmo)||
+|[Network Monitor](https://github.com/amg0/NetMonitor)||
+|[OpenSprinkler](https://github.com/dbochicchio/vera-OpenSprinkler)||
+|[OpenTherm Gateway](https://github.com/reneboer/vera-OpenThermGateway)||
+|[openWeather](https://github.com/999LV/openWeather-plugin-for-openLuup)|Support for the Wunderground weather API ended Dec, 2018. The "Multi Provider Weather Station" plugin can potentially be used as a replacement.|
+|PQRS:||
+|[Paradox EVO IP150 web page scrapper](https://github.com/a-lurker/Vera-Plugin-Paradox-IP150-wps)||
+|[Pioneer Receiver](https://github.com/rafale77/vera-pioneer)||
+|[Rachio](https://github.com/toggledbits/RachioService)||
+|[Rainforest Eagle](https://github.com/jswim788/rainforest-eagle-vera)|Based on robertmm's work|
+|[RaZberry (ALPHA)](https://github.com/amg0/razberry-altui)||
+|[Reactor](https://github.com/toggledbits/Reactor)||
+|[RGB Controller](https://github.com/vosmont/Vera-Plugin-RGBController)||
+|[Rules Engine](https://github.com/vosmont/Vera-Plugin-RulesEngine)||
+|[SiteSensor](https://github.com/toggledbits/SiteSensor)||
+|[SMA inverter](https://github.com/a-lurker/Vera-Plugin-SMA-inverter)||
+|[Smartmeter Reader](https://github.com/reneboer/Vera-Dutch-Smartmeter)||
+|[Solar Meter](https://github.com/reneboer/vera-SolarMeter)||
+|[Sonos](https://github.com/toggledbits/Sonos-Vera)|Originated by lolomodo and updated by toggledbits.|
+|[Sony Bravia IP](https://github.com/a-lurker/Vera-Plugin-Sony-Bravia-IP)||
+|[Surveillance Station Remote (BETA)](https://github.com/vosmont/Vera-Plugin-SurveillanceStationRemote)||
+|[Switchboard](https://github.com/toggledbits/Switchboard-Vera)||
+|TUV:||
+|[Telegram](https://github.com/dbochicchio/vera-Telegram)||
+|[Tesla Car](https://github.com/reneboer/vera-TeslaCar)||
+|[UPS Sensor](https://github.com/reneboer/vera-UPSSensor)||
+|[UPnP Event Proxy](https://github.com/a-lurker/Vera-Plugin-UPnP-Event-Proxy)|**Modified for installs that have systemd available. Not suitable for Vera** - plugin originated by Futzle. Uses LXP (xml parser), so may need to install it: sudo apt install lua-expat|
+|[VeraAlexa](https://github.com/dbochicchio/VeraAlexa)||
+|[Virtual Devices](https://github.com/dbochicchio/vera-VirtualDevices)|MQTT commands & status are only available with openLuup. http & Lua can be used by Vera and openLuup.|
+|[Virtual Pronto Remote](https://github.com/a-lurker/Vera-Plugin-Virtual-Pronto-Remote)||
+|[Virtual Sensor](https://github.com/toggledbits/VirtualSensor)||
+|[VW CarNet](https://github.com/reneboer/openLuup-CarNet)||
+|WXYZ:||
+|[WES](https://github.com/amg0/WES)||
+|[Xee](https://github.com/vosmont/Vera-Plugin-Xee)||
+|[Yamaha RX HTTP](https://github.com/a-lurker/Vera-Plugin-Yamaha-RX-HTTP)||
+|[Z-Way](https://github.com/akbooer/Z-Way)||
+|[ZiBlue Gateway](https://github.com/vosmont/Vera-Plugin-ZiBlueGateway)||
+|[ZiGate Gateway](https://github.com/vosmont/Vera-Plugin-ZiGateGateway)
 
-
-</details>
-
-## openLuup
-<details>
-<summary>Does openLuup require an internet connection?</summary>
-
-openLuup does not need an internet connection. AltUI requires an internet connection to download java script libraries. However you can copy these cloud components to a local SSD. Plugins that use internet resources eg say a weather plugin or a Hue hub, will obviously need an internet connection to function.
-</details>
-
-<details>
-<summary>Is openLuup a subscription service?</summary>
-
-Absolutely not. It is open source. Users are encouraged to make a donation to cancer research. Please consider [donating](https://www.justgiving.com/DataYours/). The money goes to "Cancer Research UK".
-</details>
-
-<details>
-<summary>Does openLuup auto update?</summary>
-
-The user has full control on whether it updates automatically or not.
-</details>
-
-<details>
-<summary>How to stop / start openLuup?</summary>
-
-Assuming you are using systemd and enabled has already been run:
-
-```bash
-sudo systemctl start openluup
-sudo systemctl stop openluup
-```
-</details>
-
-<details>
-<summary>How to enable / disable at boot with openLuup?</summary>
-
-Assuming you are using systemd:
-
-```bash
-sudo systemctl enable openluup
-sudo systemctl disable openluup
-```
-</details>
-
-## Shelly
-<details>
-<summary>The Shelly web page at 192.168.33.1 is not accessible?</summary>
-
-Typing the IP address into most browsers will automatically add the https:// prefix on hitting the enter key. The web page is only accessible using the http:// prefix.
-</details>
-
-## Zigbee
-<details>
-<summary>I deleted a Zigbee device in openLuup and now I can't recreate it.</summary>
-
-openLuup uses the information in the payload of the 'zigbee2mqtt/bridge/devices' topic to automatically create any missing or newly paired devices. However this topic is only issued by (pairing a new device or) by unpairing and pairing an existing device. The zigbee2mqtt app can also be manually restarted to get the topic to be sent. Both methods are somewhat inconvenient.
-
-The easiest alternative is to issue a 'zigbee2mqtt/bridge/request/restart' topic with an empty payload from say MQTT Explorer or from one of the openLuup test code test boxes. The deleted device will be recreated in openLuup. Remember to refresh the UI.
-
-```lua
-local mqtt = luup.openLuup.mqtt
-mqtt.publish ("zigbee2mqtt/bridge/request/restart", "")
-```
-</details>
-
-## Vera
-<details>
-<summary>How to migrate Z-Wave from a Vera to a USB stick?</summary>
-
-@Rafele has a detailed [explanation here](https://github.com/rafale77/Z-Way).
-
-The method described at that link, only allows for transfers from 500 series based Veras to 500 series USB sticks. To migrate a 300 series Vera  (eg a Vera 3), you have to back up the Z-Wave data, to the Micasaverde cloud and restore it to a 500 series Vera (eg a Vera Edge).
-</details>
-
+Eample of plugins shown in the [openLuup console - App Store](https://smarthome.community/assets/uploads/files/1604754181183-screenshot_2020-11-07-openluup-resized.png):
