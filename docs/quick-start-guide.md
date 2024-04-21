@@ -64,6 +64,12 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 ## json encoders / decoders
 You can optimise the json decoding, if needed. Refer to [json parser](openluup-and-json.md).
 
+## Other popular libraries
+Some plugins, such as the UPnP Event Proxy, require an xml parser. Use the lxp expat library:
+```bash
+sudo apt install lua-expat
+```
+
 ## Not working?
 Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
 
