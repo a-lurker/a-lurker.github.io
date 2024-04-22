@@ -612,7 +612,7 @@ This assumes you installed openLuup at: /etc/cmh-ludl
 Create a bash script to run openLuup in the background. Note line endings matter in bash scripts. If using some other editor, make sure lines end with just a linefeed; ie not with a carriage return, linefeed:
 
 ```text
-$ sudo nano /etc/cmh-ludl/run_openLuup.sh
+$ sudo nano /etc/cmh-ludl/openLuup_run.sh
 ```
 
 Script:
@@ -629,7 +629,7 @@ nohup ./openLuup_reload >> out.log 2>&1 &
 Privileges:
 
 ```bash
-$ sudo chmod +x run_openLuup.sh
+$ sudo chmod +x openLuup_run.sh
 ```
 
 Next create the systemd service for openLuup setting it up to wait for network before starting:
@@ -648,7 +648,7 @@ After=network.target
 [Service]
 Type=forking
 WorkingDirectory=/etc/cmh-ludl
-ExecStart=/bin/bash /etc/cmh-ludl/run_openLuup.sh
+ExecStart=/bin/bash /etc/cmh-ludl/openLuup_run.sh
 ExecStop=curl http://localhost:3480/data_request?id=exit
 
 [Install]
