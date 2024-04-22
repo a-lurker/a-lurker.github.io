@@ -61,6 +61,15 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 
 [systemctl](/openluup?id=systemctl-with-etcsystemdsystemopenluupservice)
 
+### File privileges
+These files if used need to be executable:
+```bash
+# 0644 ➔ 0755
+sudo chmod +x /etc/cmh-ludl/openLuup_reload
+sudo chmod +x /etc/cmh-ludl/openLuup_run.sh
+sudo chmod +x /etc/cmh-ludl/openLuup_stop.sh
+```
+
 ## json encoders / decoders
 You can optimise the json decoding, if needed. Refer to [json parser](openluup-and-json.md).
 
