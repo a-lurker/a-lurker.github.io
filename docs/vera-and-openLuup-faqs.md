@@ -115,6 +115,8 @@ The easiest alternative is to issue a 'zigbee2mqtt/bridge/request/restart' topic
 local mqtt = luup.openLuup.mqtt
 mqtt.publish ("zigbee2mqtt/bridge/request/restart", "")
 ```
+
+Even easier is to go the Zigbee2MQTT web page at: http://Zigbee2MQTT_IP_address:8080/#/settings/tools and push the "Restart Zigbee2MQTT" button.
 </details>
 
 ## Vera
