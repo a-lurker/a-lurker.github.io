@@ -9,7 +9,6 @@
 
 [JavaScript Lint](http://www.javascriptlint.com/online_lint.php)
 
-
 [CSS Validation](http://jigsaw.w3.org/css-validator/)
 
 ## Useful links: Lua
@@ -19,7 +18,7 @@
 
 [Lua Wiki](http://lua-users.org/wiki/LuaDirectory)
 
-[Lua for windows](http://code.google.com/p/luaforwindows/)
+[Lua for windows](https://github.com/rjpcomputing/luaforwindows)
 
 [ZeroBrane Studio for Vera](https://studio.zerobrane.com/vera.html)
 
@@ -201,7 +200,7 @@ end
 ```
 
 ## Telegram
-You need a bot and chat ID from Telegram
+You need a bot and chat ID from Telegram.
 ```lua
 local function telegram(msg)
     local botID  = 'insert_bot_ID_here'
