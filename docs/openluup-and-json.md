@@ -103,8 +103,8 @@ local function loadJsonModule()
         'rapidjson',            -- how many json libs are there?
         'cjson',                -- openLuup?
         'dkjson',               -- UI7 firmware
-        'openLuup.json',        -- https://community.getvera.com/t/pure-lua-json-library-akb-json/185273
-        'akb-json',             -- https://community.getvera.com/t/pure-lua-json-library-akb-json/185273
+        'openLuup.json',        -- https://community.ezlo.com/t/pure-lua-json-library-akb-json/185273
+        'akb-json',             -- https://community.ezlo.com/t/pure-lua-json-library-akb-json/185273
         'json',                 -- OWServer plugin
         'json-dm2',             -- dataMine plugin
         'dropbox_json_parser',  -- dropbox plugin
@@ -136,3 +136,34 @@ local function loadJsonModule()
     return json
 end
 ```
+
+## openLuup internal json encoder/decoder
+The encoder/decoder used by openLuup is based on a library written by akbooer some time ago. The salient points re: that library follow:
+
+There is already a large number of options for [JSON libraries](http://lua-users.org/wiki/JsonModules]http://lua-users.org/wiki/JsonModules) available to Lua users. None are perfect; only some are pure Lua; some are quite slow.
+However @akbooer created another!
+
+A few features:
+- it has two basic function calls: `encode` and `decode`. They both return two parameters:
+  1. required conversion or nil
+  2. error message, if first return is nil.
+- include it in your code with `json = require "akb-json"` and call it with `JSON=json.encode(LUA); LUA=json.decode(JSON);`
+- numbers bigger than json.default.huge, which can be changed but defaults to 8.88e888, are treated as infinity.
+- json.default.max_array_length = 1000, and can be changed. Noting there the code guards against things like `json.encode{[1e6]=1}`.
+- supports unicode escapes and UTF-8 encoding of Basic Multilingual Plane (BMP) codepoints.
+- returns an error, if given a self-referencing structure to encode.
+- returns an error, if encoding a table with mixed numeric and string indices as JSON can't represent these.
+- `json.version` returns the library version number.
+
+Speed: comprehensive unit testing including about 100 different cases, half of which are valid conversions, and three more extensive files (timings on a 2.66 GHz Intel Core 2 Duo iMac, about 20x the speed of a VeraLite.
+
+
+- 6 kB Netatmo device file - decode: 1.5 mS, encode: 4.5 mS
+- 40 kB dataMine configuration file - decode: 17 mS, encode: 48 mS
+- 650 kB Luup user_data file - decode: 220 mS, encode: 725 mS
+
+It scales fairly linearly.
+
+This module is also embedded in applications Netatmo, EventWatcher, DataYours, and pretty-prints its encoded JSON strings.
+
+The library is expected to be in `/usr/lib/lua/`.
