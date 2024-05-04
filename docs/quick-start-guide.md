@@ -16,16 +16,22 @@ sudo apt install lua-sec
 ```
 
 ## openLuup Installation
-Installation is straight-forward but note you may need to prefix the following commands with sudo: Create a directory **cmh-ludl/** for the openLuup installation on your machine. In your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions (octal 0755). **cd** to it, and retrieve the file **openLuup_install.lua** from the GitHub repository using:
+Installation is straight-forward but note you may need to prefix the following commands with sudo: Create a directory **cmh-ludl/** for the openLuup installation on your machine. In your home directory is a good place, or for compatibility with Vera use **/etc/cmh-ludl/** but be careful with permissions (octal 0755).
 
 ```bash
-wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
+sudo mkdir /etc/cmh-ludl
+cd /etc/cmh-ludl
+```
+**cd** to it, and retrieve the install file **openLuup_install.lua** from the GitHub repository using:
+
+```bash
+sudo wget https://github.com/akbooer/openLuup/raw/master/Utilities/openLuup_install.lua
 ```
 
 **openLuup_install.lua** will now be available in the **cmh-ludl/** directory. Run the file using the command line:
 
 ```bash
-lua5.1 openLuup_install.lua
+sudo lua5.1 openLuup_install.lua
 ```
 
 When successful, the script produces console output similar to this:
@@ -62,12 +68,10 @@ Setup a systemd service to start up openLuup at boot time. Refer to the followin
 [systemctl](/openluup?id=systemctl-with-etcsystemdsystemopenluupservice)
 
 ### File privileges
-These files if used need to be executable:
+This file if used, needs to be executable:
 ```bash
 # 0644 ➔ 0755
 sudo chmod +x /etc/cmh-ludl/openLuup_reload
-sudo chmod +x /etc/cmh-ludl/openLuup_run.sh
-sudo chmod +x /etc/cmh-ludl/openLuup_stop.sh
 ```
 
 ## json encoders / decoders
@@ -80,7 +84,12 @@ sudo apt install lua-expat
 ```
 
 ## Not working?
-Post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
+Look for clues in the logging/journal:
+```bash
+journalctl -e
+```
+
+Alternatively post your challenge to the [Smarthome Community Forum](https://smarthome.community/)!
 
 ## WinSCP
 The latest RasPi OS releases don't set up a root login. But you can set up WinSCP so it has root priviledges:
