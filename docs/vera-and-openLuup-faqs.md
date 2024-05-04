@@ -33,7 +33,6 @@ http://openLuup_IP_address:3480/data_request?id=reload
 ```lua
 luup.reload()
 ```
-
 </details>
 
 <details>
@@ -52,7 +51,20 @@ So for example Hue light controller buttons return these values in sl_SceneActiv
 |dim_dwn|13|
 |off|18|
 
+</details>
 
+<details>
+<summary>Common application home page addresses eg Shelly, Grafana, etc</summary>
+
+|App|URL|
+|---|---|
+|AltUI|http://openLuup_IP_address:3480/data_request?id=lr_ALTUI_Handler&command=home|
+|openLuup console|http://openLuup_IP_address:3480/console?page=home|
+|BroadLink AP|192.168.10.1|
+|Grafana|http://Grafana_IP_address:3000|
+|Shelly AP|http://192.168.33.1|
+|Zigbee2MQTT|http://Zigbee2MQTT_IP_address::8080/#/|
+|Z-Wave JS UI|http://Z-Wave_JS_UI_IP_address::8091|
 </details>
 
 ## openLuup
