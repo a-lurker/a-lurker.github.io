@@ -58,13 +58,13 @@ So for example Hue light controller buttons return these values in sl_SceneActiv
 
 |App|URL|
 |---|---|
-|AltUI|http://openLuup_IP_address:3480/data_request?id=lr_ALTUI_Handler&command=home|
-|openLuup console|http://openLuup_IP_address:3480/console?page=home|
+|AltUI|openLuup_IP_address:3480/data_request?id=lr_ALTUI_Handler&command=home|
+|openLuup console|openLuup_IP_address:3480/console?page=home|
 |BroadLink AP|192.168.10.1|
-|Grafana|http://Grafana_IP_address:3000|
-|Shelly AP|http://192.168.33.1|
-|Zigbee2MQTT|http://Zigbee2MQTT_IP_address::8080/#/|
-|Z-Wave JS UI|http://Z-Wave_JS_UI_IP_address::8091|
+|Grafana|Grafana_IP_address:3000|
+|Shelly AP|192.168.33.1|
+|Zigbee2MQTT|Zigbee2MQTT_IP_address::8080/#/|
+|Z-Wave JS UI|Z-Wave_JS_UI_IP_address::8091|
 </details>
 
 ## openLuup
@@ -94,6 +94,11 @@ Assuming you are using systemd and enabled has already been run:
 ```bash
 sudo systemctl start openluup
 sudo systemctl stop openluup
+```
+
+Alternatively you can hit the following URL:
+```html
+http://openLupp_IP_address:3480/data_request?id=exit
 ```
 </details>
 
