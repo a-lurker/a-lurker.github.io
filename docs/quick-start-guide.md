@@ -115,4 +115,4 @@ The `Switchboard` plugin is controlling various house modes and status with virt
 ## AltUI and scenes
 An example of various time triggered scenes that have been set using AltUI.
 
-![AltUI time triggered scenes](images/altui-house-status-with-virtual-switches.jpg "AltUI time triggered scenes")
+![AltUI time triggered scenes](images/altui-time-triggered-scenes.jpg "AltUI time triggered scenes")
