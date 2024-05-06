@@ -2,7 +2,7 @@
 
 Here's your brand new shiny Rasberry Pi 4 Model B set up with the latest Rasbian, such as bookworm.
 
-![Raspberry Pi 4B](images/raspberry-pi-4b.jpg " Raspberry-Pi-4B with a Samsung 500GB SSD")
+![Raspberry Pi 4B](images/raspberry-pi-4b.jpg "Raspberry Pi 4B with a Samsung 500GB SSD")
 
 ## Install prerequisites
 Execute the following using Putty or similar.
@@ -78,7 +78,7 @@ sudo chmod +x /etc/cmh-ludl/openLuup_reload
 You can optimise the json decoding, if needed. Refer to [json parser](openluup-and-json.md).
 
 ## Other popular libraries
-Some plugins, such as the UPnP Event Proxy, require an xml parser. Use the [lxp expat library](https://lunarmodules.github.io/luaexpat/index.html):
+Some plugins, such as the `UPnP Event Proxy`, require a xml parser. Use the [lxp expat library](https://lunarmodules.github.io/luaexpat/index.html):
 ```bash
 sudo apt install lua-expat
 ```
@@ -99,3 +99,20 @@ Select Site and Edit then select Advanced and navigate to Environment > SCP/Shel
 
 In the Shell pull down list: change from 'Default' to 'sudo su -' and save. Your account will log in using sudo privileges, letting you SCP files anywhere as root. This needs to be done per site you log into.
 
+# Alternative User Interface - AltUI
+AltUI allows the user to configure and control openLuup or a Vera:
+
+## AltUI after openLuup install
+Here is openluup, as seen in AltUI, after a first time install. Rooms have been added for demonstration purposes.
+
+![AltUI at install time](images/altui-at-install-time.jpg "AltUI at install time")
+
+## AltUI and virtual switches
+The `Switchboard` plugin is controlling various house modes and status with virtual switches.
+
+![AltUI house status with virtual switches](images/altui-house-status-with-virtual-switches.jpg "AltUI house status with virtual switches")
+
+## AltUI and scenes
+An example of various time triggered scenes that have been set using AltUI.
+
+![AltUI time triggered scenes](images/altui-house-status-with-virtual-switches.jpg "AltUI time triggered scenes")
