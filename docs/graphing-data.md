@@ -64,7 +64,12 @@ Following that metric selection with these functions will give:
 - aliasByNode (1) - "303_OutdoorTemperature"
 - aliasByNode (0,3) - "openLuup.CurrentTemperature"
 
+Example Grafana chart: indoor and outdoor temperatures.
+
+![Indoor and outdoor temperatures](images/grafana-example-1.jpg "Indoor and outdoor temperatures")
+
 ### Whisper database
+
 Whisper, the industry-standard for a time-based metrics database, is utilised for storage. The data is stored in simple text files.
 
 The choices for the aggregation functions are:
@@ -169,6 +174,10 @@ Uses Google Charts, so an internet connection is required. Example URL to chart:
 ```http
 http://openLuup_IP:3480/data_request?id=lr_render&target={temp_hot_water_pipe.w,temp_outside.w}&title=HW%20pipe&height=750&from=-y&yMin=0&yMax=50
 ```
+
+Example DataYours chart: the equinox using the openLuup solar functions.
+
+![Equinox](images/equinox-1.jpg "Equinox")
 
 ## Datamine
 A venerable plugin by @Chris Jackson. **Deprecated**.
