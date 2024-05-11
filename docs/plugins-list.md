@@ -102,7 +102,7 @@ For those just interested in what the store contains; refer to the list below - 
 |[ZiBlue Gateway](https://github.com/vosmont/Vera-Plugin-ZiBlueGateway)||
 |[ZiGate Gateway](https://github.com/vosmont/Vera-Plugin-ZiGateGateway)
 
-Example of plugins in the
+Example of plugins in the openLuup App Store - console view:
 
 ![openLuup console App Store: P to S](images/console-app-store-1.jpg "openLuup console App Store: P to S")
 
