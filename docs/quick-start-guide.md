@@ -99,20 +99,5 @@ Select Site and Edit then select Advanced and navigate to Environment > SCP/Shel
 
 In the Shell pull down list: change from 'Default' to 'sudo su -' and save. Your account will log in using sudo privileges, letting you SCP files anywhere as root. This needs to be done per site you log into.
 
-# Alternative User Interface - AltUI
-AltUI allows the user to configure and control openLuup or a Vera:
-
-## AltUI after openLuup install
-Here is openluup, as seen in AltUI, after a first time install. Rooms have been added for demonstration purposes.
-
-![AltUI at install time](images/altui-at-install-time.jpg "AltUI at install time")
-
-## AltUI and virtual switches
-The `Switchboard` plugin is controlling various house modes and status with virtual switches.
-
-![AltUI house status with virtual switches](images/altui-house-status-with-virtual-switches.jpg "AltUI house status with virtual switches")
-
-## AltUI and scenes
-An example of various time triggered scenes that have been set using AltUI.
-
-![AltUI time triggered scenes](images/altui-time-triggered-scenes.jpg "AltUI time triggered scenes")
+## AltUI
+After install the **reported URL** will take you to the AltUI interface. It looks like [this](https://a-lurker.github.io/docs/#/altui-examples-1?id=altui-after-openluup-install).
