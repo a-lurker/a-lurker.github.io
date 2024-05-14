@@ -3,6 +3,10 @@
   - [Quick start guide](quick-start-guide.md)
   - [openluup - deep dive](openluup.md)
 
+- Alternative User Interface - AltUI
+
+  - [AltUI examples](altui-examples-1.md)
+
 - Customisation
 
   - [openLuup startup attributes](openLuup-startup-code.md)
