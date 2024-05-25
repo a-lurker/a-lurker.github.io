@@ -140,7 +140,7 @@ end
 ## openLuup internal json encoder/decoder
 The encoder/decoder used by openLuup is based on a library written by akbooer some time ago. The salient points re: that library follow:
 
-There is already a large number of options for [JSON libraries](http://lua-users.org/wiki/JsonModules]http://lua-users.org/wiki/JsonModules) available to Lua users. None are perfect; only some are pure Lua; some are quite slow.
+There is already a large number of options for [JSON libraries](http://lua-users.org/wiki/JsonModules) available to Lua users. None are perfect; only some are pure Lua; some are quite slow.
 However @akbooer created another!
 
 A few features:
