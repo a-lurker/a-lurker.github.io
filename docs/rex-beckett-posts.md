@@ -30,7 +30,8 @@ return not luup.is_night()
 Or a more generic form:
 
 ```lua
-local allow = true -- true runs scene at night, false blocks it return ((luup.is_night()) == allow)
+local allow = true -- true runs scene at night, false blocks it
+return ((luup.is_night()) == allow)
 ```
 
 Many of us use the DayTime (Day or Night) plugin as an alternative to the luup.is_night() function. It has a few advantages: You can configure offsets from sunrise and sunset to control your definition of daytime; You can manually set it to Day or Night to test your scenes; It gives you an indicator on your dashboard to show its current state.
@@ -89,7 +90,8 @@ Generic Time Period:
 
 ```lua
 local pStart = "22:30" -- Start of time period
-local pEnd = "06:15" -- End of time period local allow = true -- true runs scene during period, false blocks it
+local pEnd = "06:15" -- End of time period
+local allow = true -- true runs scene during period, false blocks it
 local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
 local mStart = (hS * 60) + mS
 local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
