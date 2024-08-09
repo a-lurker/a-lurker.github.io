@@ -45,6 +45,8 @@ A similar arrangement allows Influx to be used via UDP.
 ### Grafana
 Grafana is a data visulation tool. You can connect to a database and then view the data.
 
+An example: installing [Grafana on a Raspberry Pi](https://grafana.com/tutorials/install-grafana-on-raspberry-pi/#install-grafana).
+
 openLuup includes a Grafana Data Source API, so  in Grafana choose a Graphite connection and point the URL to:
 
 - With openLuup running on same device as Grafana enter:
