@@ -129,7 +129,8 @@ Start Time to Sunrise:
 ```lua
 local pStart = "22:30" -- Start of time period
 local pEnd = 0 -- End of time period, minutes offset from sunrise
-local allow = true -- true runs scene during period, false blocks it local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
+local allow = true -- true runs scene during period, false blocks it
+local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
 local mStart = (hS * 60) + mS
 local mEnd = math.floor( (luup.sunrise() % 86400) / 60 ) + pEnd
 local tNow = os.date("*t") local mNow = (tNow.hour * 60) + tNow.min
