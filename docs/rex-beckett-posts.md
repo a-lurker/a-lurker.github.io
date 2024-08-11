@@ -6,7 +6,7 @@ https://community.ezlo.com/t/conditional-scene-execution-some-examples/178331/1
 
 RexBeckett:
 
-One of the most frequent questions on this forum is How do I stop my scene running when… This has been asked and answered for many different types of condition and diligent searching will often find you a solution. To help newcomers to Vera, I am posting a few of the most common scenarios in this thread.
+One of the most frequent questions is: How do I stop my scene running when… This has been asked and answered for many different types of condition and diligent searching will often find you a solution. Here are some of the most common scenarios.
 
 The mechanism for preventing a scene running is simple: You insert Luup code into the scene that returns false if you want the scene blocked or true if you want to allow it to run. You can insert the code in a Trigger’s Luup event to allow or block only that trigger. You can also insert the code into the scene’s main LUUP tab where it will allow or block all triggers and manual operation. You can use a combination of both types for more complex scenarios. UI7 does not currently allow code to be attached to individual triggers so only the main Luup Code tab may be used.
 
@@ -73,7 +73,8 @@ return ((status == "1") == allow)
 MultiSwitch:
 
 ```lua
-local dID = 94 -- Device ID of your MultiSwitch local button = 1 -- MultiSwitch button number (1-8)
+local dID = 94 -- Device ID of your MultiSwitch
+local button = 1 -- MultiSwitch button number (1-8)
 local allow = true -- true runs scene if switch is on, false blocks it
 local status = luup.variable_get("urn:dcineco-com:serviceId:MSwitch1","Status"..button,dID)
 return ((status == "1") == allow)
@@ -95,7 +96,8 @@ local allow = true -- true runs scene during period, false blocks it
 local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
 local mStart = (hS * 60) + mS
 local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
-local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mEnd = (hE * 60) + mE
+local tNow = os.date("*t")
 local mNow = (tNow.hour * 60) + tNow.min
 if mEnd >= mStart then
     return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
@@ -114,7 +116,8 @@ local pEnd = "06:15" -- End of time period
 local allow = true -- true runs scene during period, false blocks it
 local mStart = math.floor( (luup.sunset() % 86400) / 60 ) + pStart
 local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
-local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mEnd = (hE * 60) + mE
+local tNow = os.date("*t")
 local mNow = (tNow.hour * 60) + tNow.min
 if mEnd >= mStart then
    return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
@@ -133,7 +136,8 @@ local allow = true -- true runs scene during period, false blocks it
 local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
 local mStart = (hS * 60) + mS
 local mEnd = math.floor( (luup.sunrise() % 86400) / 60 ) + pEnd
-local tNow = os.date("*t") local mNow = (tNow.hour * 60) + tNow.min
+local tNow = os.date("*t")
+local mNow = (tNow.hour * 60) + tNow.min
 if mEnd >= mStart then
    return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
 else
@@ -166,7 +170,8 @@ Generic Humidity Range:
 
 ```lua
 local dID = 31 -- Device ID of your humidity sensor
-local hLow = 50 -- Lowest humidity of range local hHigh = 80 -- Highest humidity of range
+local hLow = 50 -- Lowest humidity of range
+local hHigh = 80 -- Highest humidity of range
 local allow = true -- true runs scene when in range, false blocks it
 local hCurrent = tonumber((luup.variable_get("urn:micasaverde-com:serviceId:HumiditySensor1","CurrentLevel",dID)))
 return (((hCurrent >= hLow) and (hCurrent <= hHigh)) == allow)
@@ -198,7 +203,8 @@ This code will enable you to set a range of values in a VC variable within which
 Generic VirtualContainer Value Range:
 ```lua
 local dID = 76 -- Device ID of your VariableContainer
-local vNo = 5 -- Variable number (1-5) to test local vLow = 100 -- Lowest value of range
+local vNo = 5 -- Variable number (1-5) to test
+local vLow = 100 -- Lowest value of range
 local vHigh = 199 -- Highest value of range
 local allow = true -- true runs scene when in range, false blocks it
 local sVC = luup.variable_get("urn:upnp-org:serviceId:VContainer1","Variable" .. vNo,dID)
@@ -226,7 +232,8 @@ end
 local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
 local mStart = (hS * 60) + mS
 local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
-local mEnd = (hE * 60) + mE local tNow = os.date("*t")
+local mEnd = (hE * 60) + mE
+local tNow = os.date("*t")
 local mNow = (tNow.hour * 60) + tNow.min
 if mEnd >= mStart then
     return (((mNow >= mStart) and (mNow <= mEnd)) == allow)
@@ -266,7 +273,8 @@ local mdStart = "12/01" -- Start of period (MM/DD)
 local mdEnd = "12/31" -- End of period (MM/DD)
 local allow = true -- true runs scene during period, false blocks it
 local smS, sdS = string.match(mdStart,"(%d+)%/(%d+)")
-local smE, sdE = string.match(mdEnd,"(%d+)%/(%d+)") local mS = tonumber(smS)
+local smE, sdE = string.match(mdEnd,"(%d+)%/(%d+)")
+local mS = tonumber(smS)
 local dS = tonumber(sdS)
 local mE = tonumber(smE)
 local dE = tonumber(sdE)
@@ -289,7 +297,8 @@ You may need to combine more than one piece of code. This can be done by using a
 ```lua
 local isDay = not luup.is_night()
 
-local dID = 55 -- Device ID of your thermostatic/temperature sensorlocal tLow = 18 – Lowest temperature of range
+local dID = 55 -- Device ID of your thermostatic/temperature sensor
+local tLow = 18 – Lowest temperature of range
 
 local tHigh = 22 -- Highest temperature of range
 
@@ -378,10 +387,9 @@ end
 Function to check the state of a Z-Wave switch:
 
 ```lua
-function checkSwitch(dID, allow) local dID = 66
--- Device ID of your Z-Wave Switch
-local allow = true
--- true runs scene if switch is on, false blocks it
+function checkSwitch(dID, allow)
+local dID = 66 -- Device ID of your Z-Wave Switch
+local allow = true -- true runs scene if switch is on, false blocks it
 
 local status = luup.variable_get("urn:upnp-org:serviceId:SwitchPower1","Status",dID)
 return ((status == "1") == allow) end
@@ -638,7 +646,7 @@ luup.variable_set("urn:rts-services-com:serviceId:DayTime", "Status", "1", dID)
 ## Delayed Actions
 RexBeckett:
 
-Another favourite forum question concerns using delays in scene Lua. It is tempting to do this with luup.sleep(milliseconds) but this can lead to problems. While luup.sleep(…) is executing, other Vera events can be blocked. A peak of activity at this point can cause a Vera restart. This is one possible cause of unexplained restarts.
+Another favourite question concerns using delays in scene Lua. It is tempting to do this with luup.sleep(milliseconds) but this can lead to problems. While luup.sleep(…) is executing, other Vera events can be blocked. A peak of activity at this point can cause a Vera restart. This is one possible cause of unexplained restarts.
 
 Luup provides a more-robust way of achieving delays with luup.call_delay("callfunction",secs,"parmstring"). This will call the function named callfunction after a delay of secs seconds and pass it the optional parameter parmstring. The called function must be global (i.e. not local). After the luup.call_delay(…), the main code continues to execute and may terminate. Multiple luup.call_delay(…) calls may be made to the same or different called functions.
 
@@ -816,7 +824,8 @@ You can use kwikLog in several ways:
 If you add it to Startup Lua (APPS → Develop Apps → Edit Startup Lua), remove the word local from the first line.
 
 ```lua
-local function kwikLog(message, clear) local socket = require("socket")
+local function kwikLog(message, clear)
+local socket = require("socket")
 local time = socket.gettime() or os.time()
 local tms = string.format(".%03d ",math.floor (1000 * (time % 1)))
 local stamp = os.date("%d %b %Y %T",math.floor(time)) .. tms
