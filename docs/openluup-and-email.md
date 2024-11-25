@@ -1,6 +1,6 @@
 # openLuup and email
 
-openLuup has an email server built in. You can use it to send and receive emails directly by openLuup.
+openLuup has a SMTP (Simple Mail Transfer Protocol) email server built in. You can use it to send and receive emails directly by openLuup.
 
 It only handles messages within the LAN. However you could set up say Telegram to forward emails to the outside world. Most email clients can be set up to RX messsages.
 
@@ -166,4 +166,24 @@ do -- SMTP debug
     local smtp = require "openLuup.smtp"
     smtp.ABOUT.DEBUG = true
 end
+```
+
+## Testing the server from some other computer using telnet
+At the command prompt type: telnet openluup_ip_address 2525
+
+```bash
+C:\Users\XYZ>telnet openluup_ip_address 2525
+220 (openLuup.smtp v18.4.12) [openluup_ip_address] Service ready
+```
+
+Connection was successful now type: quit
+
+```bash
+quit
+221 (openLuup.smtp v18.4.12) [openluup_ip_address] Service closing transmission channel
+
+
+Connection to host lost.
+
+C:\Users\XYZ>
 ```
