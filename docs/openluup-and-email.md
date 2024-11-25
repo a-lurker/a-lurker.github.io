@@ -25,10 +25,10 @@ You can view the server mailbox information at the openLuup console:
 http://openLuup_IP_address:3480/console?page=smtp
 
 ## Email server port
-The server port defaults to 2525 but it can be changed in the start up code.
+The server port defaults to 2525 but it can be changed in the start up code. Other commonly used ports are 25 and 587.
 
 ```lua
-luup.attr_set ("openLuup.SMTP.Port", 1234) -- use port 1234 instead of the 2525 default
+luup.attr_set ("openLuup.SMTP.Port", 587) -- use port 587 instead of the 2525 default
 ```
 
 ## Email management
