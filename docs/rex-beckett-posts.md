@@ -492,7 +492,8 @@ Allow the scene to run when a trigger occurs within twSecs of the last one (e.g.
 ```lua
 local twSecs = 5 -- Number of seconds in time window
 local tNow = os.time()
-local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+local tLastOn = tLastOnD99 or 0
+tLastOnD99 = tNow
 return ((tNow - tLastOn) <= twSecs)
 ```
 
@@ -501,7 +502,8 @@ Allow the scene to run provided a trigger occurs at least twSecs after the last 
 ```lua
 local twSecs = 5 -- Number of seconds in time window
 local tNow = os.time()
-local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+local tLastOn = tLastOnD99 or 0
+tLastOnD99 = tNow
 return ((tNow - tLastOn) >= twSecs)
 ```
 
@@ -510,7 +512,8 @@ Generic version:
 local twSecs = 5 -- Number of seconds in time window
 local allow = true -- true runs scene during time window, false blocks it
 local tNow = os.time()
-local tLastOn = tLastOnD99 or 0 tLastOnD99 = tNow
+local tLastOn = tLastOnD99 or 0
+tLastOnD99 = tNow
 return (((tNow - tLastOn) <= twSecs) == allow)
 ```
 
