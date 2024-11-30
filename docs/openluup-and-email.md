@@ -17,7 +17,7 @@ There are a number of predefined mailbox addresses but you can add your own:
 Add your own mailbox:
 
 ```lua
-luup_register_handler ("MyEmailHandler", "me@mymail.local")
+luup.register_handler ("MyEmailHandler", "me@mymail.local")
 ```
 
 You can view the server mailbox information at the openLuup console:
