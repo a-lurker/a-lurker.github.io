@@ -68,7 +68,7 @@ luup.attr_set ("openLuup.Scenes.Epilog", "SCENE_Epilog")
 Set the server port. The server port defaults to 2525 but it can be changed in the start up code:
 
 ```lua
-luup.attr_set ("openLuup.SMTP.Port", 1234) -- use port 1234 instead of the 2525 default
+luup.attr_set ("openLuup.SMTP.Port", 587) -- use port 587 instead of the 2525 default
 ```
 
 More details about the SMPT server and using the mailboxes can be found [here](/openluup?id=openluup-and-email).
