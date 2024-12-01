@@ -43,6 +43,13 @@ luup.attr_set ("openLuup.Logfile.Lines", 1000)
 luup.attr_set ("openLuup.Logfile.Versions", 3)
 ```
 
+## Suppress logging for luup.io.read in raw mode
+Legacy plugins may use luup.io.read in "raw" mode. Every received byte results in a log file entry. You can suppress the logging using:
+```lua
+luup.attr_set ("openLuup.Logfile.Incoming", "false")
+```
+luup.io.xyz is deprecated.
+
 ## User data update period
 The user_data.json file holds the openLuup configuration and is updated regularly in order to retain your changes. It's also saved on openLuup shutdown.
 ```lua
