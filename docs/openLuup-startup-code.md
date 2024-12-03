@@ -174,15 +174,35 @@ For example: by including this in the startup:
 ```lua
 json = require "openLuup.json"
 ```
-it becomes ready for use in the Lua test boxes or in your scene code:
+It's then ready for use in the Lua test boxes or in your scene code:
 ```lua
 local x = json.decode (y)
 ```
 
 ## Your own start up code
 You can load your own code like so.
-
 ```lua
 -- Any other startup processing may be inserted here...
 myLua = require("L_MyLuaCodeOpenLuup")
 ```
+L_MyLuaCodeOpenLuup.lua would look something like this:
+```lua
+local function f1()
+    your_code
+end
+
+local function f2()
+    more_code
+end
+
+return {
+    f1 = f1,
+    f2 = f2
+}
+```
+Scene code would call the functions like so:
+```lua
+    myLua.f1()
+```
+
+
