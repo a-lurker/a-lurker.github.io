@@ -214,7 +214,7 @@ In Vera, this call is one-shot and if you want repeating timers you have to call
 
 Example:
 ```lua
-luup.call_timer ("flashLight", 1, "5m", "", ,"colorBlue")
+luup.call_timer ("flashLight", 1, "5m", "", "colorBlue")
 ```
 
 ### create_device
