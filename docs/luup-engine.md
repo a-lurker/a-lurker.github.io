@@ -192,14 +192,14 @@ call_timer (function_name, type, time, days, argument_for_function)
 |---|---|---|
 |Arguments:|||
 |function_name|string|eg lightOn|
-|type|integer||
-|time|string||
-|days|string||
+|type of timer|enum|1,2,3,4|
+|time|string|1: number of seconds; or minutes or hours using a 'h' or 'm' suffix<br>2 & 3: For days or months then time is in hh:mm:ss format with an optional r (sunrise) or t (sunset) suffix where time is then relative to those points and can be a negative value eg -1:30:00r|
+|days|string|1: empty string ""<br>2: comma separated list of days of the week where 1=Monday ... 7=Sunday<br>3: comma separated list of days of the month, eg "7,14,21"|
 |argument_for_function|string|Multiple arguments need to be serialiased|
-|repeat|boolean|openLuup only. false: oneshot, true: timer repeats|
+|repeat|boolean|openLuup only: false (default)  = oneshot; true = for timer types 1, 2 and 3 timer will repeat|
 |.|||
 |Returns:|||
-|result|integer|0 on success|
+|result|integer|0 on success or if a job: returned parameters are: error (number), error_msg (string), job (number), arguments (table) |
 
 |Type value|Timer|
 |---|---|
@@ -214,12 +214,13 @@ In Vera, this call is one-shot and if you want repeating timers you have to call
 
 Example:
 ```lua
-luup.call_timer ("flashLight", 1, "5m", ,"colorBlue")
+luup.call_timer ("flashLight", 1, "5m", "", ,"colorBlue")
 ```
 
 ### create_device
 create_device ()
-Do we really need to do this?
+
+Occasionally used - see also luup.chdev
 
 ### device_message
 Deprecated.
@@ -376,7 +377,8 @@ Different proctocols can be recognised and acted on accordingly.
 ```lua
 luup.register_handler ("myHandler", "tcp:1234")                  -- incoming TCP connection on port 1234
 luup.register_handler ("myHandler", "udp:1234")                  -- incoming UDP -- " --
-luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
+luup.register_handler ("myHandler", "me@openLuup.local")         -- incoming email for me@...
+luup.register_handler ("myHandler", "smtp:me@openLuup.local")    -- incoming email for me@...
 luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming email for me@...
 luup.register_handler ("myHandler", "mqtt:My/Topic/Name")        -- MQTT
 ```
@@ -546,7 +548,7 @@ You can avoid this in one of two ways eg:
 
 ```lua
 -- discard the timestamp
-local temperatureString = luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105)
+local temperatureString, timeStamp = luup.variable_get("urn:upnp-org:serviceId:TemperatureSensor1", "CurrentTemperature", 105)
 local temperature = tonumber(temperatureString)
 
 -- This works but as a coding style is somewhat unclear. Note the extra set of parentheses.
@@ -559,7 +561,7 @@ Two additional arguments:
 - start time as a UNIX timestamp
 - end   time as a UNIX timestamp
 
-Returns a table, containing two nested tables, with the historical result as times and values. eg
+Returns a table, containing two nested tables, with the historical result as times and values. Note that the data "Historian" is part of this logic eg:
 
 ```lua
 local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33, {os.time()-3600, os.time()})
@@ -793,7 +795,7 @@ Table of devices indexed by device id.
 |device_type|string||
 |category_num|integer||
 |subcategory_num|integer||
-|device_num_parent|integer|If this is a child, then this its parent's id.|
+|device_num_parent|integer|If this is a child, then this its parent's id. id_parent as seen in the UI|
 |ip|string|ip address if relevant|
 |mac|string|mac address if relevant|
 |user|string|For authentication at ip address|
@@ -922,7 +924,7 @@ nil - not used
    strings = ordered list of room names
 
 ```lua
-print ("The broken light is in room "..luup.rooms[66])
+print ("The broken light is in room "..luup.rooms[666])
 ```
 
 ## luup.scenes[]
