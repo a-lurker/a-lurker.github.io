@@ -383,7 +383,41 @@ luup.register_handler ("myHandler", "mailto:me@openLuup.local")  -- incoming ema
 luup.register_handler ("myHandler", "mqtt:My/Topic/Name")        -- MQTT
 ```
 
-### UDP
+### Email handler
+For emails the protocol can be invoked using either of these three forms:
+- "me@openLuup.local"
+- "smtp:me@openLuup.local"
+- "mailto:me@openLuup.local"
+
+Sending an email to emaildemo@openLuup.local will result in the function myEmailcallback being called.
+
+```lua
+function myEmailcallback (emailAddress, emailContents)
+    print "Incoming Email!"
+    print (emailAddress) -- prints "emaildemo@openLuup.local
+    print (emailContents)
+end
+
+luup.register_handler ("myEmailcallback", "emaildemo@openLuup.local")
+```
+
+### MQTT handler
+One additional argument - message number (integer)
+
+The MQTT callback handler is passed three variables as follows:
+
+|Identifier|Type|Comments|
+|---|---|---|
+|topic|string|MQTT topic|
+|message|table|Topic json payload - needs to be decoded|
+|messageNumber|?|A generic variable or function passed in from the handler registration|
+
+Example:
+```lua
+luup.register_handler ("my_MQTT_callback", "mqtt:test", {a = "A", b = "B"})
+```
+
+### UDP handler
 The luup.register_handler function has been extended to be able to specify the UDP protocol and a port to listen on. The handler is called with a similar parameter list to regular callback functions, but with slightly different semantics:
 
 -  port - the incoming port as a string, eg. “2222”
@@ -404,22 +438,6 @@ luup.register_handler ("myUDPcallback", "udp:2222")
 ```
 
 The callback handler is called for each incoming datagram.
-
-### MQTT
-One additional argument - message number (integer)
-
-The MQTT callback handler is passed three variables as follows:
-
-|Identifier|Type|Comments|
-|---|---|---|
-|topic|string|MQTT topic|
-|message|table|Topic json payload - needs to be decoded|
-|messageNumber|?|A generic variable or function passed in from the handler registration|
-
-Example:
-```lua
-luup.register_handler ("my_MQTT_callback", "mqtt:test", {a = "A", b = "B"})
-```
 
 ### reload
 reload ()
