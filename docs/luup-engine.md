@@ -389,7 +389,7 @@ For emails the protocol can be invoked using either of these three forms:
 - "smtp:me@openLuup.local"
 - "mailto:me@openLuup.local"
 
-Sending an email to emaildemo@openLuup.local will result in the function myEmailcallback being called.
+Example. Sending an email to emaildemo@openLuup.local will result in the function myEmailcallback being called:
 
 ```lua
 function myEmailcallback (emailAddress, emailContents)
