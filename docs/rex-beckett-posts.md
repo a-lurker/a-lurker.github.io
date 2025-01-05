@@ -298,7 +298,7 @@ You may need to combine more than one piece of code. This can be done by using a
 local isDay = not luup.is_night()
 
 local dID = 55 -- Device ID of your thermostatic/temperature sensor
-local tLow = 18 – Lowest temperature of range
+local tLow = 18 - Lowest temperature of range
 
 local tHigh = 22 -- Highest temperature of range
 
@@ -330,9 +330,9 @@ Example to allow a scene to run between 08:00 and 22:30 at weekends:
 
 ```lua
 local function checkTime()
-   local pStart = "08:00" – Start of time period
-   local pEnd = "22:30" – End of time period
-   local allow = true – true runs scene during period, false blocks it
+   local pStart = "08:00" - Start of time period
+   local pEnd = "22:30" - End of time period
+   local allow = true - true runs scene during period, false blocks it
    local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
    local mStart = (hS * 60) + mS
    local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
@@ -347,9 +347,9 @@ local function checkTime()
 end
 
 local function checkDay()
-   local dFirst = 7 – Start day of period (1-7) Sunday = 1
-   local dLast = 1 – End day of period (1-7) Sunday = 1
-   local allow = true – true runs scene during period, false blocks it
+   local dFirst = 7 - Start day of period (1-7) Sunday = 1
+   local dLast = 1 - End day of period (1-7) Sunday = 1
+   local allow = true - true runs scene during period, false blocks it
    local tNow = os.date("*t")
    local dNow = tNow.wday
    if dLast >= dFirst then
@@ -913,7 +913,7 @@ If you want to watch several variables, the following example shows how this can
 The function setWatch reads this table and sets up a watch for each entry. All the watches use the same callback function. This function, catchWatch, searches the table for a matching entry and, if it finds one, runs the specified scene.
 
 ```lua
-–- Watch table parameters:  { "ServiceID", "VariableName", DeviceNo, SceneNo }
+-- Watch table parameters:  { "ServiceID", "VariableName", DeviceNo, SceneNo }
 watchTable = {
 {"urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",123,11},
 {"urn:micasaverde-com:serviceId:LightSensor1","CurrentLevel",124,12}
@@ -935,7 +935,7 @@ function catchWatch(lul_device, lul_service, lul_variable, lul_value_old, lul_va
    end
 end
 
-–- Wait for 30 seconds after restart then run setWatch
+-- Wait for 30 seconds after restart then run setWatch
 luup.call_delay("setWatch",30)
 ```
 
