@@ -733,7 +733,7 @@ end
 
 Parameters may also be passed as a serialized table. See Passing a Serialized Table 1.
 
-I hope some of these examples will help to point the way to a solution for your particular requirements. If not, I recommend taking a look at the Program Logic Event Generator (PLEG) plugin.
+I hope some of these examples will help to point the way to a solution for your particular requirements.
 
 ## Delayed Actions - Passing a Serialized Table
 RexBeckett:
@@ -913,13 +913,13 @@ If you want to watch several variables, the following example shows how this can
 The function setWatch reads this table and sets up a watch for each entry. All the watches use the same callback function. This function, catchWatch, searches the table for a matching entry and, if it finds one, runs the specified scene.
 
 ```lua
-– Table entries { "ServiceID", "VariableName", DeviceNo, SceneNo }
+–- Watch table parameters:  { "ServiceID", "VariableName", DeviceNo, SceneNo }
 watchTable = {
 {"urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature",123,11},
 {"urn:micasaverde-com:serviceId:LightSensor1","CurrentLevel",124,12}
 }
--- Setup Variable Watch for each entry in watchTable
 
+-- Setup Variable Watch for each entry in watchTable
 function setWatch()
    for n,t in ipairs(watchTable) do
       luup.variable_watch("catchWatch",t[1],t[2],t[3])
@@ -934,8 +934,8 @@ function catchWatch(lul_device, lul_service, lul_variable, lul_value_old, lul_va
       end
    end
 end
-– Wait for 30 seconds after restart then run setWatch
 
+–- Wait for 30 seconds after restart then run setWatch
 luup.call_delay("setWatch",30)
 ```
 
