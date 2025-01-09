@@ -20,12 +20,12 @@ print (pretty(times))
 The socket.gettime() function is capable of high accuracy timing:
 ```lua
 local socket = require('socket')
+local m_startTime = 0
 local m_endTime = 0
-local m_startTime = socket.gettime()
 
 -- insert the code to time here eg
+m_startTime = socket.gettime()
 whatsTakingSoLong()
-
 m_endTime = socket.gettime()
 
 local elapsedTime = (m_endTime - m_startTime)*1000
@@ -39,7 +39,7 @@ local profile = require "miniprofiler"
 profile "on"       -- start profiling
 
 -- run whatever code you want here
--- we'll do this an example (openLuup only)
+-- we'll do this as an example (openLuup only)
 local x, t = luup.variable_get ("openLuup", "Memory_Mb", 2, {0, os.time()})
 
 profile "off"      -- turn off profiling
