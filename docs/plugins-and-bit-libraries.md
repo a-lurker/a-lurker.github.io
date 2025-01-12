@@ -2,11 +2,11 @@
 
 Lua 5.1 used by openLuup and Vera does not incorporate bitwise operators. Noting that Lua 5.2 and above do have native bitwise operators. There is broad ranging discussion on bit libraries for Lua [here](http://lua-users.org/wiki/BitwiseOperators).
 
-The lack of a bitwise library can be problem, as some plugins make use of bit operations. Here are some solutions:
-
-OpenWrt based devices and hence Vera devices, already have the [nixio library](https://openwrt.github.io/luci/api/modules/nixio.bit.html) installed.
+The lack of a bitwise library can be a problem, as some plugins make use of bit operations. Here are some solutions:
 
 ## nixio library
+OpenWrt based devices and hence Vera devices, already have the [nixio library](https://openwrt.github.io/luci/api/modules/nixio.bit.html) installed.
+
 The nixio library in a Vera Edge will be found in:
 ```text
 /rom/usr/lib/lua/nixio.so
@@ -63,7 +63,7 @@ Other Linux like devices, such as Raspberry Pis can also use [Lua BitOP](http://
 ```bash
 sudo apt install lua-bitop
 ```
-## library in Lua
+## Lua code
 As opposed to installing libraries like the above, you can use (or distribute) some Lua code in a file like [this example](https://github.com/kengonakajima/lua-msgpack/blob/master/luabit.lua). Place the file in the main luup engine directory:
 ```text
 /etc/cmh-ludl/luabit.lua
