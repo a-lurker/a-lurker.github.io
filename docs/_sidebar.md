@@ -14,6 +14,7 @@
   - [Vera Bridge](vera-bridge-plugin.md)
   - [List of Plugins](plugins-list.md)
   - [Writing a plugin](writing-a-plugin.md)
+  - [Plugins and bit libraries](plugins-and-bit-libraries.md)
 
 - Guide
 
