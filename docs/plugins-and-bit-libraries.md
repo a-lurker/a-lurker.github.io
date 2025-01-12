@@ -63,6 +63,21 @@ Other Linux like devices, such as Raspberry Pis can also use [Lua BitOP](http://
 ```bash
 sudo apt install lua-bitop
 ```
+Gives:
+```text
+bit.arshift
+bit.band
+bit.bnot
+bit.bor
+bit.bswap
+bit.bxor
+bit.lshift
+bit.rol
+bit.ror
+bit.rshift
+bit.tobit
+bit.tohex
+```
 ## Lua code
 As opposed to installing libraries like the above, you can use (or distribute) some Lua code in a file like [this example](https://github.com/kengonakajima/lua-msgpack/blob/master/luabit.lua). Place the file in the main luup engine directory:
 ```text
