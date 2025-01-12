@@ -18,7 +18,7 @@ local bit = require("bit")
 print(pretty(bit))
 ```
 Resulting in:
-```lua
+```text
 {
     arshift = function: 0x1791028,
     band = function: 0x1790fc8,
@@ -44,7 +44,7 @@ The Lua 5.2 bit library has been back ported to suit Lua 5.1 as "bit32". You can
 sudo luarocks install bit32
 ```
 The operators are as follows:
-```txt
+```text
 bit32.arshift (x, disp)
 bit32.band (···)
 bit32.bnot (x)
