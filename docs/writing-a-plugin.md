@@ -1,18 +1,18 @@
 # Quick start
-First thing to note is that Vera uses it own subset of the variously seen xml tags. Many aren't implemented and others are just plain ignored.
+First thing to note is that Vera uses it own subset of the variously seen xml tags. Many tags are just plain ignored and hence don't work as expected.
 
 Additionally the json code used to describe the UI layouts is hard to navigate and it can be tricky to get the outcome one may like. In short; it's confusing and awkward.
 
 Coding errors generally result from non matching xml tags between the various xml files, when it's expected that they do match. Ditto for the json file.
 
-A plugin typically consists of five files (but can be four or six) with a hierarchy roughly as follows:
+A plugin typically consists of five files (but can be three, four or six) with a hierarchy roughly as follows:
 
 |File name|Prefix|Note|
 |---|---|---|
 |D_SimplePlugin1.xml|D_ = Description file|`required`|
 |D_SimplePlugin1.json|D_ = Description file for UI|optional but generally in use|
 |J_SimplePlugin1.js|J_ = Javascript file for UI|optional but not seen overly often|
-|S_SimplePlugin1.xml|S_ = Service file|`required`|
+|S_SimplePlugin1.xml|S_ = Service file|`required` but unorthodox methods can see it being left out|
 |I_SimplePlugin1.xml|I_ = Implementation file|`required`|
 |L_SimplePlugin1.lua|L_ = Lua file|`required`|
 
@@ -69,10 +69,10 @@ The `Lua` file contains the actual Lua code that makes the plugin function.
 |XML tag|Description|Note|
 |---|---|---|
 |serviceStateTable|Table of state variable descriptions|See stateVariable tag below|
-|stateVariable|Description of a variable used by the plugin|Set `sendEvents="no"` Events don't work. See also tags `stateVariable`, `name`, `shortCode`, `dataType`|
+|stateVariable|Description of a variable used by the plugin|Set `sendEvents="no"` or leave out. Events don't work. See also tags `stateVariable`, `name`, `dataType`|
 |actionList|List of actions used by the plugin|See action tag below|
 |action|Description of an action used by the plugin|See also tags `name`, `argumentList`|
-|argument|Description of the action's arguments|See also tags `name`, `direction`,`relatedStateVariable`|
+|argument|Description of the action's arguments|See also tags `name`, `relatedStateVariable`|
 
 # xml tags: I_SimplePlugin1.xml
 
@@ -101,7 +101,7 @@ The `Lua` file contains the actual Lua code that makes the plugin function.
         
 Note the reference here to the D_SimplePlugin1.json file:
 
-        <staticJson>D_SimplePlugin1.jsno</staticJson>
+        <staticJson>D_SimplePlugin1.json</staticJson>
         <modelDescription>LED light controller</modelDescription>
         <modelName>Super LED</modelName>
         <modelNumber>1.0</modelNumber>
@@ -132,6 +132,11 @@ Note the reference here to the I_SimplePlugin1.xml file:
 
 # Example D_SimplePlugin1.json
 Describe the UI layout for the device. Some sections left out here for clarity Here is a label and a button for the UI:
+
+When the button is pushed an action URL is sent from the browser to the Luup engine. Note the service ID and the action:
+```http
+http://openLuupIPaddress?id=action&output_format=json&DeviceNum=15&serviceId=urn:dali-org:serviceId:Dali1&action=FadeUpDown&addressFadeUpDown
+```
 
 ```json
 Make an entry box - start with a label stating what it is and how to use it.
@@ -193,16 +198,21 @@ Here is a button that will send a fade up/down command to DALI address entered i
 
 # Example S_SimplePlugin1.xml
 
-Note that the `dataType` tag may typically contain `string`, `number`, `float`, `boolean`. However the Vera Luup engine treats them all as `string`, so what's entered is irrelevant. Just use:
+Note that the `dataType` tag may typically contain `string`, `number`, `float`, `boolean`, `ui4`, etc. However the Vera Luup engine treats them all as `string`, so what's entered is irrelevant. Just use:
 ```xml
 <dataType>string</dataType>
 ```
 You may see these tags as part of the `stateVariable` declaration. They are ignored:
 ```xml
+<sendEventsAttribute>
+<shortCode>
+<direction>
 <defaultValue>
 <allowedValueList>
 <allowedValue>
 ```
+
+Regarding `<stateVariable sendEvents="no">`: `sendEvents="no"` is for UPnP and is not used by LuaUPnP. Leave it out and just use `<stateVariable>`.
 
 Likewise the `specVersion` tag and its contents is often seen but not used.
 
@@ -216,9 +226,8 @@ The state variables are declared in the S_*1.xml. State variable names can be an
     </specVersion>
 
     <serviceStateTable>
-        <stateVariable sendEvents="no">
+        <stateVariable>
         <name>A_ARG_TYPE_AddressFadeUpDown</name>
-        <shortCode>addressFadeUpDown</shortCode>
         <dataType>string</dataType>
         </stateVariable>
     </serviceStateTable>
