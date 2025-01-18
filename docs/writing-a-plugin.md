@@ -13,7 +13,7 @@ A plugin typically consists of five files (but can be three, four or six) with a
 |D_SimplePlugin1.json|D_ = Description file for UI|optional but generally in use|
 |J_SimplePlugin1.js|J_ = Javascript file for UI|optional but not seen overly often|
 |S_SimplePlugin1.xml|S_ = Service file|`required` but unorthodox methods can see it being left out|
-|I_SimplePlugin1.xml|I_ = Implementation file|`required`|
+|I_SimplePlugin1.xml|I_ = Implementation file|`required`. Some setups include the Lua code in the implementation file. Don't do this - it's the road to hell!|
 |L_SimplePlugin1.lua|L_ = Lua file|`required`|
 
 The file names are prefixed by a capital letter (as listed in the table above) followed by an underscore. By convention a "1" is placed after the plugin name and before the period. Words begin with uppercase and no separators are used.
@@ -131,9 +131,9 @@ Note the reference here to the I_SimplePlugin1.xml file:
 ```
 
 # Example D_SimplePlugin1.json
-Describe the UI layout for the device. Some sections left out here for clarity Here is a label and a button for the UI:
+Describe the UI layout for the device. Some sections left out here for clarity. Here is a label and a button for the UI:
 
-When the button is pushed an action URL is sent from the browser to the Luup engine. Note the service ID and the action:
+When the button is pushed an action URL is sent from the browser to the Luup engine. Note the service ID and the action parameters in the URL:
 ```http
 http://openLuupIPaddress?id=action&output_format=json&DeviceNum=15&serviceId=urn:dali-org:serviceId:Dali1&action=FadeUpDown&addressFadeUpDown
 ```
@@ -156,7 +156,7 @@ Make an entry box - start with a label stating what it is and how to use it.
                     }
                 },
 
-Here's the actual entry box - the entered value "ID" will be called "ourAddress". You call it anything or even just number it. The value is just used to reference the value latter on.
+Here's the actual entry box - the entered value "ID" will be called "ourAddress". You call it anything or even just number it. The value is just used to reference the value later on.
 
                 {
                     "ControlType": "input",
@@ -202,7 +202,7 @@ Note that the `dataType` tag may typically contain `string`, `number`, `float`, 
 ```xml
 <dataType>string</dataType>
 ```
-You may see these tags as part of the `stateVariable` declaration. They are ignored:
+You may see these tags as part of the `stateVariable` declaration. They are ignored, so leave out:
 ```xml
 <sendEventsAttribute>
 <shortCode>
@@ -238,7 +238,6 @@ The state variables are declared in the S_*1.xml. State variable names can be an
             <argumentList>
                 <argument>
                     <name>AddressFadeUpDown</name>
-                    <direction>in</direction>
                     <relatedStateVariable>A_ARG_TYPE_AddressFadeUpDown</relatedStateVariable>
                 </argument>
             </argumentList>
