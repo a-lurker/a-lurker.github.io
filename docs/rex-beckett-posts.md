@@ -656,14 +656,14 @@ Luup provides a more-robust way of achieving delays with luup.call_delay("callfu
 For example, the following code turns on a light and then turns it off after ten seconds. You could, of course, do this simply with scene action delays but it’s a stepping stone:
 
 ```lua
-luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },66)
-luup.call_delay("delayOff",10)
--- Main code terminates at this point
-
 -- Function to be called after delay
 function delayOff()
    luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=0},66)
 end
+
+luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },66)
+luup.call_delay("delayOff",10)
+-- Main code terminates at this point
 ```
 
 Because the called function is global, it does not have access to any of the local variables in the main part of your code. You could make your variables global but be careful how you name them to avoid side effects with other code. A cleaner approach is to pass them via the optional parameter. This parameter is a string so you will need to convert numeric data for some purposes.
@@ -672,20 +672,20 @@ In this example, the device ID of the switch is passed as the parameter:
 
 ```lua
 local dID = 66
-luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },dID)
-luup.call_delay("delayOff",10,dID)
 
 function delayOff(dev)
    local devno = tonumber(dev)
    luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=0},devno)
 end
+
+luup.call_action("urn:upnp-org:serviceId:SwitchPower1","SetTarget",{ newTargetValue=1 },dID)
+luup.call_delay("delayOff",10,dID)
 ```
 
 The called function can also issue a luup.call_delay(…) to itself. This allows timed sequences to be programmed. The following example will dim a light by 10% every two seconds until it reaches zero:
 
 ```lua
 local dID = 99
-luup.call_delay("delayDim",2,dID)
 
 function delayDim(dev)
    local devno = tonumber(dev)
@@ -695,23 +695,14 @@ function delayDim(dev)
    luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = newlls}, devno)
    if newlls > 0 then luup.call_delay("delayDim",2,dev) end
 end
+
+luup.call_delay("delayDim",2,dID)
 ```
 
 Only one parameter string can be passed to the called function. If you need to pass more than one item, you will need to encode them into the string. Simple numeric items can be passed as a comma-separated list. The next example uses this technique to pass three numeric values. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run:
 
 ```lua
 local dID = 99
-local dstep, dtarget
-local level = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)))
-if level > 50 then
-   dtarget = 0
-   dstep = -10
-else
-   dtarget = 100
-   dstep = 10
-end
-local prms = string.format("%d,%d,%d",dID,dtarget,dstep)
-luup.call_delay("delayDim",2,prms)
 
 function delayDim(parms)
    local pdev,ptgt,pstp = string.match(parms,"(%d+),(%d+),([%-%d]+)")
@@ -725,6 +716,19 @@ function delayDim(parms)
    else
       if newlls < target then newlls = target end
 end
+
+local dstep, dtarget
+local level = tonumber((luup.variable_get("urn:upnp-org:serviceId:Dimming1", "LoadLevelStatus", dID)))
+if level > 50 then
+   dtarget = 0
+   dstep = -10
+else
+   dtarget = 100
+   dstep = 10
+end
+
+local prms = string.format("%d,%d,%d",dID,dtarget,dstep)
+luup.call_delay("delayDim",2,prms)
 
 luup.call_action("urn:upnp-org:serviceId:Dimming1", "SetLoadLevelTarget", {newLoadlevelTarget = newlls}, devno)
 if newlls ~= target then luup.call_delay("delayDim",2,parms) end
