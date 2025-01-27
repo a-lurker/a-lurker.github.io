@@ -4,7 +4,7 @@ An open source version of the Luup library found in Vera.
 Written by [akbooer](https://github.com/akbooer/openLuup).
 
 ## History
-The developement of the Vera software and hardware slowly came to a standstill. Regardless it is a great setup and well supported. There is a need for it to continue, hence this open source replacement. There are also plenty of Vera controllers in existance that can still be made good use of as well.
+The development of the Vera software and hardware slowly came to a standstill. Regardless it is a great setup and well supported. There is a need for it to continue, hence this open source replacement. There are also plenty of Vera controllers in existance that can still be made good use of as well.
 
 ## openLuup overview
 - Runs on any slightly decent hardware running Linux.
