@@ -56,13 +56,13 @@ The `Lua` file contains the actual Lua code that makes the plugin function.
 |friendly_name|A string that appears in various spots|Can be whatever - not critical|
 |manufacturer|A string that appears in various spots|Can be whatever - not critical|
 |modelName|A string that appears in various spots|Can be whatever - not critical|
-|modelNumber|A string that appears in various spots|Can be whatever - not critical|
 |category_num|A number: What category is the device in? eg 11 is "General I/O"|Inconsistently implemented|
 |subcategory_num|See category_num|Optional and inconsistently implemented|
-|local_udn|Unique identifier|Optional (if even used?)|
 |handle_children|If this device has multiple children then add the handle_children tag and set it to "1", else leave out||
 |service_list|Essential: references the service file|See also tags `service`, `serviceType`, `serviceId` & `SCPDURL`|
 |impl_file|Name of the implementation file eg I_SimplePlugin1.xml|Essential|
+|local_udn|Unique identifier|Optional (if even used?)|
+|modelNumber|String|Optional (if even used?)|
 
 # xml tags: S_SimplePlugin1.xml
 
