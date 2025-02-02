@@ -13,12 +13,14 @@ A plugin typically consists of five files (but can be three, four or six) with a
 |D_SimplePlugin1.json|D_ = Description file for UI|optional but generally in use|
 |J_SimplePlugin1.js|J_ = Javascript file for UI|optional but not seen overly often|
 |S_SimplePlugin1.xml|S_ = Service file|`required` but unorthodox methods can see it being left out|
-|I_SimplePlugin1.xml|I_ = Implementation file|`required`. Some setups include the Lua code in the implementation file. Don't do this - it's the road to hell!|
+|I_SimplePlugin1.xml|I_ = Implementation file|`required`. Some plugins include the Lua code in the xml implementation file. Don't do this - it's the road to hell!|
 |L_SimplePlugin1.lua|L_ = Lua file|`required`|
 
 The file names are prefixed by a capital letter (as listed in the table above) followed by an underscore. By convention a "1" is placed after the plugin name and before the period. Words begin with uppercase and no separators are used.
 
 The files are placed in the `../cmh-ludl/` directory.
+
+Additionaly an icon reprsenting the plugin will be required: a 50 * 50 pixel png file is ideal.
 
 ### D_SimplePlugin1.xml
 The `Description xml` file contains information about the plugin device itself.
@@ -152,14 +154,14 @@ You will see other items that are not required and do nothing - for example:
 ```
 
 `flashicon` is a hangover from years ago when Flash websites were popular (circa 2005!)
-`default_icon` species the icon to use for the device in the UI.
+`default_icon` specifies the icon to use for the device in the UI.
 `inScene` allows the device to participate in scenes.
 
 The icons can be loaded from a specified URL or from a local directory.
 
 ```json
-    "flashicon": "../../../icons/DALI_planet_50_50.png.png",
-    "default_icon": "../../../icons/DALI_planet_50_50.png.png",
+    "flashicon": "../../../icons/DALI_planet_50_50.png",
+    "default_icon": "../../../icons/DALI_planet_50_50.png",
     "inScene": "1",
 ```
 
