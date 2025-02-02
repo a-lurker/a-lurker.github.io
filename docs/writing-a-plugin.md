@@ -98,7 +98,7 @@ The `Lua` file contains the actual Lua code that makes the plugin function.
     <device>
         <deviceType>urn:schemas-dali-org:device:DaliPlanet:1</deviceType>
         <friendlyName>DALI Planet</friendlyName>
-        
+
 Note the reference here to the D_SimplePlugin1.json file:
 
         <staticJson>D_SimplePlugin1.json</staticJson>
@@ -108,7 +108,7 @@ Note the reference here to the D_SimplePlugin1.json file:
         <Category_Num>11</Category_Num>
         <handleChildren>1</handleChildren>
 
-        
+
 Note the reference here to the S_SimplePlugin1.xml file:
 
         <serviceList>
@@ -119,7 +119,7 @@ Note the reference here to the S_SimplePlugin1.xml file:
             </service>
         </serviceList>
 
-        
+
 Note the reference here to the I_SimplePlugin1.xml file:
 
         <implementationList>
@@ -131,7 +131,42 @@ Note the reference here to the I_SimplePlugin1.xml file:
 ```
 
 # Example D_SimplePlugin1.json
-Describe the UI layout for the device. Some sections left out here for clarity. Here is a label and a button for the UI:
+This file describes the UI layout for the device. (some sections left out here for clarity.)
+
+The file consists of three main parts:
+- prologue
+- array of Tabs
+- epilogue
+
+### Prologue
+You will see other items that are not required and do nothing - for example:
+
+```json
+	"doc_url": {
+		"doc_language": 1,
+		"doc_manual": 1,
+		"doc_version": 1,
+		"doc_platform": 0,
+		"doc_page": "devices"
+	},
+```
+
+`flashicon` is a hangover from years ago when Flash websites were popular (circa 2005!)
+`default_icon` species the icon to use for the device in the UI.
+`inScene` allows the device to participate in scenes.
+
+The icons can be loaded from a specified URL or from a local directory.
+
+```json
+    "flashicon": "../../../icons/DALI_planet_50_50.png.png",
+    "default_icon": "../../../icons/DALI_planet_50_50.png.png",
+    "inScene": "1",
+```
+
+### Array of Tabs
+Each array item is a UI tab and contains the visual objects on that tab.
+
+Example - here is a label and a button on a tab:
 
 When the button is pushed an action URL is sent from the browser to the Luup engine. Note the service ID and the action parameters in the URL:
 ```http
@@ -156,7 +191,8 @@ Make an entry box - start with a label stating what it is and how to use it.
                     }
                 },
 
-Here's the actual entry box - the entered value "ID" will be called "ourAddress". You call it anything or even just number it. The value is just used to reference the value later on.
+Here's the actual entry box - the entered value "ID" will be called "ourAddress". You can
+call it anything or even just number it. The value is just used to reference the value later on.
 
                 {
                     "ControlType": "input",
@@ -194,6 +230,13 @@ Here is a button that will send a fade up/down command to DALI address entered i
                         ]
                     }
                 }]
+```
+
+### Epilogue
+Specifies the device type:
+
+```json
+    "DeviceType": "urn:schemas-dali-org:device:DaliPlanet:1"
 ```
 
 # Example S_SimplePlugin1.xml
@@ -256,7 +299,7 @@ Actions are implemented as described in the I_*1.xml files
         <major>1</major>
         <minor>0</minor>
     </specVersion>
-        
+
 Note the reference here to the L_SimplePlugin1.lua file:
 
     <files>L_SimplePlugin1.lua</files>
@@ -282,7 +325,7 @@ Note the reference here to the fadeUpDown function seen in L_SimplePlugin1.lua f
 # Example L_SimplePlugin1.lua
 
 ```lua
--- LED light controller. Originated by a-lurker, 15 Jan 2025, Version 0.51. 
+-- LED light controller. Originated by a-lurker, 15 Jan 2025, Version 0.51.
 
 local m_fadeUp = nil
 
@@ -299,7 +342,7 @@ function fadeUpDown(DALIaddress)
     m_fadeUp = not m_fadeUp
 end
 
--- The Luup engine implements the startup as coded here in this L_*1.lua file. 
+-- The Luup engine implements the startup as coded here in this L_*1.lua file.
 function luaStartUp(lul_device)
    -- do the start up
     m_fadeUp = true
