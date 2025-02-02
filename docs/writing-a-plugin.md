@@ -20,7 +20,7 @@ The file names are prefixed by a capital letter (as listed in the table above) f
 
 The files are placed in the `../cmh-ludl/` directory.
 
-Additionaly an icon reprsenting the plugin will be required: a 50 * 50 pixel png file is ideal.
+Additionaly an icon representing the plugin will be required: a 50 * 50 pixel png file is ideal.
 
 ### D_SimplePlugin1.xml
 The `Description xml` file contains information about the plugin device itself.
@@ -55,9 +55,9 @@ The `Lua` file contains the actual Lua code that makes the plugin function.
 |---|---|---|
 |device_type|urn:schemas-dali-org:device:DaliPlanet:1|Must be of the form shown here.
 |json_file|Name of the json file used to create the UI eg D_SimplePlugin1.json|Only required if a UI is needed for the device|
-|friendly_name|A string that appears in various spots|Can be whatever - not critical|
-|manufacturer|A string that appears in various spots|Can be whatever - not critical|
-|modelName|A string that appears in various spots|Can be whatever - not critical|
+|friendly_name|A string that appears in various places in the UI|Can be whatever - not critical|
+|manufacturer|A string that appears in various places in the UI|Can be whatever - not critical|
+|modelName|A string that appears in various places in the UI|Can be whatever - not critical|
 |category_num|A number: What category is the device in? eg 11 is "General I/O"|Inconsistently implemented|
 |subcategory_num|See category_num|Optional and inconsistently implemented|
 |handle_children|If this device has multiple children then add the handle_children tag and set it to "1", else leave out||
