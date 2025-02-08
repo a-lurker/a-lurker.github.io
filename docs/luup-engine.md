@@ -809,7 +809,7 @@ Table of devices indexed by device id.
 |device_id|string or integer|String is the device's udn, else it's the device number.|
 |.|||
 |Returns:|||
-|room_num|integer|The device is in this room|
+|room_num|integer|The device is in this room. `No room` is room zero|
 |device_type|string||
 |category_num|integer||
 |subcategory_num|integer||
@@ -825,8 +825,32 @@ Table of devices indexed by device id.
 |description|string|Users descrption seen in the UI|
 |udn|string|udn of the device, can be used instead of device id|
 
+Get the device's ip address:
 ```lua
 local ip_address = luup.devices[THIS_LUL_DEVICE].ip)
+```
+Show all the devices attributes:
+```lua
+print(pretty(luup.devices[226]))
+```
+```json
+{
+  category_num = 2,
+  description = "DALI address 5",
+  device_num_parent = 15,
+  device_type = "urn:schemas-upnp-org:device:DimmableLight:1",
+  embedded = false,
+  hidden = false,
+  id = "5",
+  invisible = false,
+  ip = "",
+  mac = "",
+  pass = "",
+  room_num = 0,
+  subcategory_num = 0,
+  udn = "uuid:d764c8cc-e932-55c4-478d-7aa05d83f3ea",
+  user = ""
+}
 ```
 
 ## luup.inet
@@ -942,7 +966,19 @@ nil - not used
    strings = ordered list of room names
 
 ```lua
-print ("The broken light is in room "..luup.rooms[666])
+-- prints "The broken light is in the Office"
+print ("The broken light is in the "..luup.rooms[6])
+
+-- device is "No room" NOTE the room name is "nil" as "No room" is room zero
+local device = 226
+local room = luup.devices[device].room_num
+print(room)
+print(luup.rooms[room])   -- prints "nil"
+
+-- device is in the Pantry
+local device = 100
+local room = luup.devices[device].room_num
+print(luup.rooms[room])   -- prints "Pantry"
 ```
 
 ## luup.scenes[]
