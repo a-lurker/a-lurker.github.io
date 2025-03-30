@@ -61,8 +61,10 @@ So for example Hue light controller buttons return these values in sl_SceneActiv
 |AltUI|openLuup_IP_address:3480/data_request?id=lr_ALTUI_Handler&command=home|
 |openLuup console|openLuup_IP_address:3480/console?page=home|
 |BroadLink AP|192.168.10.1|
+|Expressif ESP32 AP|192.168.4.1|
 |Grafana|Grafana_IP_address:3000|
 |Shelly AP|192.168.33.1|
+|Vera after factory reset|192.168.81.1|
 |Zigbee2MQTT|Zigbee2MQTT_IP_address::8080/#/|
 |Z-Wave JS UI|Z-Wave_JS_UI_IP_address::8091|
 </details>
