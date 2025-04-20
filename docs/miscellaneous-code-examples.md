@@ -217,3 +217,94 @@ end
 telegram('The house alarm has just been triggered!')
 ```
 
+## Send an email
+Adjust these values to suit your email set up:
+- SENT_FROM   
+- EMAIL_SERVER
+- EMAIL_PORT
+- USER
+- PW
+
+And call the function as seen in the code below:   sendMessage (sentTo, subjectLine, message).
+
+With these values set as needed:
+- sentTo
+- subjectLine
+- message
+
+```lua
+-- https://stackoverflow.com/questions/29312494/sending-email-using-luasocket-smtp-and-ssl
+-- Michal Kottman, 2011, public domain. With some modifications as of April 2025.
+
+local socket = require 'socket'
+local smtp   = require 'socket.smtp'
+local ssl    = require 'ssl'
+
+smtp.TIMEOUT = 1
+
+local SENT_FROM    = 'me@example.com'
+local EMAIL_SERVER = 'mail.example.com'
+local EMAIL_PORT   = '465'  -- others also used: 993, 995, etc
+
+local USER = 'user_name'
+local PW   = 'password'
+
+function sslCreate()
+    local sock = socket.tcp()
+    return setmetatable({
+        connect = function(_, host, port)
+            local r, e = sock:connect(host, port)
+            if not r then return r, e end
+            
+            -- various options for the protocol here eg: tlsv1, tlsv1_2, sslv3, etc
+            sock = ssl.wrap(sock, {mode='client', protocol='tlsv1_2'})
+            return sock:dohandshake()
+        end
+    }, {
+        __index = function(t,n)
+            return function(_, ...)
+                return sock[n](sock, ...)
+            end
+        end
+    })
+end
+
+local function sendMessage(sentTo, subjectLine, body)
+    local msg = {
+        headers = {
+            from    = SENT_FROM,  -- becomes the 'reply to' address
+            to      = sentTo,
+            subject = subjectLine
+        },
+        body = body
+    }
+
+    local ok, err = smtp.send {
+        -- from & rcpt email addresses should open/close with <>
+        from = '<'..SENT_FROM..'>',
+
+        -- can have multiple recipients in this table.
+        -- default behavior is similar to BCC. Alter headers for To & CC
+        rcpt = {'<'..sentTo..'>'},
+
+        server   = EMAIL_SERVER,
+        port     = EMAIL_PORT,
+        user     = USER,
+        password = PW,
+
+        source = smtp.message(msg),
+        
+        -- you can comment this line out if SSL is not required
+        create = sslCreate
+    }
+    if not ok then
+        luup.log('Error - mail send failed: '..tostring(err),50)
+    end
+end
+
+local sentTo      = 'someone@somedomain.com'
+local subjectLine = 'Message dated ' .. os.date('%c')
+local message     = 'Plugin says hello.\r\n'
+
+sendMessage (sentTo, subjectLine, message)
+```
