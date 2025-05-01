@@ -249,7 +249,7 @@ local EMAIL_PORT   = '465'  -- others also used: 993, 995, etc
 local USER = 'user_name'
 local PW   = 'password'
 
-function sslCreate()
+local function sslCreate()
     local sock = socket.tcp()
     return setmetatable({
         connect = function(_, host, port)
