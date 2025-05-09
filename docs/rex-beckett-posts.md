@@ -298,8 +298,8 @@ You may need to combine more than one piece of code. This can be done by using a
 local isDay = not luup.is_night()
 
 local dID = 55 -- Device ID of your thermostatic/temperature sensor
-local tLow = 18 - Lowest temperature of range
 
+local tLow = 18 - Lowest temperature of range
 local tHigh = 22 -- Highest temperature of range
 
 local allow = true -- true runs scene when in range, false blocks it
@@ -602,7 +602,6 @@ local level = luup.variable_get("urn:micasaverde-com:serviceId:HumiditySensor1",
 Security Sensor:
 
 ```lua
-
 local tripped = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "Tripped", dID)
 
 local armed = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "Armed", dID)
@@ -610,7 +609,6 @@ local armed = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1",
 local lasttrip = luup.variable_get("urn:micasaverde-com:serviceId:SecuritySensor1", "LastTrip", dID)
 
 luup.call_action("urn:micasaverde-com:serviceId:SecuritySensor1", "SetArmed", {newArmedValue = "1"}, dID)
-
 ```
 
 Window Covering
@@ -749,7 +747,6 @@ The general-purpose serialize function in the following example will convert a t
 This example performs the same function as the previous one but a serialized table is used to pass the three numeric values. The values are initially set in the table dparms which is then serialized and sent as the parameter in luup.call_delay(…). The called function uses loadstring to recreate the table as xparms and can then access the individual variables using xparms. notation. The resulting code will either dim a light down to zero or up to 100% - depending on its level when the scene is run.
 
 ```lua
-
 local function serialize(val,name)
 local tmp = ""
 if name then
