@@ -299,7 +299,7 @@ local isDay = not luup.is_night()
 
 local dID = 55 -- Device ID of your thermostatic/temperature sensor
 
-local tLow = 18 - Lowest temperature of range
+local tLow = 18 -- Lowest temperature of range
 local tHigh = 22 -- Highest temperature of range
 
 local allow = true -- true runs scene when in range, false blocks it
@@ -330,9 +330,9 @@ Example to allow a scene to run between 08:00 and 22:30 at weekends:
 
 ```lua
 local function checkTime()
-   local pStart = "08:00" - Start of time period
-   local pEnd = "22:30" - End of time period
-   local allow = true - true runs scene during period, false blocks it
+   local pStart = "08:00" -- Start of time period
+   local pEnd = "22:30" -- End of time period
+   local allow = true -- true runs scene during period, false blocks it
    local hS, mS = string.match(pStart,"(%d+)%:(%d+)")
    local mStart = (hS * 60) + mS
    local hE, mE = string.match(pEnd,"(%d+)%:(%d+)")
@@ -347,9 +347,9 @@ local function checkTime()
 end
 
 local function checkDay()
-   local dFirst = 7 - Start day of period (1-7) Sunday = 1
-   local dLast = 1 - End day of period (1-7) Sunday = 1
-   local allow = true - true runs scene during period, false blocks it
+   local dFirst = 7 -- Start day of period (1-7) Sunday = 1
+   local dLast = 1 -- End day of period (1-7) Sunday = 1
+   local allow = true -- true runs scene during period, false blocks it
    local tNow = os.date("*t")
    local dNow = tNow.wday
    if dLast >= dFirst then
