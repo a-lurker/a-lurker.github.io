@@ -582,7 +582,8 @@ Two additional arguments:
 Returns a table, containing two nested tables, with the historical result as times and values. Note that the data "Historian" is part of this logic eg:
 
 ```lua
-local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33, {os.time()-3600, os.time()})
+local now = os.time()
+local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33, {now-3600, now})
 print ("over the last hour", pretty {value = v2, times=t2})
 
 -- over the last hour 	{
