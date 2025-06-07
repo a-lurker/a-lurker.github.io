@@ -24,9 +24,9 @@ attr ("date_format", "dd/mm/yy")
 attr ("model", "Apple MAC")
 attr ("timeFormat", "24hr")
 
-luup.log "startup code completed"
-
 -- Any other startup processing may be inserted here...
+
+luup.log "startup code completed"
 ```
 
 ## Change the log file defaults
@@ -88,6 +88,29 @@ The act of inserting this line into the startup code, enables the archiving proc
 -- spot, noting the path is relative to cmh-ludl/
 -- this line will start the Historian
 luup.attr_set ("openLuup.Historian.Directory","history/")
+```
+
+The Data historian automatically retains data for most numeric variables being used by openLuup. It decides what variables will be retained using a rule based system. The rules follow the [Grafana example](https://graphite-api.readthedocs.io/en/latest/api.html#graphing-metrics). The rules currently in force can be viewed in the openLuup Console at:
+
+openLuup_IP_address:3480/console?page=rules
+
+There may be occasions where a variable you want saved is not automatically saved, as it doesn't match any of the built in rules. In the start up code, you can add a new rule to force a match to suit eg:
+
+```lua
+do -- bespoke Historian archive rules
+  local rules = require "openLuup.servertables" .archive_rules
+
+  -- enable archiving of the selected numeric device variables
+  rules[#rules+1] = {
+      patterns = {"*.EKMmetering1.{ResettablekWh}"},
+      retentions = "5m:28d"
+    }
+
+  rules[#rules+1] = {
+      patterns = {"*.SMA_inverter1.{kWhToday}"},
+      retentions = "5m:28d"
+    }
+end
 ```
 
 ## Using Graphite or Influx databases?
@@ -204,5 +227,4 @@ Scene code would call the functions like so:
 ```lua
     myLua.f1()
 ```
-
 
