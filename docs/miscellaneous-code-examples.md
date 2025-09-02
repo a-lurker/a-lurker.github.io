@@ -208,7 +208,7 @@ local function telegram(msg)
     msg = urlEncode(msg)
 
     if (msg and (msg ~= '')) then
-        luup.inet.wget('https://api.telegram.org/bot'..botID..'/sendMessage?chat_id='..chatID..'&text='..msg,5)
+        luup.inet.wget('https://api.telegram.org/bot'..botID..'/sendEmail?chat_id='..chatID..'&text='..msg,5)
     else
         luup.log('Telegram message string is nil or blank',50)
     end
@@ -225,7 +225,7 @@ Adjust these values to suit your email set up:
 - USER
 - PW
 
-And call the function as seen in the code below:   sendMessage (sentTo, subjectLine, message).
+And call the function as seen in the code below:   sendEmail (sentTo, subjectLine, message).
 
 With these values set as needed:
 - sentTo
@@ -249,31 +249,31 @@ local EMAIL_PORT   = '465'  -- others also used: 993, 995, etc
 local USER = 'user_name'
 local PW   = 'password'
 
-local function sslCreate()
-    local sock = socket.tcp()
-    return setmetatable({
-        connect = function(_, host, port)
-            local r, e = sock:connect(host, port)
-            if not r then return r, e end
-            
-            -- various options for the protocol here eg: tlsv1, tlsv1_2, sslv3, etc
-            sock = ssl.wrap(sock, {mode='client', protocol='tlsv1_2'})
-            return sock:dohandshake()
-        end
-    }, {
-        __index = function(t,n)
-            return function(_, ...)
-                return sock[n](sock, ...)
+local function sendEmail(sendTo, subjectLine, body)
+    local function sslCreate()
+        local sock = socket.tcp()
+        return setmetatable({
+            connect = function(_, host, port)
+                local r, e = sock:connect(host, port)
+                if not r then return r, e end
+                
+                -- various options for the protocol here eg: tlsv1, tlsv1_2, sslv3, etc
+                sock = ssl.wrap(sock, {mode='client', protocol='tlsv1_2'})
+                return sock:dohandshake()
             end
-        end
-    })
-end
+        }, {
+            __index = function(t,n)
+                return function(_, ...)
+                    return sock[n](sock, ...)
+                end
+            end
+        })
+    end
 
-local function sendMessage(sentTo, subjectLine, body)
     local msg = {
         headers = {
             from    = SENT_FROM,  -- becomes the 'reply to' address
-            to      = sentTo,
+            to      = sendTo,
             subject = subjectLine
         },
         body = body
@@ -285,7 +285,7 @@ local function sendMessage(sentTo, subjectLine, body)
 
         -- can have multiple recipients in this table.
         -- default behavior is similar to BCC. Alter headers for To & CC
-        rcpt = {'<'..sentTo..'>'},
+        rcpt = {'<'..sendTo..'>'},
 
         server   = EMAIL_SERVER,
         port     = EMAIL_PORT,
@@ -302,9 +302,9 @@ local function sendMessage(sentTo, subjectLine, body)
     end
 end
 
-local sentTo      = 'someone@somedomain.com'
+local sendTo      = 'someone@somedomain.com'
 local subjectLine = 'Message dated ' .. os.date('%c')
 local message     = 'Plugin says hello.\r\n'
 
-sendMessage (sentTo, subjectLine, message)
+sendEmail (sendTo, subjectLine, message)
 ```
