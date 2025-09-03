@@ -220,7 +220,7 @@ luup.call_timer ("flashLight", 1, "5m", "", "colorBlue")
 ### create_device
 create_device ()
 
-Occasionally used - see also luup.chdev
+create_device() is rarely used. See luup.chdev() which is typically used to create any new devices.
 
 luup.create_device (
 device_type,
@@ -819,7 +819,7 @@ Children:
 |device_type|string|eg 'urn:schemas-upnp-org:device:BinaryLight:1'|
 |device_filename|string|eg 'D_BinaryLight1.xml'|
 |implementation_file_name|string|Use an empty string, if implementation file is mentioned in the device file.|
-|parameters|string|eg Set up child variable defaults. Generally easier to set to an empty string and set up the vars in the child code.|
+|parameters|string|eg Set up child variable defaults. Generally easier to set to an empty string and set up the vars in the child code. Regardless you can set variables and attributes as required. See the example in the luup.create_device section above.|
 |embedded|boolean|eg If true children cannot be split between rooms.|
 |invisible|boolean|Optional - makes child invisible in the UI.|
 |.|||
