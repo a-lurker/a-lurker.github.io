@@ -266,7 +266,7 @@ nodupid
 |nodupid|boolean|Legacy, set to false.|
 |.|||
 |Returns:|||
-|Device id|numer|The id of the newly created device.|
+|Device id|number|The id of the newly created device.|
 
 Example:
 ```lua
@@ -278,10 +278,10 @@ Example:
     -- set an "attribute" using:  ',variable=value' eg:
     local attribute_1 = ',description=Dimmer light'
 
-    -- note that multiple values are concatenated with intervening linefeeds (/n) to form a block of text:
-    local parameters = variable_1..'/n'..attribute_1
+    -- note that multiple values are concatenated with intervening linefeeds (\n) to form a block of text:
+    local parameters = variable_1..'\n'..attribute_1
 
-    -- prints 'urn:upnp-org:serviceId:Dimming1,SetLoadLevelTarget={newLoadlevelTarget=33}/n,description=Dimmer light'
+    -- prints 'urn:upnp-org:serviceId:Dimming1,SetLoadLevelTarget={newLoadlevelTarget=33}\n,description=Dimmer light'
     print(parameters)
 
 
