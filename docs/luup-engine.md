@@ -222,6 +222,90 @@ create_device ()
 
 Occasionally used - see also luup.chdev
 
+luup.create_device (
+device_type,
+id,
+description,
+device_file_name,
+implementation_file_name,
+ip,
+mac,
+hidden,
+invisible,
+parent,
+room,
+pluginnum,
+parameters,
+pnpid,
+nochildsync,
+aeskey,
+reload,
+nodupid
+)
+
+|Identifier|Type|Comments|
+|---|---|---|
+|Arguments:|||
+|device_type|string|Set to an empty string. Value is retrieved from the device file.|
+|id|string|The "altid" attribute or an empty string. You decide what it's called. Optional.|
+|description|string|A name for the device as seen in the UI or an empty string. You decide what it's called. Optional.|
+|device_filename|string|eg 'D_BinaryLight1.xml'|
+|implementation_file_name|string|Use an empty string, if implementation file is mentioned in the device file.|
+|ip|string|Empty string or ip address.|
+|mac|string|Empty string or mac address.|
+|hidden|boolean|true/false|
+|invisible|boolean|true/false: makes child invisible in the UI. Tends not to "stick".|
+|parent|integer|0 if the device has no parent, else the parent's device number.|
+|room|integer|0 if no room, else the room's number.|
+|pluginnum|integer|If zero do nothing else install the numbered plugin.|
+|parameters|string|Set the device's attributes and variables. Same format as used by luup.chdev(). See below.|
+|pnpid|integer|Legacy, set to 0.|
+|nochildsync|string|Legacy, set to ''.|
+|aeskey|string|Legacy, set to ''.|
+|reload|boolean|If true does a Luup engine restart.|
+|nodupid|boolean|Legacy, set to false.|
+|.|||
+|Returns:|||
+|Device id|numer|The id of the newly created device.|
+
+Example:
+```lua
+    -- Example of parameters/stateVariables. Noting that variables & attributes are handled slightly differently:
+
+    -- set a "value" using:  'service,variable=value' eg:
+    local variable_1  = 'urn:upnp-org:serviceId:Dimming1,SetLoadLevelTarget={newLoadlevelTarget=33}'
+
+    -- set an "attribute" using:  ',variable=value' eg:
+    local attribute_1 = ',description=Dimmer light'
+
+    -- note that multiple values are concatenated with intervening linefeeds (/n) to form a block of text:
+    local parameters = variable_1..'/n'..attribute_1
+
+    -- prints 'urn:upnp-org:serviceId:Dimming1,SetLoadLevelTarget={newLoadlevelTarget=33}/n,description=Dimmer light'
+    print(parameters)
+
+
+luup.create_device(
+    '',                              -- device_type (loaded from device file)
+    'Group'..groupAddressStr,        -- altid
+    'C-Bus Group '..groupAddressStr, -- description
+    'D_BinaryLight1.xml',            -- device filename
+    '',                              -- implementation filename
+    '',                              -- ip: not needed today
+    '',                              -- mac: not needed today
+    false,                           -- hidden
+    false,                           -- invisible
+    46,                              -- parent:  eg device 46
+    12,                              -- room: eg number 12
+    0,                               -- pluginnum: don't load any plugin
+    parameters,                      -- contents of "parameters" variable - see above for an example
+    0,                               -- Legacy: always 0
+    '',                              -- Legacy: always ''
+    '',                              -- Legacy: always ''
+    true,                            -- Luup engine restart
+    false)                           -- Legacy: always false
+```
+
 ### device_message
 Deprecated.
 
@@ -730,14 +814,14 @@ Children:
 |Arguments:|||
 |device|string|id of this parent|
 |ptr|C code reference|pointer to all the children located by luup.chdev.start()|
-|id|string|The "altid" attribute. You decide what it's called.|
-|description|string|A name for the child. You decide what it's called.|
+|id|string|The "altid" attribute or an empty string. You decide what it's called. Ideal for identifying the children.|
+|description|string|A name for the child as seen in the UI or an empty string. You decide what it's called. Optional.|
 |device_type|string|eg 'urn:schemas-upnp-org:device:BinaryLight:1'|
 |device_filename|string|eg 'D_BinaryLight1.xml'|
-|implementation_file_name|string| Use empty string, if implementation file is mentioned in the device file|
-|parameters|string|eg Set up child variable defaults. Easier to set to empty string and set up vars in child code.|
-|embedded|boolean|eg If true children cannot be split between rooms|
-|invisible|boolean|optional - makes child invisible in the UI|
+|implementation_file_name|string|Use an empty string, if implementation file is mentioned in the device file.|
+|parameters|string|eg Set up child variable defaults. Generally easier to set to an empty string and set up the vars in the child code.|
+|embedded|boolean|eg If true children cannot be split between rooms.|
+|invisible|boolean|Optional - makes child invisible in the UI.|
 |.|||
 |Returns:|||
 |nil|||
@@ -751,7 +835,7 @@ luup.chdev.append(
     THIS_LUL_DEVICE,
     childDevices,
     'Group'..groupAddressStr,        -- altid
-    "C-Bus Group "..groupAddressStr, -- name
+    'C-Bus Group '..groupAddressStr, -- name
     veraDevice,                      -- device type
     veraFile,                        -- device filename
     '',                              -- implementation filename
@@ -820,7 +904,7 @@ Table of devices indexed by device id.
 |user|string|For authentication at ip address|
 |pass|string|For authentication at ip address|
 |id|string|AltID as seen in the UI - used to identify children|
-|embedded|boolean|If child - can't be detacjhed from its parent|
+|embedded|boolean|If child - can't be detached from its parent|
 |hidden|boolean|If true device is not shown in the UI|
 |invisible|boolean|If true device is completely isolated from the user|
 |description|string|Users descrption seen in the UI|
