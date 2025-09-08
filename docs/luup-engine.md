@@ -682,9 +682,9 @@ variable_set (service, variable_name, variable_value, device)
 |Identifier|Type|Comments|
 |---|---|---|
 |Arguments:|||
-|service|string|eg "urn:upnp-org:serviceId:SwitchPower1"|
-|variable_name|string||
-|variable_value|string||
+|service|string|eg "urn:upnp-org:serviceId:Dimming1"|
+|variable_name|string|LoadLevelTarget]|
+|variable_value|string|eg '100'|
 |device|string or integer|String is the device's udn, else it's the device number.|
 |startup|boolean|Deprecated|
 |.|||
@@ -693,7 +693,8 @@ variable_set (service, variable_name, variable_value, device)
 
 Example:
 ```lua
-luup.variable_set ("urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+local newLoadLevelTarget = '55'
+luup.variable_set ("urn:upnp-org:serviceId:Dimming1", "LoadLevelTarget]", newLoadLevelTarget, 43)
 ```
 
 ### variable_watch
