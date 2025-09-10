@@ -182,7 +182,7 @@ In Vera the delay was an integer, so the shortest delay was one second. In openL
 
 Example:
 ```lua
-luup.call_delay ("lightOn", "3600", "colorRed")
+luup.call_delay ("lightOn", 3600, "colorRed")
 ```
 
 ### call_timer
@@ -203,7 +203,7 @@ call_timer (function_name, type, time, days, argument_for_function)
 
 |Type value|Timer|
 |---|---|
-|1|Interval|
+|1|One shot delay|
 |2|Day of week|
 |3|Day of month|
 |4|Absolute|
@@ -694,7 +694,7 @@ variable_set (service, variable_name, variable_value, device)
 Example:
 ```lua
 local newLoadLevelTarget = '55'
-luup.variable_set ("urn:upnp-org:serviceId:Dimming1", "LoadLevelTarget]", newLoadLevelTarget, 43)
+luup.variable_set ("urn:upnp-org:serviceId:Dimming1", "LoadLevelTarget", newLoadLevelTarget, 43)
 ```
 
 ### variable_watch
