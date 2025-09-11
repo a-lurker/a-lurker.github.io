@@ -698,9 +698,10 @@ luup.variable_set ("urn:upnp-org:serviceId:Dimming1", "LoadLevelTarget", newLoad
 ```
 
 Deleting variables:
+
 It's not uncommon to accidentally create unwanted variables when say developing a new plugin. Other than taking up some memory, they do no harm. Using `variable_set` to save a `nil` is claimed to work in Vera but doesn't in openLuup. There are two ways to fix your OCD:
 - Use the delete button beside the variable in the devices `Variables` tab in AltUI.
-- The hard & risky way: Backup the `user_data.json` file. Unzip the file and edit very carefully. Rezip and restart the Luup engine.
+- The hard & risky way: Backup the `user_data.json` file. Unzip the file and edit very carefully. Rezip and restart the Luup Engine.
 
 ### variable_watch
 variable_watch (function_name, service, variable_name, device)
