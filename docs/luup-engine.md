@@ -670,7 +670,7 @@ local now = os.time()
 local v2,t2 = luup.variable_get ("urn:upnp-org:serviceId:TemperatureSensor1","CurrentTemperature", 33, {now-3600, now})
 print ("over the last hour", pretty {value = v2, times=t2})
 
--- over the last hour 	{
+-- over the last hour   {
 --   times = {1530023886,1530023926.5466,1530024526.9677,1530025127.1189,1530026327.7046,1530026929.0275,1530027486},
 --   value = {31.1,31,31.2,31.3,31.2,31.3,31.3}
 --   }
@@ -696,6 +696,11 @@ Example:
 local newLoadLevelTarget = '55'
 luup.variable_set ("urn:upnp-org:serviceId:Dimming1", "LoadLevelTarget", newLoadLevelTarget, 43)
 ```
+
+Deleting variables:
+It's not uncommon to accidentally create unwanted variables when say developing a new plugin. Other than taking up some memory, they do no harm. Using `variable_set` to save a `nil` is claimed to work in Vera but doesn't in openLuup. There are two ways to fix your OCD:
+- Use the delete button beside the variable in the devices `Variables` tab in AltUI.
+- The hard & risky way: Backup the `user_data.json` file. Unzip the file and edit very carefully. Rezip and restart the Luup engine.
 
 ### variable_watch
 variable_watch (function_name, service, variable_name, device)
@@ -1065,6 +1070,44 @@ print(luup.rooms[room])   -- prints "nil"
 local device = 100
 local room = luup.devices[device].room_num
 print(luup.rooms[room])   -- prints "Pantry"
+```
+
+## Category numbers
+
+`category_num` can be one of the following in openLuup:
+
+```lua
+local mcv  = "urn:schemas-micasaverde-com:device:"
+local upnp = "urn:schemas-upnp-org:device:"
+
+local categories_lookup =   -- info about device types and categories
+{
+    {id =  1, name = "Interface",          type = mcv  .. "HomeAutomationGateway:1"},
+    {id =  2, name = "Dimmable Switch",    type = upnp .. "DimmableLight:1"},
+    {id =  3, name = "On/Off Switch",      type = upnp .. "BinaryLight:1"},
+    {id =  4, name = "Sensor",             type = mcv  .. "DoorSensor:1"},
+    {id =  5, name = "HVAC",               type = upnp .. "HVAC_ZoneThermostat:1"},
+    {id =  6, name = "Camera",             type = upnp .. "DigitalSecurityCamera:1"},
+    {id =  6, name = "Camera",             type = upnp .. "DigitalSecurityCamera:2"},
+    {id =  7, name = "Door Lock",          type = mcv  .. "DoorLock:1"},
+    {id =  8, name = "Window Covering",    type = mcv  .. "WindowCovering:1"},
+    {id =  9, name = "Remote Control",     type = mcv  .. "RemoteControl:1"},
+    {id = 10, name = "IR Transmitter",     type = mcv  .. "IrTransmitter:1"},
+    {id = 11, name = "Generic I/O",        type = mcv  .. "GenericIO:1"},
+    {id = 12, name = "Generic Sensor",     type = mcv  .. "GenericSensor:1"},
+    {id = 13, name = "Serial Port",        type =         "urn:micasaverde-org:device:SerialPort:1"},  -- yes, it really IS different
+    {id = 14, name = "Scene Controller",   type = mcv  .. "SceneController:1"},
+    {id = 15, name = "A/V",                type = mcv  .. "avmisc:1"},
+    {id = 16, name = "Humidity Sensor",    type = mcv  .. "HumiditySensor:1"},
+    {id = 17, name = "Temperature Sensor", type = mcv  .. "TemperatureSensor:1"},
+    {id = 18, name = "Light Sensor",       type = mcv  .. "LightSensor:1"},
+    {id = 19, name = "Z-Wave Interface",   type = mcv  .. "ZWaveNetwork:1"},
+    {id = 20, name = "Insteon Interface",  type = mcv  .. "InsteonNetwork:1"},
+    {id = 21, name = "Power Meter",        type = mcv  .. "PowerMeter:1"},
+    {id = 22, name = "Alarm Panel",        type = mcv  .. "AlarmPanel:1"},
+    {id = 23, name = "Alarm Partition",    type = mcv  .. "AlarmPartition:1"},
+    {id = 23, name = "Alarm Partition",    type = mcv  .. "AlarmPartition:2"},
+    {id = 24, name = "Siren",              type = mcv  .. "Siren:1"}
 ```
 
 ## luup.scenes[]
