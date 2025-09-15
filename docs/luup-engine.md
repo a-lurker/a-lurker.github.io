@@ -717,8 +717,35 @@ variable_watch (function_name, service, variable_name, device)
 |Returns:|||
 |nil|||
 
-Example:
+Note that the called function is passed various useful variables. Example:
 ```lua
+-- function needs to be global
+function lightSwitchOperated(lul_device, lul_service, lul_variable, lul_value_old, lul_value_new)
+    print('lul_device:  '    ..type(lul_device))
+    print('lul_service:  '   ..type(lul_service))
+    print('lul_variable:  '  ..type(lul_variable))
+    print('lul_value_old:  ' ..type(lul_value_old))
+    print('lul_value_new:  ' ..type(lul_value_new))
+end
+
+luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
+
+-- prints:
+-- lul_device:  number
+-- lul_service:  string
+-- lul_variable:  string
+-- lul_value_old:  string
+-- lul_value_new:  string
+```
+Note that you can't unwatch a watch. The best compromise is to place a flag in the called function; allowing it to complete or not eg:
+```lua
+local watchDisabled = false
+
+function lightSwitchOperated(lul_device, lul_service, lul_variable, lul_value_old, lul_value_new)
+   if watchDisabled then return end
+   -- do watch stuff here
+end
+
 luup.variable_watch ("lightSwitchOperated", "urn:upnp-org:serviceId:SwitchPower1", "Status", 43)
 ```
 
@@ -914,7 +941,7 @@ Table of devices indexed by device id.
 |embedded|boolean|If child - can't be detached from its parent|
 |hidden|boolean|If true device is not shown in the UI|
 |invisible|boolean|If true device is completely isolated from the user|
-|description|string|Users descrption seen in the UI|
+|description|string|Users description seen in the UI|
 |udn|string|udn of the device, can be used instead of device id|
 
 Get the device's ip address:
