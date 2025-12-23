@@ -180,7 +180,7 @@ http://openLuupIPaddress?id=action&output_format=json&DeviceNum=15&serviceId=urn
 `"TabType": "flash"` is a hangover from years ago.
 
 ```json
-The Aray of Tabs starts like this:
+The Array of Tabs starts like this:
 
     "Tabs": [
         {
