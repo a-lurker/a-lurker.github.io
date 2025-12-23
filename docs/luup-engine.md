@@ -431,9 +431,9 @@ local PLUGIN_URL_ID = callmyplugin
 
 function myPluginCallbackHandler (lul_request, lul_parameters, lul_outputformat)
 
-    debug('request is: '..tostring(lul_request))
+    debug('Request is: '..tostring(lul_request))
     for k,v in pairs(lul_parameters) do debug ('parameters are: '..tostring(k)..'='..tostring(v)) end
-    debug('outputformat is: '..tostring(lul_outputformat))
+    debug('Output format is '..tostring(lul_outputformat))
 
     if not (lul_request:lower() == PLUGIN_URL_ID) then return end
 
@@ -444,10 +444,10 @@ function myPluginCallbackHandler (lul_request, lul_parameters, lul_outputformat)
     -- output the intro web page?
     if not lcParameters.fnc then return htmlIntroPage() end -- no 'fnc' parameter so do the intro
 
-    if (lcParameters.fnc == 'getwebpage1') then return getLog(lcParameters) end
-    if (lcParameters.fnc == 'getwebpage2') then return getZWInfo() end
-    if (lcParameters.fnc == 'getwebpage3') then return getZWDeviceInfo(lcParameters) end
-    if (lcParameters.fnc == 'getwebpage4') then return getIP() end
+    if (lcParameters.fnc == 'getwebpage1') then return abc(lcParameters) end
+    if (lcParameters.fnc == 'getwebpage2') then return fgh() end
+    if (lcParameters.fnc == 'getwebpage3') then return mno(lcParameters) end
+    if (lcParameters.fnc == 'getwebpage4') then return xyz() end
 
     return 'Error', 'text/html'
 end
