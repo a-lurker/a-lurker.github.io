@@ -375,7 +375,7 @@ end
 - The chaining of file names located in the various xml files, starting at the top with D_xyz1.xml, is incorrect. Needed files don't get loaded.
 - The json and xml the various files use is invalid. Always run the code through a validator to check.
 - Mixing up the `serviceType` and `serviceId`, eg these are not the same: `urn:schemas-a-lurker-com:service:WSPR:1` vs `urn:schemas-a-lurker-com:serviceId:WSPR1`
-- `device_json` in the device's attribute list is incorrect. During development and if changing the plugin filenames, this attribute might not pick up cany hanges to the name of the D_xyz.json file.
+- `device_json` in the device's attribute list is incorrect. During development and if changing the plugin filenames, this attribute might not pick up any changes to the name of the D_xyz.json file.
 
 ## Deep dive
 @toggledbits has written [some info on plugins here](https://github.com/toggledbits/PluginTools).
