@@ -175,6 +175,25 @@ When the button is pushed an action URL is sent from the browser to the Luup eng
 http://openLuupIPaddress?id=action&output_format=json&DeviceNum=15&serviceId=urn:dali-org:serviceId:Dali1&action=FadeUpDown&addressFadeUpDown
 ```
 
+`Label` is the Tab label.
+`"Position": "0"` specifies the Tab order - they start at 0.
+`"TabType": "flash"` is a hangover from years ago.
+
+```json
+The Aray of Tabs starts like this:
+
+    "Tabs": [
+        {
+            "Label": {
+                "lang_tag": "Dali Addresses",
+                "text": "Dali Addresses"
+            },
+            "Position": "0",
+            "TabType": "flash",
+
+The controls follow - see next section:
+```
+
 ```json
 Make an entry box - start with a label stating what it is and how to use it.
 
